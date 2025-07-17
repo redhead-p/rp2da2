@@ -169,10 +169,6 @@ class OLED_0in91:
 
 if __name__ == '__main__':
     o = OLED_0in91(I2C(0))
-
-
-
-
     o.page[0].text('Hello World', 0, 0)
     o.page[1].text('Line 2', 0, 0)
     o.page[2].text('Indented line 3', 8, 0)
