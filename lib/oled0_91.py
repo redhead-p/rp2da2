@@ -5,8 +5,6 @@
 Mono chrome using SSD1306 controller
 
 Display is organised as 4 full width pages. Each may contain 1 line of text 
-
-
 """
 
 from micropython import const
@@ -24,9 +22,6 @@ _I2C_RAM = const(0X40)
 _I2C_ADDR = const(0x3c)
 
 
-
-
-
 class Page(FrameBuffer):
     """Display Page Class
     
@@ -34,11 +29,17 @@ class Page(FrameBuffer):
     It is based on the FrameBuffer class.
     
     If using the default Framebuffer text each page holds 1 line of text.
+    The text is written to the page using the text() method.
+
     """
     def __init__(self):
         """Construct a page.
         
         This allocates creates a framebuffer with the buffer allocated here.
+        The buffer is 128 bytes wide and 8 lines high.
+        The first byte is reserved for the command / data flag.
+        The rest of the buffer is used for the display data.
+
         
         Args:
             self:
@@ -52,7 +53,7 @@ class Page(FrameBuffer):
     def data_buff(self):
         """Get the data buffer
 
-        This returns a memory view of the buffer. 
+        This returns a memory view of the buffer content
         
         Returns:
             Data buffer
@@ -60,12 +61,11 @@ class Page(FrameBuffer):
         return self._data_buff_mv
 
 
-
-
-
 class OLED_0in91:
     """0.91" OLED Display using SSD1306
-    
+
+    This is a driver for the 0.91 inch OLED display using the SSD1306 controller.
+    It uses the I2C interface to communicate with the display.
     """
     def __init__(self, i2c):
         """Construct the OLED driver
@@ -98,9 +98,12 @@ class OLED_0in91:
         self.page = [Page(), Page(), Page(), Page()]
 
 
-
-
     def _write_cmd(self, cmd):
+        """Write a command to the display
+        This writes a command to the display using the I2C interface.
+        args:
+            cmd: The command to write to the display.
+        """
         self._cmdBuff[1] = cmd
         l = self._i2c.writeto(self._addr, self._cmdBuff)
         assert l == len(self._cmdBuff), 'i2c write cmd NACK'
@@ -112,7 +115,12 @@ class OLED_0in91:
         assert l == len(buf), f'i2c write data NACK l {l}'
 
     def _init_display(self):
-        """Initialize display""" 
+        """Initialize display
+        
+        This initializes the display by sending the necessary commands to the SSD1306 controller.
+        It sets the display to normal mode, sets the contrast, and sets the multiplex ratio.
+        It also sets the display offset and the clock divide ratio. 
+        """ 
         self._write_cmd(0xAE)
 
         self._write_cmd(0x40) # set low column address
@@ -153,6 +161,12 @@ class OLED_0in91:
 
 
     def show_page(self, pg_n):
+        """Show a page on the display
+
+        This shows a page on the display by writing the data buffer to the display.
+        args:
+            pg_n: The page number to show. This should be between 0 and 3.
+        """
         self._write_cmd(0xB0 + pg_n) # set page address
         self._write_cmd(0x00) # set low column address
         self._write_cmd(0x10) # set high column address
@@ -163,9 +177,25 @@ class OLED_0in91:
         
 
     def show(self):
+        """Show all pages on the display
+        This shows all pages on the display by iterating through each page and calling show_page.
+        """
         for pg in range(0, _OLED_HEIGHT//_PAGE_HEIGHT):
             self.show_page(pg)
+
+    def scroll_write(self, txt):
+        """Scroll and write.
+        
+        Scroll pages(lines) up by one line creating a blank line at the bottom (Page 4)
+        and then put the text on the last line"""
+        lst_pg = _OLED_HEIGHT//_PAGE_HEIGHT -1 # last page index
            
+        for pgn in range(0, lst_pg):
+            self.page[pgn].data_buff()[1:] = self.page[pgn + 1].data_buff()[1:]
+            self.show_page(pgn)
+        self.page[lst_pg].fill(0)
+        self.page[lst_pg].text(txt, 0, 0)
+        self.show_page(lst_pg)
 
 if __name__ == '__main__':
     o = OLED_0in91(I2C(0))
@@ -176,3 +206,5 @@ if __name__ == '__main__':
     x = time.ticks_us()
     o.show()
     print(time.ticks_us() -  x)
+    time.sleep(5)
+    o.scroll_write("New Last Line")

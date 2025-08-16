@@ -19,7 +19,7 @@ This module contains classes for DCC command objects.
 
 from micropython import const
 import machine
-import time
+
 from machine import Pin
 
 from dcc_cmd_pio import DCCCmdTx
@@ -103,10 +103,26 @@ class CommandPacket:
     
     @classmethod
     def get_counts(cls):
+        """Get the command counts
+
+        This returns the counts of commands sent by type. The counts are reset by the
+        reset_counts method.
+        args:
+            cls:
+        Returns:
+            A dictionary of command counts by type.
+        """
+
         return cls._counts
     
     @classmethod
     def reset_counts(cls):
+        """Reset the command counts 
+
+        This resets the command counts to zero. It is used to reset the command counts
+        after a report has been printed.
+
+        """
         cls._counts = {}
 
 
@@ -299,7 +315,7 @@ class SpeedCommand(CommandPacket):
         args:
             self:
             address: DCC address of target decoder
-            dir:    Direction (forward or reverse)
+            dir:    Direction (1:forward  or 0:reverse)
             speed:  Speed
         
         """

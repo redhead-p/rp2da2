@@ -1,7 +1,6 @@
 """Device Module
     :author: Paul Redhead
 
-        Copyright (C) 2023, 2034 Paul Redhead
 
 This provides the Device class, a base class for hardware device drivers and
 similar objects.
@@ -12,12 +11,33 @@ and core 1 is idle.  The RP2040 port of MicroPython uses the _thread module to r
 in core 1 and enable communications between the cores.
 
 
-This module provides a queue for passing events.  Multiple
-sources may write to the queue.  There may be only 1 reader.  The reader runs in the main loop.  Sources are 
-typically event driven.
+This module provides a queue for passing events and instructions.  Multiple
+sources may write to the queue.  There may be only 1 reader.  The reader runs in the main loop.
+Sources are typically event driven and use a combination of hardware interrupts and 
+timer call-backs.
 
-If using both cores, core 1 runs a main loop which reads the queue and processess events as they
-occur.  Device drivers run on core 0.
+In the RP2 MicroPython implementaton all interrupts (both hard and soft) are processed in
+core 0. Core 1 always runs in nob - interrupt context.
+
+If using both cores, the structure of the application has to be designed to accomodate
+this.  Device drivers run on core 0. Core 1 runs a main loop which reads the queue and processess entries as they
+occur. 
+
+"""
+"""       Copyright 2023, 2024, 2025  Paul Redhead
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 """
 
@@ -56,7 +76,22 @@ class Device():
     instantiated independently.
     
     Attributes:
-        """
+
+        BLK_EMPTY: Block unoccupied
+        BLK_CH1: Block occupied - RailCom channel 1 info.
+        BLK_OCC: Block occupied - Load detected but no info.
+        POM_CV:  event code for reporting a CV value from read or write.
+        POM_TO:  event code for reporting POM access timeout.
+        POM_NAK: event code for reporting NAK received.
+        MC_SET_LED : Instruction to set Comms led - data is colour, value (0 or 1)
+        MC_READY  : Initial subscriptions registered and broker available
+        MC_CONNECT_ERR  : Connect error - broker not available
+        WF_SET_LED : Set WiFi LED instruction, data is colour, value
+        TO_CMD : Set Turnout (point) instruction, data is 'N' or 'R'
+        
+        
+
+    """
     # class variables
 
 
@@ -70,13 +105,38 @@ class Device():
     INDETERMINATE = const(3)
     """State indeterminate (e.g. action in progress)"""
 
-    # device specific states are defined in the relevant drivers
+    # device specific states
 
+    # RailCom channel 1, local detector
+
+    BLK_EMPTY = const(20)   # Block unoccupied
+    BLK_CH1   = const(21)   # Block occupied - RailCom channel 1 info
+    BLK_OCC   = const(22)   # Block occupied - Load detected but no info
+
+    # RailCom channel 2, global detector
+
+    POM_CV    = const(30)   # CV value from read or write
+    POM_TO    = const(31)   # POM access timeout
+    POM_NAK   = const(32)   # POM access NAK
+
+    # MQTT Client
+
+
+    # 40 not used
+    MC_SET_LED      = const(41) # Instruction to set Comms led - data is colour, value (0 or 1)
+    MC_READY        = const(43) # initial subscriptions registered
+    MC_CONNECT_ERR  = const(48) # MQTT connect error 
+
+    # WiFi
+
+    WF_SET_LED      = const(50) 
+
+    # Point 
+
+    TO_CMD  = const(60) # Point control instruction - data is hw number, value 'N' or 'R'
 
     
     # _fido = WDT()  # enable a watch dog timer just in case
-
-
 
     _queue = deque((), MAX_Q_LEN, 1)
 
@@ -163,6 +223,7 @@ class Device():
                     event = cls._queue.popleft()
                 except IndexError:
                     if not wait:
+                        time.sleep_ms(0)
                         return None
             time.sleep_ms(1)
         return event
@@ -245,7 +306,7 @@ class Device():
 
         args:
             self:
-            event:  event code - system specific
+            event:  event or instruction code - a Device class constant
             data:   event data to qualify code - device dependent  
             """
 

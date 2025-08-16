@@ -15,14 +15,16 @@ A command comprises a preamble, one or more instruction/data bytes and an error 
 Each byte is preceeded by a single '0' bit.
 The checksum is followed by a single '1' bit which may be the initial bit of
 the next preamble. The preamble is at least 14 '1' bits. Note that in this implementation the pre-amble is
-not interrupted by the cutout so the preamble length doesn't need to be lengthened.
+not interrupted by the cutout so the preamble length doesn't need to be lengthened but for compliance
+RCN-217 the pre-amble is set to 18 bits.
 
 The DCC signal is a series of '1' & '0' bits.  Each bit is encoded
 into a complete DCC output cycle.  The half cycle length for a '1' is 58us, a '0' is 100us.
-The PIO FIFO buffer is 32 bits wide - 1 word.  The RX FIFO is 
-not used so is joined to the TX FIFO.  This gives a total FIFO of 8 words. 7 words max are required for
-a normal DCC command packets. The DCC output pin is set high for the first half cycle of a bit and low for
+The DCC output pin is set high for the first half cycle of a bit and low for
 second half cycle.
+The PIO FIFO buffer is 32 bits wide - 1 word.  The RX FIFO is 
+not used so is joined to the TX FIFO.  This gives a total FIFO of 8 words. Each word holds two DCC command
+bytes plus framing bits. 
 
 If the FIFO is empty, the PIO doesn't stall but continues outputing '0' bits until the FIFO is 
 loaded with a new command.
@@ -50,18 +52,11 @@ from machine import Pin
 
 from micropython import const
 
-
 import rp2
-
-
 
 
 # module constants - not for importing elsewhere
 _PIO_FREQ = const(500_000)          # 500 kHz - 2 micro sec. tick period
-
-
-
-
 
 
 class DCCCmdTx:
@@ -93,16 +88,14 @@ class DCCCmdTx:
         OFF:    Power Off  
     """
 
-    # class constants - may be imported by other modules
 
+    # class constants - may be imported by other modules
 
     FWD = const(1)
     REV = const(-1)
 
     ON = const(1)
     OFF = const(0)
-
-     
 
     # class variables
 
@@ -331,8 +324,3 @@ class DCCCmdTx:
             self._sm.active(False)
         return self._sleep_pin()
 
-
-if __name__ == '__main__':
-
-    # state machine 0, DCC pin 20, sleep pin 19
-    dcc = DCCCmdTx(0, Pin(20, Pin.OUT), Pin(19, Pin.OUT), Pin(18, Pin.OUT)) 

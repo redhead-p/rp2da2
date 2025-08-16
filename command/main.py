@@ -1,0 +1,141 @@
+"""RP2 command station main.py
+
+:author: Paul Redhead
+
+This is the main entry point for the RP2 application running on the central command station. 
+It starts the MQTT client and the DCC command and RailCom command response objects on the first core.
+It also starts the screen and NeoString objects, and the DCC monitor on the second core.
+
+It is designed to run on the Raspberry Pi Pico or Arduino Nano RP2040 Connect.
+It uses the micropython, machine, and mqtt libraries.
+It also uses the dcc_command, dcc_rc_ch2, neoled, screen, mqtt_cmd, mqtt, mqtt_client, dcc_mon, and device modules.
+"""
+"""       Copyright 2025  Paul Redhead
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+"""
+# python imports
+import _thread, os, network
+
+# micropython imports 
+from micropython import const
+from machine import Pin, ADC
+
+# lib imports
+from device import Device
+from led import NeoString
+from screen import Screen
+
+# DCC and RailCom imports
+from dcc_command import DCCCommand
+from dcc_rc_ch2 import RComCmdRsp
+from dcc_mon import DCCMon
+
+# MQTT imports
+from mqtt_cmd import Power, Cab
+from mqtt import Will
+from mqtt_client import MQTTClient
+
+from wifi import WiFi
+
+
+def screen_splash():
+    """create screen splash
+    
+    It's done here to avoid unnessesary imports in screen modules."""
+    hostname = network.hostname()
+    ssid = WiFi.get_instance().get_ssid()
+    l0 = (0, '  DCC Cmnd Stn', 0)
+    l1 = (1, '', 0)
+    l2 = (2, f'{ssid} {hostname}', 0)
+    l3 = (3, 'Standalone', 0)
+    # override defaults.
+    for _, dev in Device.get_items():
+        if dev.get_type() == MQTTClient.DEVICE_TYPE:
+            l3 = (3, f'MQTT {dev.get_broker()}', 0)
+        elif dev.get_type() == RComCmdRsp.DEVICE_TYPE:
+            l1 = (1, 'RailCom Global', 0)
+    return (l0, l1, l2, l3)
+
+
+def main():
+    """Main function for the RP2 first core application.
+
+    This function sets up the MQTT client and starts the main loop.
+    It also sets up the DCC command and RailCom command response objects.
+    The main loop reads the MQTT client and publishes the power state if it has changed.
+    """
+
+    DCC_STATE_MC = const(0) #DCC generation - First state machine on PIO 0
+    RC2_STATE_MC = const(6) # RailCom Global detector state machine - 3rd on PIO 1
+    
+    machine_descrip = os.uname().machine # get machine description
+    if machine_descrip.find("Pico") > -1:
+        # Detector pin allocations - Raspberry Pi Pico format
+        # orientation pins are initiated but not specifically allocated
+        c2_rx_pin = Pin(16, Pin.IN)
+        _ = Pin(17, Pin.IN)
+    elif machine_descrip.find("Nano") > -1:
+        # Detector pin allocations - Arduino Nano  format
+        # orientation pins are initiated but not specifically allocated
+        c2_rx_pin = Pin(15, Pin.IN)
+        _ = Pin(16, Pin.IN)
+    else:
+        print (machine_descrip, "invalid")
+
+    DCCCommand(dcc_pin, sleep_pin, DCC_STATE_MC, enable_pin)
+
+    RComCmdRsp(RC2_STATE_MC, c2_rx_pin, enable_pin)
+    
+    # list of MQTT Agents to be started.
+    MQTT_LIST = [Power("track/power/set", MQTTClient.QoS1, "track/power/event"),
+                    Will("track/state", MQTTClient.QoS1),
+                    Cab("cab/+/+/#", MQTTClient.QoS1)]
+  
+    mc = MQTTClient.get_instance() # this will create the MQTT client
+    mc.start(MQTT_LIST)
+    while True:
+        mc.read_poll()
+        for device in MQTT_LIST:
+            device.pub_check()
+
+
+def main1():
+    """ Main function for the RP2 second core application.
+    
+    This function sets up the screen and NeoString objects, and starts the DCC monitor.
+    It also enters a loop to read event reports and update the screen and NeoString accordingly."""
+    s = Screen().get_instance()
+    np = NeoString(Pin(22),2)
+    dcc_mon = DCCMon(sleep_pin, enable_pin, fault_pin, sense_pin)
+    s.show_screen(screen_splash())
+    
+    
+    while True:
+        report = Device.get_event_report() # wait until event received
+        s.show_event(report)
+        np.show_event(report)
+        dcc_mon.scan()
+
+
+if __name__ == '__main__':
+    # DRV8874 pin allocations - common to Pico & Arduino Nano Connect
+    enable_pin = Pin(18, Pin.OUT, value = 1)
+    sleep_pin = Pin(19, Pin.OUT, value = 0)   # set sleep mode initially
+    dcc_pin = Pin(20, Pin.OUT)
+    fault_pin = Pin(21, Pin.IN, Pin.PULL_UP)  # low for true
+    sense_pin = ADC(Pin(26)) # current sense input
+    _thread.start_new_thread(main1,())
+    main()

@@ -52,17 +52,14 @@ class RComBlkDet(Device):
         - occupied and RailCom Channel 1 info available
 
     Attributes:
-        BLK_EMPTY: Block unoccupied
-        BLK_CH1: Block occupied - RailCom channel 1 info
-        BLK_OCC: Block occupied - Load detected but no info
+
+        DEVICE_TYPE: Device type for reporting events.
 
     """
     
     # class constants
-
-    BLK_EMPTY = const(20)   # Block unoccupied
-    BLK_CH1   = const(21)   # Block occupied - RailCom channel 1 info
-    BLK_OCC   = const(22)   # Block occupied - Load detected but no info
+    
+    DEVICE_TYPE = const('b')
    
 
     def __init__(self, blk_name, rc_sm_num, rx_pin, enable_pin = None):
@@ -93,13 +90,13 @@ class RComBlkDet(Device):
         self._rx_pin = rx_pin
         self._enable_pin = enable_pin
         self._no_resp_count = _MAX_NO_READ
-        self._last_report = None  # this will be a tuple (address type, address, orientation)
+
         # block state may be unknown, empty, occupied (no channel 1 data), occupied with channel 1 data
-        self._blk_state = Device.UNKNOWN
+        self._blk_state = (Device.UNKNOWN, None) # block state is status and RailCom info if available.
         self._load_timer = Timer(mode = Timer.ONE_SHOT, period = _FIRST_TIMER_PERIOD, callback = self._load_check)
         self._errors = {} # Error counts by type
         self._dgs = set() # Datagrams seen
-        super().__init__(blk_name, 'b')
+        super().__init__(blk_name, RComBlkDet.DEVICE_TYPE)
 
 
     def get_error_counts(self):
@@ -131,6 +128,18 @@ class RComBlkDet(Device):
         self._errors = {}
         self._dgs = set()
 
+    def get_block_state(self):
+        """ Get the current block state
+        
+        This returns the current block state. The block state is a tuple of the block status and any RailCom
+        information available. The block status may be:
+            - Device.UNKNOWN: the block state is unknown
+            - Device.EMPTY: the block is empty
+            - RComBlkDet.BLK_OCC: the block is occupied, but no RailCom Channel 1 information is available
+            - RComBlkDet.BLK_CH1: the block is occupied and RailCom Channel 1 information is available
+            """
+        return self._blk_state
+
 
     def _log_error(self,error_code):
         try:
@@ -145,37 +154,41 @@ class RComBlkDet(Device):
         Check to see if there's a load on the block.
         """
         #Device.check_core0()
-        if self._enable_pin is None or self._enable_pin.value() == 1:
+        if self._enable_pin is None or self._enable_pin() == 1:
             # only check if we have power!
 
-            if self._rx_pin.value() == 1:
+            if self._rx_pin() == 1:
                 # no load
                 if self._no_resp_count < 0:
-                    if self._blk_state != RComBlkDet.BLK_EMPTY: 
+                    if self._blk_state[0] != RComBlkDet.BLK_EMPTY: 
                     # consecutive missed response limit reached
                     # but it's not been reported
-                        self._id_val = {}
+                        self._id_val = {} # clear any previous datagrams
                         self._last_report = None
-                        self._blk_state = RComBlkDet.BLK_EMPTY
-                        self.report_event(RComBlkDet.BLK_EMPTY, None)
+                        self._blk_state = (RComBlkDet.BLK_EMPTY, None)
+                        self.report_event(*self._blk_state)
                 else:
                     self._no_resp_count -= 1
             else:
                 # false positive unlikely so report change immediately if was empty
                 # but allow limit misreads if last report was CH1 data
-                if self._blk_state == RComBlkDet.BLK_EMPTY:
+                if self._blk_state[0] not in (RComBlkDet.BLK_OCC, RComBlkDet.BLK_CH1):
+                    # either empty or start of day
                     self._no_resp_count = _MAX_NO_READ
-                    self._blk_state = RComBlkDet.BLK_OCC
-                    self.report_event(RComBlkDet.BLK_OCC, None)
-                elif self._blk_state == RComBlkDet.BLK_CH1:
+                    self._blk_state = (RComBlkDet.BLK_OCC, None)
+                    self.report_event(*self._blk_state)
+                elif self._blk_state[0] == RComBlkDet.BLK_CH1:
                     if self._no_resp_count < 0:
                         # consecutive limit reached
                         self._id_val = {}
                         self._last_report = None
-                        self._blk_state = RComBlkDet.BLK_OCC
-                        self.report_event(RComBlkDet.BLK_OCC, None)
+                        self._blk_state = (RComBlkDet.BLK_OCC, None)
+                        self.report_event(*self._blk_state)
                     else:
                         self._no_resp_count -= 1
+                else:
+                    self._no_resp_count = _MAX_NO_READ  # reset the count
+
                 
         # start timer for next check
         self._load_timer.init(mode = Timer.ONE_SHOT, period = _TIMER_PERIOD, callback = self._load_check)
@@ -190,7 +203,6 @@ class RComBlkDet(Device):
             self:
             buffer:   translated data
             orientation: orientation of DCC decoder wrt DCC signal
-        
         """
 
         # detector_side 1 or -1, 0 nothing detected.
@@ -207,8 +219,10 @@ class RComBlkDet(Device):
         try:
             if buffer[1] == RailComRead.ERR_OE:
                 self._log_error('oe') # overrun on in datagram
-            if buffer[0] == RailComRead.ERR_LU or buffer[1] == RailComRead.ERR_LU:
-                self._log_error('h4')  # hamming code look up error detected earlier
+            if buffer[0] == RailComRead.ERR_WH or buffer[1] == RailComRead.ERR_WH:
+                self._log_error('wh')  # hamming code look up error detected earlier
+            if buffer[0] == RailComRead.ERR_WL or buffer[1] == RailComRead.ERR_WL:
+                self._log_error('wl')  # hamming code look up error detected earlier
                 return
 
             if buffer[0] > 0x3f or buffer[1] > 0x3f:
@@ -258,32 +272,6 @@ class RComBlkDet(Device):
         # if the occupancy report has changed since the last time
         # report the event and update saved info for next time.
         report_data = (address_type, address, orientation)
-        if report_data != self._last_report:
-            self.report_event(RComBlkDet.BLK_CH1, report_data)
-            self._blk_state = RComBlkDet.BLK_CH1
-            self._last_report = report_data
-
-
-if __name__ == '__main__':
-    from dcc_cmd_pio import DCCGen
-    from dcc_cmd_util import SpeedCommand, CV_Access
-    from dcc_rc_ch2 import RComCmdRsp
-
-    enable_pin = Pin(18, Pin.OUT, value = 1)
-    sleep_pin = Pin(19, Pin.OUT, value = 0)
-    dcc_pin = Pin(20, Pin.OUT)
-    c1_rx_pin = Pin(0, Pin.IN)
-    c2_rx_pin = Pin(15, Pin.IN)
-
-    # command stn rc1
-    rc_ch1 = RComBlkDet(4, c1_rx_pin, enable_pin)
-    
-    # block detect rc1
-    #rc_ch1 = RComBlkDet(4, c1_rx_pin)
-        
-    rc_ch2 = RComCmdRsp(6, c2_rx_pin, enable_pin)
-    dcc = DCCGen(0, dcc_pin, sleep_pin, enable_pin)
-
-    s1 = SpeedCommand(1, -1, 0)
-    s10 = SpeedCommand(10, 1, 0)
-    
+        if report_data != self._blk_state[1]: # occupancy info changed?
+            self._blk_state = (RComBlkDet.BLK_CH1, report_data)
+            self.report_event(*self._blk_state)

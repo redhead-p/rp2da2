@@ -1,6 +1,6 @@
 # rp2da2
 
- Model Railway Distributed Automation for RP2 (and other MicropPython MCUs).
+Model Railway Distributed Automation for RP2 (and other MicropPython MCUs).
 
 ---
 
@@ -12,7 +12,18 @@
 
 **oled0_91** - Module for 0.91 inch OLED on i2c
 
+**led** - Module to drive ws2812 LEDs or similar.  A string of 2 LEDs is supported.  The first LED displays the backend communications state, the second
+displays the track status.
+
 **screen** - This is the screen application module. It specifies the Screen class.
+
+### Communications
+
+**mqtt_client** - This provides a simple MQTT client.
+
+**mqtt\*** - Other MQTT modules provide interfaces for MQTT devices and agents.  These may be used
+with JMRI but JMRI MQTT specifications will need to be changed from the default. Initially we support
+cabs, power and blocks.  Blocks have combined occupancy sensor and reporter.
 
 ### DCC and RailCom
 
@@ -31,23 +42,72 @@ serialisation and RailCom response processing.
 
 **dcc_rc_pio**  - This module contains the functions and classes for low level RailCom datagram reading. It's applicable for block occupancy detection on Channel 1 and central dcc command decoder responses on Channel 2.
 
+**dcc_mon** - This module monitors the DCC track status by looking at the DRV8874 fault pin and current sense pin.
+
+---
+
+## Configuration
+
+Configuration files hold information required at runtime.  The files use the JSON format. They are held in the repository's conf directory. They must be copied to a top level directory on the target machine called conf. The configuration files in the repository should be taken as examples. They need to be modified outside the repository to reflect local requirements. The Thonny editor may be used to update them as required once they have been copied to the target machine.
+
+### Wi-Fi
+
+The config file specifies:
+
+- Network country code
+- SSID - your Wi-Fi network name
+- password - the network password
+- host name - the name to be used by local machine. This needs to be changed from the MicroPython default to avoid duplicates.
+
+### MQTT
+
+The config file specifies:
+
+- the MQTT broker's host name
+- the local machine client ID.  The client id is required as mosquitto does not permit anonymous access.
+- port - the MQTT port number. By default this is set to 1883 and this setting may be ommitted.
+
 ---
 
 ## Installation
 
-Copy the python (.py) files from the lib and rp2dcc directories to the Pico using Thonny or similar.
-Don’t replicate the repository directory structure, just copy to the top level. Don’t bother with the \_\_init\_\_.py files.  These are purely documentary at the moment.
+### General
 
-There’s no ‘main.py’ yet and everything runs from a test harness at the end of dcc_command.py so load this into the Thonny editor window and ‘Run current script’ (green play button). It will auto-detect whether on a RP Pico or
-Arduino Nano RP2040 Connect and allocate the detector pins accordingly. It creates the DCCCommand object (named dcc).
+Copy the python (.py) files from the lib and rp2dcc directories to the Pico using Thonny or similar.
+Don’t replicate the repository directory structure, just copy to the top level or if you want to be tidier
+you can copy the .py files to the lib directory. Don’t bother with the \_\_init\_\_.py  files.  These are purely documentary at the moment.
+Also ignore the test directory.
 
 The screen driver will object if it can’t find the OLED on the i2c bus. Most 0.91" OLEDs include i2c pull-ups so
-these should not be needed.  If OK you will get an invitation to type at the REPL, but the program will still be running in the background. The OLED display shows a ’splash’, immediately followed by the block status.
+these should not be needed.
+
+### Command Station
+
+The main.py in the command directory is the command station version. It provides MQTT connectivity
+allowing the command station to be controlled from JMRI or similar. Copy this main.py from the command directory to the top level directory on the target device.
+
+Alternatively there is a test harness test_dcccmd.py in the test directory. This may be run using Thonny. Load this into the Thonny editor window and ‘Run current script’ (green play button). It will auto-detect whether on a RP Pico or
+Arduino Nano RP2040 Connect and allocate the detector pins accordingly.
+It creates the DCCCommand object (named dcc).
+
+If OK you will get an invitation to type at the REPL, but the program will still be running in the background. The OLED display shows a ’splash’.
 
 You can enter DCC API commands at the REPL preceded by
 'dcc.'. E.g.:
 
 dcc.power(1)
+
+### Block Detector
+
+The main.py in the layout directory is the block detector version. It provides MQTT connectivity
+allowing the block detector to report to JMRI or similar. Copy this main.py from the layout directory to the top level directory on the target device.
+
+Alternatively there is a test harness test_dccrc1.py in the test directory. This may be run using Thonny. Load this into the Thonny editor window and ‘Run current script’ (green play button). It will auto-detect whether on a RP Pico or
+Arduino Nano RP2040 Connect and allocate the detector pins accordingly.
+It creates the channel 1 block detector objects for two blocks.
+
+If OK you will get an invitation to type at the REPL, but the program will still be running in the background. The OLED display shows a ’splash’.
+Block occupancy details will be displayed on the OLED screen.
 
 ---
 
@@ -89,7 +149,10 @@ Returns
 method **read_cv** *(address, cv_num)*
 
 This initiates reading a CV using Programming on Main in conjunction with RailCom.
-The command is validated and the read request scheduled for action. The addressed decoder must be active and the command will be rejected by the command generator class this is not true.
+The command is validated and the read request scheduled for action. The addressed decoder must be
+active and the command will be rejected by the command generator class this is not true.
+
+The CV value will be displayed on the OLED.
 
 Parameters
 
@@ -106,6 +169,8 @@ This initiates writing a CV using Programming on Main in conjunction with RailCo
 The command is validated and the write request scheduled for action. The addressed
 decoder must be active and the command will be rejected by the command generator class
 this is not true.
+
+The updated CV value will be displayed on the OLED if the write is successful.
 
 Parameters
 
@@ -139,9 +204,11 @@ Returns
 
 ---
 
-**set_speed** *(address, dir, speed=0)*
+method **set_speed** *(address, speed)*
 
-Set Speed (including direction)
+Set Speed.
+
+The direction is not modified. If this is a new command the direction defaults to forward.
 
 The packet generated will be for a 128 step speed setting and decoders must be configured for 28/128 speed steps.
 
@@ -151,9 +218,29 @@ Parameters
 
 - *address* the address of the decoder - may be short or long
 
-- *dir* the direction - forward or reverse
+- *speed* the speed to be set - range 0 to 127
 
-- *speed* the speed to be set - range 0 to 127 - default 0
+Returns
+
+- True if validation is passed and the packet is scheduled for transmission. False if validation fails.
+
+---
+
+method **set_dir** *(address, direction)*
+
+Set Direction.
+
+Direction may be forward or reverse. Speed is not modified. If this is a new command speed defaults to 0.
+
+The packet generated will be for a 128 step speed setting and decoders must be configured for 28/128 speed steps.
+
+See NMRA S-9.2.1 Section 2.3.2.1
+
+Parameters
+
+- *address* the address of the decoder - may be short or long
+
+- *speed* the speed to be set - range 0 to 127
 
 Returns
 

@@ -67,6 +67,7 @@ class DCCCommand():
     Attributes:
         FWD:    Forward direction
         REV:    Reverse direction
+        STOP:   Stopped N.B this is included for completeness
         ON:     Power On
         OFF:    Power Off
         
@@ -75,10 +76,29 @@ class DCCCommand():
     # class constants - may be imported by other modules
     FWD = const(1)
     REV = const(-1)
+    STOP = const(0)
 
+    # used for both power and decoder functions
     ON = const(1)
     OFF = const(0)
-    
+
+    _dcc_cmd = None # singleton dcc command instance
+
+    @classmethod
+    def get_instance(cls):
+        """ Get the DCC Command instance.
+
+        This returns the singleton DCC Command instance.
+
+        Args:
+            cls:
+
+        Returns:
+            The DCC Command instance
+        """
+
+        return cls._dcc_cmd
+
     
     def __init__(self, DCC_pn, sleep_pn, gen_sm_num, enable_pn = None):
         """DCC Command object constructor
@@ -100,6 +120,10 @@ class DCCCommand():
             gen_sm_num: PIO state machine number to be used for DCC Generation
             enable_pn: Pin number to enable the DRV8874.
         """
+
+        if not DCCCommand._dcc_cmd is None:
+            raise RuntimeError ('Attempt to create 2nd DCC Cmd')
+        DCCCommand._dcc_cmd = self
 
         # The packet list is used for commands that are currently scheduled for 
         # transmission. Speed & function commands are never deleted but POM commands have
@@ -162,7 +186,7 @@ class DCCCommand():
         args:
             self:
             address: the address of the decoder - may be short or long
-            dir:    the direction - forward or reverse
+            dir:    the direction - forward or reverse - stop is treated as invalid
             speed: the speed to be set - range 0 to 127 - default 0
               
         returns:
@@ -172,14 +196,11 @@ class DCCCommand():
         # a bit of defensive programming
         if address < 1 or address > CommandPacket.MAX_LONG_ADDR:
             return False
-        if speed < 0 or speed > 127:
-            return False
         if not dir in (DCCCommand.FWD, DCCCommand.REV):
             return False
         
         # speed direction packet list entry's key is 'S', address
-        # speed / direction packet - 1 or 2 address bytes, 2 instruction bytes
-    
+        # speed / direction packet - 1 or 2 address bytes, 2 instruction bytes    
         try:
             self._get_cmd((SpeedCommand.TYPE, address)).update(dir, speed)
         except KeyError:
@@ -214,7 +235,7 @@ class DCCCommand():
             return False
         if f_num < 0 or f_num > 4:
             return False
-        if not state in (0, 1):
+        if not state in (DCCCommand.ON,  DCCCommand.OFF):
             return False
 
         # function group 1 packet - single instruction byte
@@ -330,7 +351,6 @@ class DCCCommand():
         if self._dcc_gen_pio.pio_pwr() == DCCCmdTx.OFF:
             # power now off - don't transmit.
             return
-        #ts = time.ticks_us()
         if len(self._packet_list) == 0:
             # list empty send the DCC idle packet
             self._idle_packet.send()
@@ -338,7 +358,6 @@ class DCCCommand():
         
         if self._pom_packet is None:
             # POM packet if there takes precidence
-
             try:
                 # get the next packet in the list
                 packet_key = next(self._packet_iter)
@@ -347,7 +366,6 @@ class DCCCommand():
                 self._packet_iter = iter(self._packet_list)
                 packet_key = next(self._packet_iter)
             # send the command
-            #t1 = time.ticks_us() - ts
             result = self._packet_list[packet_key].send()
         else:
             result = self._pom_packet.send()
@@ -359,87 +377,3 @@ class DCCCommand():
             self._pom_packet = None
         # else nothing to do if normal command sent OK
         return
-
-
-
-if __name__ == '__main__':
-    import _thread, time, os
-    from dcc_rc_ch1 import RComBlkDet
-    from dcc_rc_ch2 import RComCmdRsp
-
-    from screen import Screen
-
-    # DRV8874 pin allocations - common to Pico & Arduino Nano Connect
-    enable_pin = Pin(18, Pin.OUT, value = 1)
-    sleep_pin = Pin(19, Pin.OUT, value = 0)   # set sleep mode initially
-    dcc_pin = Pin(20, Pin.OUT)
-    fault_pin = Pin(21, Pin.IN, Pin.PULL_UP)  # low for true
-    sense_pin = ADC(Pin(26)) # current sense input
-
-    machine_descrip = os.uname().machine # get machine description
-
-    if machine_descrip.find("Pico") > -1:
-        # Detector pin allocations - Raspberry Pi Pico format
-        # orientation pins are initiated but not specifically allocated
-        c1_rx_pin = Pin(14, Pin.IN)
-        _ = Pin(15, Pin.IN)
-        c2_rx_pin = Pin(16, Pin.IN)
-        _ = Pin(17, Pin.IN)
-    elif machine_descrip.find("Nano") > -1:
-        # Detector pin allocations - Arduino Nano  format
-        # orientation pins are initiated but not specifically allocated
-        c1_rx_pin = Pin(0, Pin.IN)
-        _ = Pin(1, Pin.IN)
-        c2_rx_pin = Pin(15, Pin.IN)
-        _ = Pin(16, Pin.IN)
-    else:
-        print (machine_descrip, "invalid")
-
-
-    time_stamp = time.ticks_ms()
-
-    #rc_ch1 = RComBlkDet('b001', 4, c1_rx_pin, enable_pin)
-
-    rc_ch2 = RComCmdRsp(6, c2_rx_pin, enable_pin)
-    
-    dcc = DCCCommand(dcc_pin, sleep_pin, 0, enable_pin)
-
-    def main1():
-        s = Screen()
-        
-        while True:
-            s.show_event(Device.get_event_report())
-
-    def print_stats(reset = True):
-        global time_stamp
-        elapsed_time = time.ticks_diff(time.ticks_ms(), time_stamp)  
-        print("** Commands **")
-        counts = CommandPacket.get_counts()
-        total = sum(counts.values())
-        print(f"Rate: {(total) * 1000 / elapsed_time:.2f} per sec")
-        print(counts)
-
-        print("** Channel 1 **")
-        print("datagrams:",rc_ch1.get_dg_list())
-        counts = rc_ch1.get_error_counts()
-        print("errors   :", counts)
-        print(f"err. rate: {(sum(counts.values())/total):.0%}")
-        print("** Channel 2 **")
-        print("datagrams:",rc_ch2.get_dg_list())
-        counts = rc_ch2.get_error_counts()
-        print("errors   :", counts)
-        print(f"err. rate: {(sum(counts.values())/total):.0%}")
-        if reset:
-            rc_ch1.reset_stats()
-            rc_ch2.reset_stats()
-            CommandPacket.reset_counts()
-            time_stamp = time.ticks_ms()
-
-
-
-    _thread.start_new_thread(main1,())
-
-
-
-
-

@@ -48,8 +48,7 @@ class RComCmdRsp(Device):
         DYN_REAL_SPEED0: real speed part 1 datagram identifier.
         DYN_REAL_SPEED1: real speed part 2 datagram identifier.
         DYN_RECEP_STATS: reception stats datagram identifier.
-        POM_CV:  event code for reporting a CV value from read or write
-        POM_TO:  event code for reporting POM access timeout
+        DEVICE_TYPE: Device type for reporting events.
 
 
     """
@@ -61,10 +60,7 @@ class RComCmdRsp(Device):
     DYN_REAL_SPEED1 = const(1) # real speed part 2
     DYN_RECEP_STATS = const(7) # reception stats
 
-    # event codes
-    POM_CV    = const(30)   # CV value from read or write
-    POM_TO    = const(31)   # POM access timeout
-    POM_NAK   = const(32)   # POM access NAK
+    DEVICE_TYPE = const('r')
 
 
     def __init__(self, rc_sm_num, rx_pn, enable_pn):
@@ -102,7 +98,7 @@ class RComCmdRsp(Device):
         self._errors = {} # error counts
         self._dgs = set() # Datagrams seen
 
-        super().__init__('cmd', 'r')
+        super().__init__('cmd', RComCmdRsp.DEVICE_TYPE)
 
     def get_error_counts(self):
         """ Get Error Counts
@@ -202,6 +198,12 @@ class RComCmdRsp(Device):
         """ Parse channel 2 message
         
         Inspect the message and extract datagrams which are saved in list and returned.
+        The datagrams are tuples of (datagram id, payload).
+        Bytes are either protocol control bytes, error bytes or data bytes. The least significant 6 bits of a
+        data byte contrinbute to the payload of a datagram and the most significant 2 bits are ignored. The payload
+        content of each byte is concatenated together to form the datagram. The datagram id is
+        the first 4 bits of the datagram. The datagram id is used to determine the length of the datagram.
+        
         """ 
         buff_iter = iter(buff)
         dg_id = None
@@ -212,11 +214,17 @@ class RComCmdRsp(Device):
             while True:
                 # StopIteration will end the loop
                 b = next(buff_iter)
-                if b == RailComRead.ERR_LU:
-                    # Hamming weight error
+                if b == RailComRead.ERR_WH:
+                    # Hamming weight error high
                     # no point in going any further - as structure of
                     # remaining message indeterminate
-                    self._log_error('h4')
+                    self._log_error('wh')
+                    return datagram
+                if b == RailComRead.ERR_WL:
+                    # Hamming weight error low
+                    # no point in going any further - as structure of
+                    # remaining message indeterminate
+                    self._log_error('wl')
                     return datagram
                 if b == RailComRead.ERR_OE:
                     # Over run error
@@ -241,12 +249,16 @@ class RComCmdRsp(Device):
                         error = False
                         for _ in range(_DG2_LEN[dg_id]):
                             b = next(buff_iter)
-                            if b == RailComRead.ERR_LU:
-                                # original byte was invalid Hamming weight 4
-                                self._log_error('h4')
+                            if b == RailComRead.ERR_WH:
+                                # original byte was Hamming weight > 4
+                                self._log_error('wh')
                                 error = True
-                            if b == RailComRead.ERR_OE:
-                                # original byte was invalid Hamming weight 4
+                            elif b == RailComRead.ERR_WL:
+                                # original byte was Hamming weight < 4
+                                self._log_error('wl')
+                                error = True
+                            elif b == RailComRead.ERR_OE:
+                                # original byte was overrun error (missing stop bit)
                                 self._log_error('oe')
                                 error = True
                             elif b > 0x3f:
@@ -320,5 +332,10 @@ class RComCmdRsp(Device):
                     pass
 
 
-        # save the last received datagrams            
-        self._rc_msg[addr] = (datagram)
+        # save the last received datagrams
+        '''
+        if len(datagram) > 1:
+            print(addr, datagram)
+        '''
+      
+        self._rc_msg[addr] = (datagram)            

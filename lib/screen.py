@@ -1,4 +1,4 @@
-"""Block Detector Screen Module
+"""Screen Module
     :author: Paul Redhead
 
  
@@ -7,7 +7,8 @@ This is the screen application module.  It specifies the Screen class.
 Generally it provides application specific access to the display. It knows about application objects and events etc.
 and how they are managed on screen.
 
-It specifies menus, menu items and other popups.
+
+The OlED display is updated using blocked writes.
 """
 """       Copyright 2023, 2024  Paul Redhead
 
@@ -25,14 +26,12 @@ It specifies menus, menu items and other popups.
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 """
+from machine import I2C
 
 from oled0_91 import OLED_0in91
 
-from machine import I2C
+from device import Device
 
-
-from dcc_rc_ch1 import RComBlkDet
-from dcc_rc_ch2 import RComCmdRsp
 
 class Screen():
     """This class provides the screen application.
@@ -68,20 +67,41 @@ class Screen():
     def __init__(self):
         """Screen Initialiser
         
-        This displays the start up splash.
+        Initialise the oled and clear screen.
 
         """
         if (Screen._scrn) != None and (Screen._scrn is not self):
             raise RuntimeError ('Only one Screen object possible')
         
         self._oled = OLED_0in91(I2C(0))
-        self._oled.page[0].text('RailCom Demo', 0, 0)
-        self._oled.page[1].fill(0)
-        self._oled.page[2].fill(0)
-        self._oled.page[3].fill(0)
+        self.clear_screen()
+        self._just_started = True
+
+
+
+    def clear_screen(self):
+        """Clear the screen
+        
+        This clears the screen by filling it with black.
+        """
+        for pg in self._oled.page:
+            pg.fill(0)
         self._oled.show()
 
-        
+    def show_screen(self, lines):
+        """Show the screen with the given lines.
+
+        This loads the screen with the given lines and then displays it.
+        Each line is a tuple of (page number, text, x position).
+        If the same page number appears multiple times in `lines`, only the last entry for that page will be displayed.
+
+        Args:
+            lines: A list of tuples, each containing (page number, text, x position).
+        """
+        for pgn, text, x in lines:
+            self._oled.page[pgn].fill(0)
+            self._oled.page[pgn].text(text, x, 0)
+            self._oled.show_page(pgn)
 
 
     def show_event(self, report):
@@ -97,53 +117,51 @@ class Screen():
         """
     
         (source, event, data) = report
-        self._event_handler[event](self, source, data)
-
-
-
-
-
+        try:
+            self._event_handler[event](self, source, data)
+        except KeyError:
+            # assume intended for a different event processor
+            pass
 
     def _handle_blk_empty(self,src, _):
-        self._oled.page[0].fill(0)
-        self._oled.page[0].text(f'{src.get_name()} empty', 0, 0)
-        self._oled.show_page(0)
+        self._oled.scroll_write(f'{src.get_name()} empty')
 
     def _handle_blk_ch1(self,src, data):
         addr_t, address, orientation = data
-        self._oled.page[0].fill(0)
-        self._oled.page[0].text(f'{src.get_name()} {addr_t}{address} {orientation}', 0, 0)
-        self._oled.show_page(0)
+        self._oled.scroll_write(f'{src.get_name()} {addr_t}{address} {orientation}')
 
     def _handle_blk_occ(self,src, _):
-        self._oled.page[0].fill(0)
-        self._oled.page[0].text(f'{src.get_name()} occupied', 0, 0)
-        self._oled.show_page(0)
+        self._oled.scroll_write(f'{src.get_name()} occupied')
+
 
     def _handle_cv_val(self,src, data):
         address, cv_num, value = data
-        self._oled.page[1].fill(0)
         try:
-            self._oled.page[1].text(f'a:{address} {Screen._CV_LU[(cv_num, value)]}', 0, 0)
+            self._oled.scroll_write(f'a:{address} {Screen._CV_LU[(cv_num, value)]}')
         except KeyError:
-            self._oled.page[1].text(f'a:{address} c:{cv_num} v:{value}', 0, 0)
-        self._oled.show_page(1)
+            self._oled.scroll_write(f'a:{address} c:{cv_num} v:{value}')
 
     def _handle_pom_to(self,src, data):
         address, cv_num = data
-        self._oled.page[1].fill(0)
-        self._oled.page[1].text(f'a:{address} c:{cv_num} timeout', 0, 0)
+        self._oled.scroll_write(f'a:{address} c:{cv_num} timeout')
         self._oled.show_page(1)
 
     def _handle_pom_nak(self,src, data):
         address, cv_num = data
-        self._oled.page[1].fill(0)
-        self._oled.page[1].text(f'a:{address} c:{cv_num} NAK', 0, 0)
-        self._oled.show_page(1)
+        self._oled.scroll_write(f'a:{address} c:{cv_num} NAK')
 
-    _event_handler = {RComBlkDet.BLK_EMPTY: _handle_blk_empty,
-                      RComBlkDet.BLK_OCC:_handle_blk_occ,
-                      RComBlkDet.BLK_CH1: _handle_blk_ch1,
-                      RComCmdRsp.POM_CV: _handle_cv_val,
-                      RComCmdRsp.POM_TO: _handle_pom_to,
-                      RComCmdRsp.POM_NAK: _handle_pom_nak}
+    def _handle_mqtt_ready(self, src, data):
+        """MQTT connection established
+        (subscribption sent) - clear the screen if first time"""
+        if self._just_started:
+            # this is the first time
+            self._just_started = False
+            self.clear_screen()
+
+    _event_handler = {Device.BLK_EMPTY: _handle_blk_empty,
+                      Device.BLK_OCC:_handle_blk_occ,
+                      Device.BLK_CH1: _handle_blk_ch1,
+                      Device.POM_CV: _handle_cv_val,
+                      Device.POM_TO: _handle_pom_to,
+                      Device.POM_NAK: _handle_pom_nak,
+                      Device.MC_READY: _handle_mqtt_ready}

@@ -49,6 +49,8 @@ _PIO_RX_FREQ = const(4_000_000)         # 4MHz - 16 * 250kHz bps rx clock rate f
 _CH_SIZE = [2, 6]                       # Channel 1: 2 chars max - Channel 2: 6 chars max     
 
 # memory mapped addresses and offsets of PIO registers (as defined the RP2040 datasheet)
+PIO0_BASE = const(0x50200000)
+""" PIO  0 base address"""
 PIO1_BASE = const(0x50300000)
 """ PIO 1 base address """
 SM1_EXECCTRL = const(0xe4)
@@ -99,11 +101,12 @@ class RailComRead:
         RES:  reserved
         NAK: negative acknowledgement from decoder (may follow ACK!)
         IMP_ACK: no explicit ACK but datagram received (implicit ACK)
-        ERR_LU: raw data byte not valid Hamming 4 weighted value
+        ERR_WH: raw data byte not valid Hamming 4 weight - weight high
+        ERR_WL: raw data byte not valid Hamming 4 weight - weight low
         ERR_OE: Overrun error (no valid stop bit)
         DG_RESP: internally generated datagram containing protocol control byte
     """
-    # class constants
+    # class constant
 
     # protocol bytes - only applicable to Channel 2
     # decoder responses
@@ -113,8 +116,9 @@ class RailComRead:
     RES =  const(0x82)
     NAK =  const(0x83)
     # locally interpreted responses
-    ERR_LU = const(0x84)
+    ERR_WH = const(0x84)
     ERR_OE = const(0x85)
+    ERR_WL = const(0x86)
     # other available response codes (used elsewhere)
     IMP_ACK = const(0x87)
     ERR_RESP = const(0x88)
@@ -124,6 +128,13 @@ class RailComRead:
     # IDs >= 64 are internally generated datagrams
     DG_RESP = const(0x40) # protocol control byte
     # DG_SIDE = const(0x41) # side - originating decoder orientation
+
+    _RESTART_MEM = {0:PIO0_BASE + SM1_EXECCTRL,
+                    2:PIO0_BASE + SM3_EXECCTRL,
+                    4:PIO1_BASE + SM1_EXECCTRL,
+                    6:PIO1_BASE + SM3_EXECCTRL}
+    """Memory locations for restart calculation by MP state machine number
+    """
 
     _H4LU = {
     0xAC:0x00, 0xAA:0x01, 0xA9:0x02, 0xA5:0x03,
@@ -170,13 +181,11 @@ class RailComRead:
         args:
             self:
             cu_sm_num: state machine number for cut out scheduling - 4 or 6 if using the second PIO block
-            rc_rx_pin: the detector output pin (pin + 1 is the side detect pin)
+            rc_rx_pin: the detector output pin (pin + 1 is the orientation detect pin)
             cb: read complete callback
             channel: RailCom channel to be monitored
             cu_pin: the DRV8874 enable pin (command station usage only)
-
         """
-        assert cu_sm_num in [4, 6], "Invalid cutout sm"
 
 
         # set up cutout detect PIO state machine 
@@ -202,16 +211,19 @@ class RailComRead:
                                       in_base = rc_rx_pin, jmp_pin = rc_rx_pin)
         
 
-        self._restart = ((mem32[PIO1_BASE + (SM1_EXECCTRL if cu_sm_num == 4 else SM3_EXECCTRL)] & 0xf80)
-                          >> 7) - 1          
+
+        self._restart = ((mem32[RailComRead._RESTART_MEM[cu_sm_num]] & 0xf80) >> 7) - 1      
         """PIO restart instruction
 
-        This generates the PIO op code required to restart the rx state machine which must run in sm 5 or 7
-        corresponding to PIO state machines 1 or 3.
+        This generates the PIO op code required to restart the rx state machine which must run in
+        sm 1, 3, 5 or 7
+        corresponding to PIO state machines 1 or 3 on the PIO.
         
         Read the wrap address from the PIO exec control register and subtract 1
-        for the first PIO instruction of state machine 5 or 7 (the rx program).
+        for the first PIO instruction of state machine 1, 3, 5 or 7 (the rx program).
         Unconditional 'jmp' opcode is 0 so the address is the jump instruction!
+
+        Raises KeyError if state machine number invalid. 
         
         """
 
@@ -354,7 +366,7 @@ class RailComRead:
         the line idle (no RailCom current) is a logic '1'.
         Low indicates logic '0' and vice versa.
         
-        The second input pin is the first side.  This may be used to determine which side is
+        The second input pin is the first comparator side.  This may be used to determine which side is
         active, thus indicating which way the locomotive is facing relative to the track DCC.
 
         The second pin may be NC or used for other purposes, in which case the indication of the
@@ -458,38 +470,10 @@ class RailComRead:
                 if (rxd & 0x200) != 0:
                     self._rx_buff[x] = RailComRead.ERR_OE
                 else:
-                    self._rx_buff[x] = RailComRead.ERR_LU
+                    # work out if Hamming weight is high or low
+                    self._rx_buff[x] = RailComRead.ERR_WH if bin(self._rx_buff[x & 0xff]).count('1') > 4 \
+                        else RailComRead.ERR_WL
                 x += 1
         # buffer now translated - parsing for channel specific info done in callback
         self._callback(memoryview(self._rx_buff)[:x], detector_side)
         return
-
-
-if __name__ == '__main__':
-    from dcc_cmd_pio import DCCGen 
-    from dcc_cmd_util import SpeedCommand, CV_Access
-
-
-    enable_pin = Pin(18, Pin.OUT)
-    sleep_pin = Pin(19, Pin.OUT, value = 0)
-    dcc_pin = Pin(20, Pin.OUT)
-    rx_pin = Pin(15, Pin.IN)
-    #rx_pin = Pin(15, Pin.IN)
-    def cb(mv, o):
-        global buffer, orientation
-        buffer = bytes(mv)
-        orientation = o
-
-    dcc = DCCGen(0, dcc_pin, sleep_pin, enable_pin)
-    # channel 2 test
-    rc = RailComRead(4, rx_pin, cb, channel = 2, cu_pin=enable_pin)
-
-    # channel 1 test - command station
-    #rc = RailComRead(6, 7, rx_pin, cb1, channel = 1, cu_pin=enable_pin)
-
-    # channel 1 test - block detect station
-    #rc = RailComRead(4, rx_pin, cb, channel = 1)
-
-    s1 = SpeedCommand(1, -1, 0)
-    s10 = SpeedCommand(10, 1, 0)
-    cv1 = CV_Access(1, 0)
