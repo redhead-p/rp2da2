@@ -45,8 +45,7 @@ class MPPointDriver():
 
     CMD_DECODE = {'N':(1, True), # Normal  output on
                   'R':(2, True), # Reverse output on
-                  ' ':(3, False), # both off
-                 }
+                  ' ':(3, False)} # both off
     
     _mp_driver = None
 
@@ -55,8 +54,7 @@ class MPPointDriver():
     def get_instance(cls):
         """Return the singleton instance
 
-        The singleton is created on the first call. It is only created if it's possible.
-        I.e. on an Arduino Nano RP2
+        The singleton is created on the first call.
 
         args:
             cls:
@@ -86,7 +84,7 @@ class MPPointDriver():
             return False
         
         self._cmd_byte[0] &= ~(3 << ((num % 4) * 2)) # switch off both
-        # and switch on the one we wane
+        # and switch on the one we want
         if output_on:
             output <<= (num % 4) * 2  # shift to position
             self._cmd_byte[0] |= output

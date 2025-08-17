@@ -185,12 +185,14 @@ class TO(MQTTAgent):
     It handles the turnout message
     when it is received from the broker."""
 
-    TO_DECODE = {'THROWN':'R', 'CLOSED':'N'}
-    POINT_TOPIC_PREFIX = "track/turnout"
-    TO_INCONSISTENT = 'INCONSISTENT'
-    TO_UNKNOWN = 'UNKNOWN'
     TO_CLOSED = 'CLOSED'
     TO_THROWN = 'THROWN'
+    TO_INCONSISTENT = 'INCONSISTENT'
+    TO_UNKNOWN = 'UNKNOWN'
+    TO_DECODE = {TO_THROWN:'R', TO_CLOSED:'N'} # jmri only sets thrown or closed
+    POINT_TOPIC_PREFIX = "track/turnout"
+
+
 
     TO_ENCODE = {Point.UNAVAIL:TO_UNKNOWN,
                  Point.UNKNOWN:TO_UNKNOWN,
@@ -223,7 +225,10 @@ class TO(MQTTAgent):
             payload: the payload of the publication as a string
         """
         print("Point", topic, payload)
-        self._point.set_position(TO.TO_DECODE[payload])
+        try:
+            self._point.set_position(TO.TO_DECODE[payload])
+        except KeyError:
+            print("Point payload invalid")
 
     def pub_check(self):
         state = self._point.get_state()

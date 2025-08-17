@@ -25,6 +25,8 @@ displays the track status.
 with JMRI but JMRI MQTT specifications will need to be changed from the default. Initially we support
 cabs, power and blocks.  Blocks have combined occupancy sensor and reporter.
 
+**wifi** - This acts as wrapper for the standard micropython network/wi-fi functions.
+
 ### DCC and RailCom
 
 These modules are dependent on RP2 series processor programable input/output peripherals (PIO) for DCC command
@@ -40,15 +42,22 @@ serialisation and RailCom response processing.
 
 **dcc_rc_ch2** - This module contains the functions and classes for DCC RailCom DCC command mobile responses on Channel 2.
 
-**dcc_rc_pio**  - This module contains the functions and classes for low level RailCom datagram reading. It's applicable for block occupancy detection on Channel 1 and central dcc command decoder responses on Channel 2.
+**dcc_rc_pio**  - This module contains the functions and classes for low level RailCom datagram reading.
+It's applicable for block occupancy detection on Channel 1 and central dcc command decoder responses
+on Channel 2.
 
-**dcc_mon** - This module monitors the DCC track status by looking at the DRV8874 fault pin and current sense pin.
+**dcc_mon** - This module monitors the DCC track status by looking at the DRV8874
+fault pin and current sense pin.
 
 ---
 
 ## Configuration
 
-Configuration files hold information required at runtime.  The files use the JSON format. They are held in the repository's conf directory. They must be copied to a top level directory on the target machine called conf. The configuration files in the repository should be taken as examples. They need to be modified outside the repository to reflect local requirements. The Thonny editor may be used to update them as required once they have been copied to the target machine.
+Configuration files hold information required at runtime.  The files use the JSON format.
+They are held in the repository's conf directory. They must be copied to a top level directory on the
+target machine called conf. The configuration files in the repository should be taken as examples.
+They need to be modified outside the repository to reflect local requirements. The Thonny editor
+may be used to update them as required once they have been copied to the target machine.
 
 ### Wi-Fi
 
@@ -204,41 +213,22 @@ Returns
 
 ---
 
-method **set_speed** *(address, speed)*
+method **set_speed** *(address, dir, speed)*
 
 Set Speed.
 
-The direction is not modified. If this is a new command the direction defaults to forward.
+This sets the direction and speed. Direction may be forward or reverse.
 
-The packet generated will be for a 128 step speed setting and decoders must be configured for 28/128 speed steps.
-
-See NMRA S-9.2.1 Section 2.3.2.1
-
-Parameters
-
-- *address* the address of the decoder - may be short or long
-
-- *speed* the speed to be set - range 0 to 127
-
-Returns
-
-- True if validation is passed and the packet is scheduled for transmission. False if validation fails.
-
----
-
-method **set_dir** *(address, direction)*
-
-Set Direction.
-
-Direction may be forward or reverse. Speed is not modified. If this is a new command speed defaults to 0.
-
-The packet generated will be for a 128 step speed setting and decoders must be configured for 28/128 speed steps.
+The packet generated will be for a 128 step speed setting and decoders must be configured for
+28/128 speed steps.
 
 See NMRA S-9.2.1 Section 2.3.2.1
 
 Parameters
 
 - *address* the address of the decoder - may be short or long
+
+- *direction* 1 for forward, -1 for reverse
 
 - *speed* the speed to be set - range 0 to 127
 
