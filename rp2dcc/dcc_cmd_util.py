@@ -387,8 +387,7 @@ class CV_Access(CommandPacket):
     Objects in this class are single use.  I.e once the CV access is complete they may
     dropped for garbage collection.
 
-    TODO:
-      - do we need to look at accessory CVs too.
+    **TODO** Do we need to look at accessory CVs too?
 
     Attributes:
         BYTE_CHK: As specified in RCN-217 for read cv byte

@@ -154,7 +154,8 @@ class Will(MQTTAgent):
         """Handle will publication
         
         This method is called by the MQTT client when a will publication is received.
-        :TODO: What to do with this?
+
+        **TODO** What to do with this?
 
         retained 1 payload 'OFFLINE' on initial connection indicates JMRI not available
         retained 0 payload 'OFFLINE' during connection indicates JMRI connection now closed
@@ -180,11 +181,13 @@ class Block(MQTTAgent):
     SENSOR_PAYLOAD = {RComBlkDet.BLK_EMPTY:"INACTIVE",
                        RComBlkDet.BLK_OCC:"ACTIVE",
                        RComBlkDet.BLK_CH1:"ACTIVE"}
+    
+    _ACTIVE_STATE = (RComBlkDet.BLK_OCC, RComBlkDet.BLK_OCC)
 
     def __init__(self, rc_block):
         self._rc_block = rc_block # RailCom block
         self._name = rc_block.get_name()
-        #self._last_block_state = None
+        self._last_blk_state = RComBlkDet.UNKNOWN
         super().__init__(f'{Block.SENSOR_TOPIC_PREFIX}/{self._name}/set', MQTTClient.QoS1)
 
     def _create_pub_check(self):
@@ -215,27 +218,37 @@ class Block(MQTTAgent):
 
             # Get the new block state from the channel 1 detector
             state, data = self._rc_block.get_block_state()
+            # the detector treats OCCUPIED to CH1 data available
+            # or vice versa as a state change - but they are both reported as
+            # ACTIVE so are ignored here
 
-            # Publish the new block state
-            try:
-                tx_payload = Block.SENSOR_PAYLOAD[state]
-            except KeyError:
-                # not valid status (yet)
-                continue
-            if not await self._client.publish(f'{Block.SENSOR_TOPIC_PREFIX}/{self._name}/event',
-                                    tx_payload,
-                                    False,
-                                    MQTTClient.QoS1):
-                continue # publish failed - retry later
+            if not((state in Block._ACTIVE_STATE)
+                    and (self._last_blk_state in Block._ACTIVE_STATE)):
+                # Publish the new block state
+                try:
+                    tx_payload = Block.SENSOR_PAYLOAD[state]
+                except KeyError:
+                    # not valid status (yet)
+                    continue
+                if not await self._client.publish(
+                        f'{Block.SENSOR_TOPIC_PREFIX}/{self._name}/event',
+                        tx_payload,
+                        False,
+                        MQTTClient.QoS1):
+                    continue # publish failed - retry later
             if state == RComBlkDet.BLK_CH1:
-                # channel 1 info available
+                # channel 1 info available - always published 
+                # likelyhood of a change without intervening INACTIVE low
                 _, address, orientation = data
-                await self._client.publish(f'{Block.REPORTER_TOPIC_PREFIX}/{self._name}',
-                                    f'{address} {orientation}',
-                                    False, MQTTClient.QoS1)
-            else:
+                await self._client.publish(
+                        f'{Block.REPORTER_TOPIC_PREFIX}/{self._name}',
+                        f'{address} {orientation}',
+                        False, MQTTClient.QoS1)
+            elif self._last_blk_state == RComBlkDet.BLK_CH1:
                 # clear reporter info
-                await self._client.publish(f'{Block.REPORTER_TOPIC_PREFIX}/{self._name}',
-                            '',
-                            False,
-                            MQTTClient.QoS1)
+                await self._client.publish(
+                        f'{Block.REPORTER_TOPIC_PREFIX}/{self._name}',
+                        '',
+                        False,
+                        MQTTClient.QoS1)
+            self._last_blk_state = state

@@ -30,7 +30,6 @@ class Page(FrameBuffer):
     
     If using the default Framebuffer text each page holds 1 line of text.
     The text is written to the page using the text() method.
-
     """
 
     def __init__(self):
@@ -40,11 +39,6 @@ class Page(FrameBuffer):
         The buffer is 128 bytes wide and 8 lines high.
         The first byte is reserved for the command / data flag.
         The rest of the buffer is used for the display data.
-
-        
-        Args:
-            self:
-            
         """
         self._data_buff = bytearray(_OLED_WIDTH + 1)  # monochrome eight pixels per byte
         self._data_buff[0] = _I2C_RAM # it will always hold data for ram
@@ -58,7 +52,7 @@ class Page(FrameBuffer):
         
         Returns:
             Data buffer
-            """
+        """
         return self._data_buff_mv
 
 
@@ -72,11 +66,13 @@ class OLED_0in91:
     def __init__(self, i2c):
         """Construct the OLED driver
         
-        Check to see if OLED is on I2C bus and initialise the SSD1306.
+        Initialise the SSD1306.
+
+        I2C and device errors are quietly ignored.
         
         args:
             i2c: I2C driver.
-            """
+        """
         #self.width = _OLED_WIDTH
         #self.height = _OLED_HEIGHT
         #Initialize DC RST pin
@@ -84,17 +80,13 @@ class OLED_0in91:
 
         self._i2c = i2c
         self._addr = _I2C_ADDR       # address is fixed
-
-        assert self._addr in self._i2c.scan(), print ('oled not found')
         
         self._cmdBuff = bytearray(2)  # buffer for commands - fixed size
         self._cmdBuff[0] = _I2C_CMD    # it will always hold a command
-        #self._pageBuff = memoryview(self._dataBuff[1:len(self._dataBuff)]) 
-        #super().__init__(self._frmBuff, _OLED_WIDTH, _OLED_HEIGHT, MONO_VLSB)
         self._init_display()
 
         self.page = [Page(), Page(), Page(), Page()]
-        """Array of pages."""
+        """Array of pages"""
 
     def _write_cmd(self, cmd):
         """Write a command to the display
@@ -103,13 +95,17 @@ class OLED_0in91:
             cmd: The command to write to the display.
         """
         self._cmdBuff[1] = cmd
-        self._i2c.writeto(self._addr, self._cmdBuff)
+        try:
+            self._i2c.writeto(self._addr, self._cmdBuff)
+        except OSError:
+            pass # write errors ignored
 
 
     def _write_data(self, buf):
-
-        self._i2c.writeto(self._addr, buf)
-
+        try:
+            self._i2c.writeto(self._addr, buf)
+        except OSError:
+            pass # write errors ignored
 
     def _init_display(self):
         """Initialize display
@@ -172,14 +168,15 @@ class OLED_0in91:
         
 
     def show(self):
-        """Show all pages on the display
+        """Show all pages on the Display
+
         This shows all pages on the display by iterating through each page and calling show_page.
         """
         for pg in range(0, _OLED_HEIGHT//_PAGE_HEIGHT):
             self.show_page(pg)
 
     def scroll_write(self, txt):
-        """Scroll and write.
+        """Scroll and Write
         
         Scroll pages(lines) up by one line creating a blank line at the bottom (Page 4)
         and then put the text on the last line.

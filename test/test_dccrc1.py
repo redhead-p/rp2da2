@@ -34,12 +34,24 @@ if __name__ == '__main__':
         RailComRead.ERR_CB:'CB_IN_DG',
         RailComRead.ERR_FE:'DG_INCOMP',
         RailComRead.ERR_ID:'UNRECOG_DG',
-        RailComRead.ERR_RESP:'SYNC_ERR'                
-                }
+        RailComRead.ERR_PL:'PAYLD_ERR',
+        RailComRead.ERR_RESP:'SYNC_ERR'}
 
 
     build = sys.implementation._build # get build details
-    if build.find("PICO") > -1:
+    
+    if build.find("PICO2") > -1:
+        # Detector pin allocations - Raspberry Pi Pico format
+        # orientation pins are initiated but not specifically allocated
+        c1a_rx_pin = Pin(14, Pin.IN)
+        _ = Pin(15, Pin.IN)
+        c1b_rx_pin = Pin(16, Pin.IN)
+        _ = Pin(17, Pin.IN)
+        c1c_rx_pin = Pin(18, Pin.IN)
+        _ = Pin(19, Pin.IN)
+        c1d_rx_pin = Pin(20, Pin.IN)
+        _ = Pin(21, Pin.IN)
+    elif build.find("PICO") > -1:
         # Detector pin allocations - Raspberry Pi Pico format
         # orientation pins are initiated but not specifically allocated
         c1a_rx_pin = Pin(14, Pin.IN)
@@ -67,10 +79,10 @@ if __name__ == '__main__':
 
     time_stamp = time.ticks_ms()
 
-    block_list = (RComBlkDet('t001', 4, c1a_rx_pin),
-                RComBlkDet('t002', 6, c1b_rx_pin),
-                RComBlkDet('t003', 0, c1c_rx_pin),
-                RComBlkDet('t004', 2, c1d_rx_pin))
+    block_list = (RComBlkDet('t001', 0, c1a_rx_pin),
+                RComBlkDet('t002', 2, c1b_rx_pin),
+                RComBlkDet('t003', 4, c1c_rx_pin),
+                RComBlkDet('t004', 6, c1d_rx_pin))
     
     def main1():
         # bypass screen module to avoid pulling in MQTT & WiFi

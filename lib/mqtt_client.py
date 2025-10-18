@@ -349,11 +349,13 @@ class MQTTClient(Device):
     async def publish(self, topic, payload,  retain = True, QoS = QoS1):
         """ MQTT Publish
 
-        at the moment we will assume no duplicates will be sent
-        it only makes sense to send duplicates if clean session not used
-        i.e. sessions may span connections  - therefore despite use of QoS one  there's
-        no need to save the message 
-    
+        At the moment we will assume no duplicates will be sent
+        it only makes sense to send duplicates if clean session not used.
+        I.e. sessions may span connections  - therefore despite use of QoS one  there's
+        no need to save the message.
+
+        **TODO** Trap 'no free pid error'
+
         args:
             topic: MQTT topic
             payload: the payload message to be sent

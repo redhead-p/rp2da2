@@ -9,8 +9,10 @@ It also starts the screen and NeoString objects on the second core.
 All interrupt service routines and timer callbacks run on core 0.  No pre-emptive code
 runs on core 1.
 
-It is designed to run on the Raspberry Pi Pico or Arduino Nano RP2040 Connect.
-It uses the micropython, machine, and mqtt libraries.
+It is designed to run on the Raspberry Pi Pico2 W or Arduino Nano RP2040 Connect.
+The Wi-Fi radio interface uses a PIO state machine. The Pico W doesn't have enough state
+machines for concurrent Wi-Fi and quad RailCom.
+It uses the micropython,  _thread, sys, network and asyncio libraries.
 It also uses the dcc_rc_ch1, neoled, screen, mqtt_cmd, mqtt, mqtt_client, and device modules.
 """
 """       Copyright 2025  Paul Redhead
@@ -42,6 +44,7 @@ from screen import Screen
 
 # DCC and RailCom imports
 from dcc_rc_ch1 import RComBlkDet
+from dcc_rc_pio import RailComRead
 
 # MQTT imports
 from mqtt import Will, Block
@@ -50,7 +53,6 @@ from mqtt_client import MQTTClient
 from wifi import WiFi
 
 alloc_emergency_exception_buf(100)
-
 
 def screen_splash():
     """Create screen splash.
@@ -67,10 +69,9 @@ def screen_splash():
     for _, dev in Device.get_items():
         if dev.get_type() == MQTTClient.DEVICE_TYPE:
             t3 = (3, f'MQTT {dev.get_broker()}', 0)
-        elif dev.get_type() == RComBlkDet.DEVICE_TYPE:
+        elif dev.get_type() == RailComRead.LCL_DEVICE_TYPE:
             t1 = (1, 'RailCom Block', 0)
     return (t0, t1, t2, t3)
-
 
 async def main():
     """Main function for the RP2 first core (core 0) application.
@@ -87,8 +88,9 @@ async def main():
     RC1D_STATE_MC = const(6)
 
     build = sys.implementation._build # get build details
-    if build.find("PICO") > -1:
+    if build.find("PICO2") > -1:
         # Detector pin allocations - Raspberry Pi Pico format
+        # Must be Pico2 for quad board and Wi-Fi
         # orientation pins are initiated but not specifically allocated
         c1a_rx_pin = Pin(14, Pin.IN)
         _ = Pin(15, Pin.IN)
@@ -101,16 +103,16 @@ async def main():
         _ = Pin(1, Pin.IN)
         c1b_rx_pin = Pin(15, Pin.IN)
         _ = Pin(16, Pin.IN)
-
-        # second Dual reader - these pins are used for DRV8874
-        # on command station
-
-        c1c_rx_pin = Pin(18, Pin.IN)
-        _ = Pin(19, Pin.IN)
-        c1d_rx_pin = Pin(20, Pin.IN)
-        _ = Pin(21, Pin.IN)
     else:
         print (build, "invalid")
+
+    # second Dual reader - these pins are used for DRV8874
+    # on command station
+
+    c1c_rx_pin = Pin(18, Pin.IN)
+    _ = Pin(19, Pin.IN)
+    c1d_rx_pin = Pin(20, Pin.IN)
+    _ = Pin(21, Pin.IN)
 
     # List of MQTT agents to be started.
     MQTT_LIST = [Block(RComBlkDet('1011', RC1A_STATE_MC, c1a_rx_pin)),
@@ -120,7 +122,6 @@ async def main():
                 Will("track/state", MQTTClient.QoS1)]
 
     await MQTTClient.get_instance().run(MQTT_LIST)  # runs forever
-
 
 def main1():
     """ Main function for the RP2 second core (core 1) application.
@@ -136,7 +137,6 @@ def main1():
     while True:
         report = Device.get_event_report() # wait until event received
         s.show_event(report)
-
 
 if __name__ == '__main__':
     _thread.start_new_thread(main1,())

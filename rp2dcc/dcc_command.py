@@ -189,8 +189,7 @@ class DCCCommand():
         
         args:
             address: the address of the decoder - may be short or long
-            dir:    the direction - forward or reverse - stop is treated as
-            invalid
+            dir:    the direction - forward or reverse - stop is treated as invalid
             speed: the speed to be set - range 0 to 127 - default 0
               
         returns:
@@ -342,8 +341,7 @@ class DCCCommand():
         The function is triggered via a soft ISR.  If RailCom is enabled, this is connected to the enable
         pin rising indicating the end of the cutout period assocated with the preceding command.
 
-        TODO:
-        If RailCom not enabled this will be triggered by the PIO program itself when serialising the packet
+        **TODO** If RailCom not enabled this will be triggered by the PIO program itself when serialising the packet
         end bit. 
         
         This function instructs the next Command object in the list to send its command.

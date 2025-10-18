@@ -34,7 +34,7 @@ Indexed by datagram id, contains the additional number of 6 bit groups to be con
 """
 
 
-class RComCmdRsp(Device):
+class RComCmdRsp(RailComRead):
     """Channel 2 (Command Response) Decode
     
     This runs on the command station. As there is only one DCC generator there can only be
@@ -60,7 +60,6 @@ class RComCmdRsp(Device):
         DYN_RECEP_STATS: reception stats datagram identifier.
         DYN_TRACK_VOLT: track voltage
         DYN_DIRECTION: direction status byte
-        DEVICE_TYPE: Device type for reporting events.
         ERR_CODE: list of error codes
     """
     # class constants
@@ -85,7 +84,7 @@ class RComCmdRsp(Device):
     DYN_DIRECTION   = const(27)# direction status byte
     DYN_TRACK_VOLT  = const(46)# track voltage
 
-    DEVICE_TYPE = const('r')
+
     
     # error codes as detected by low level code
     ERR_CODE = (RailComRead.ERR_WH, RailComRead.ERR_WL, RailComRead.ERR_OE, RailComRead.ERR_CB)
@@ -112,17 +111,13 @@ class RComCmdRsp(Device):
             rx_pn:  First pin number for RailCom rx
             enable_pn: Pin number that enables the DRV8874 - it's only read here
         """
-        self._rc = RailComRead(rc_sm_num,
-                              rx_pn,  self._rail_com_ch2_msg, 2, enable_pn)
-        
-        self._rc_msg = {}   # most recently received message by address
         self._dyn_info = {} # other dynamic info
         self._pom_acc = {}   # outstanding cv accesss requests by command type/address
 
         self._errors = {} # error counts
         self._dgs = set() # Datagrams seen
 
-        super().__init__('cmd', RComCmdRsp.DEVICE_TYPE)
+        super().__init__('cmd', rc_sm_num, rx_pn, enable_pn)
 
     def get_error_counts(self):
         """ Get Error Counts
@@ -158,12 +153,17 @@ class RComCmdRsp(Device):
         except KeyError:
             self._errors[error_code] = 1
 
-    def _rail_com_ch2_msg(self, buffer, _):
-        """Handle RailCom Message Callback
+    def _rail_com_msg(self, buffer, _):
+        """Process RailCom Channel 2 response
         
-        This callback is called on termination of the RailCom Channel 2 message receipt window,
-        whether a message has been received or not. The addressed decoder returns a channel 2
+        This is called on termination of the RailCom Channel 2 message receipt window,
+        when a response is detected. The addressed decoder returns a channel 2
         message. Other mobile decoders remain silent.
+
+        It overrides the method in the base class.
+
+        Blank reads should have been intercepted in the hard ISR. They are not checked for 
+        here but should not be problematic.
 
         args:
             buffer:   raw data
@@ -196,18 +196,16 @@ class RComCmdRsp(Device):
             except KeyError:
                 # no outstanding POM command
                 pass
-
-        if len(buffer) != 0:
-            self._act_on_datagram(self._parse_cg2_msg(buffer), address)
+        self._act_on_datagram(self._parse_cg2_msg(buffer), address)
 
     def _parse_cg2_msg(self, buff):
-        """ Parse channel 2 message
+        """ Parse Channel 2 Message
         
         Inspect the message and extract datagrams which are saved in list and returned.
         The datagrams are tuples of (datagram id, payload).
         Bytes are either protocol control bytes, error bytes or data bytes. The least significant 6 bits of a
         data byte contrinbute to the payload of a datagram and the most significant 2 bits are ignored. The payload
-        content of each byte is concatenated together to form the datagram. The datagram id is
+        content of each byte is concatenated to form the datagram. The datagram id is
         the first 4 bits of the datagram. The datagram id is used to determine the length of the datagram.
         """ 
         buff_iter = iter(buff)
@@ -216,8 +214,8 @@ class RComCmdRsp(Device):
         datagram = list()
 
         try:
+            # StopIteration will end the loop
             while True:
-                # StopIteration will end the loop
                 b = RailComRead.hw4_2_6b(next(buff_iter))
                 if b > 0x3f:
                     if b in RailComRead.PROT_BYTE:
@@ -278,7 +276,6 @@ class RComCmdRsp(Device):
                 # datagram not complete - ignore it - duff format
                 # other earlier datagrams in same message will be processed
                 self._log_error(RailComRead.ERR_FE)
-
         return datagram
 
     def _act_on_datagram(self, datagram, addr):
@@ -310,7 +307,4 @@ class RComCmdRsp(Device):
                     del(self._pom_acc[(addr)]) # no longer needed
                     self.report_event(Device.POM_NAK, (addr, cv + 1))
                 except KeyError:
-                    pass
-
-        # save the last received datagrams
-        self._rc_msg[addr] = (datagram)            
+                    pass         

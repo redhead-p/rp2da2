@@ -25,14 +25,16 @@ from device import Device
 
 _MAX_NO_READ = const(10)    # maximum number of missed reads/no load
 _TIMER_PERIOD = const(50)   # time in ms between checks for current load on block 
+_CONSIST_ADDR_MASK = const(0x7F)      # DCC consist address mask
+_MAX_LONG_ADDR = const(0x27FF)      # DCC long address upper limit (inclusive)
 
 
-class RComBlkDet(Device):
+class RComBlkDet(RailComRead):
     """Channel 1 (block) Detector
     
-    This can run on the command station or an accessory controller.
+    This runs on an accessory controller.
     
-    The enable pin is supplied if on the command station to mark the cutout. On accessory the PIO code monitors
+    The PIO code monitors
     the load current to detect the cutout.
 
     In addition to interpreting channel 1 messages, we use the rx_pin to monitor the block for occupancy, detecting
@@ -44,7 +46,7 @@ class RComBlkDet(Device):
 
     Datagram identifiers for channel 1 are defined in RCN-217 3.1 Table 5.
 
-    This inherits from the Device Class.
+    This inherits from the RailComRead Class.
 
     Block status may be:
         - empty
@@ -54,21 +56,19 @@ class RComBlkDet(Device):
     Attributes:
 
         DEVICE_TYPE: Device type for reporting events.
-
+        _MAX_LONG_ADDR: DCC Maximum long address
+        _SHORT_ADDR_MASK: DCC short address mask.
     """
     
-    # class constants
-    
-    DEVICE_TYPE = const('b')
+
    
-    def __init__(self, blk_name, rc_sm_num, rx_pin, enable_pin = None):
+    def __init__(self, blk_name, rc_sm_num, rx_pin):
         """Construct the RailCom block detector
         
         This constructs the RailCom block detector. This reads channel 1. It instatiates a RailCom reader using
-        the supplied state machine and receiver pin.  If the enable pin is not supplied, it's assumed that 
-        this is running on a remote accessory controller and the cutout timing is to be recovered from the DCC signal.
-        If the enable pin is supplied, then we are running on the command station and the cutout is defined by the
-        enable pin state, which is read-only in this context. The base Device class is initiated with the block name
+        the supplied state machine and receiver pin. 
+        This runs on a remote accessory controller and the cutout timing is recovered from the DCC signal.
+        The base RailCom class is initiated with the block name.
         block type.
 
         Note:
@@ -80,34 +80,29 @@ class RComBlkDet(Device):
             blk_name: the name of the block
             rc_sm_num:  the first state machine number.
             rx_pin: the first receiver pin.
-            enable_pin: the pin as used by the DCC generator to assert the RailCom cutout (optional).
         """
 
         self._id_val = {} # channel 1 payload values for ids 1 & 2
         self._load_timer = Timer()
         self._rx_pin = rx_pin
-        self._enable_pin = enable_pin
         self._no_resp_count = _MAX_NO_READ
         self.reset_stats()
 
         """block state may be unknown, empty, occupied (no channel 1 data),
         occupied with channel 1 data"""
         self._blk_state = (Device.UNKNOWN, None) # block state is status and RailCom info if available.
-        self._rc = RailComRead(rc_sm_num, rx_pin,
-                                self._rail_com_ch1_msg,
-                                channel = 1,
-                                cu_pin=enable_pin)
         self._load_timer.init(mode = Timer.PERIODIC, period = _TIMER_PERIOD, callback = self._load_check)
 
         self._ready_flag = asyncio.ThreadSafeFlag() # used to signal new state available to comms agent
 
-        super().__init__(blk_name, RComBlkDet.DEVICE_TYPE)
+        super().__init__(blk_name,
+                        rc_sm_num,
+                        rx_pin)
 
     async def wait_for_flag(self):
         """ Wait for the new state available flag
 
         This waits for the asynchio thread safe flag to be set.
-        
         """
         await self._ready_flag.wait()
         return
@@ -121,7 +116,6 @@ class RComBlkDet(Device):
         args:
             event:  updated Block status code.
             data:   a tuple containing address type, address & orientation  
-        
         """
         self._ready_flag.set()
         super().report_event(event, data)
@@ -137,7 +131,7 @@ class RComBlkDet(Device):
         return self._errors
     
     def get_cb_count(self):
-        """ Get call back count
+        """ Get Read Count
         
         returns:
             the number of times the detector read function has been called.
@@ -210,14 +204,16 @@ class RComBlkDet(Device):
             else:
                 self._no_resp_count = _MAX_NO_READ  # reset the count
         
-    def _rail_com_ch1_msg(self,  buffer, orientation):
-        """ This callback is called on termination of the RailCom Channel 1 message receipt window,
+    def _rail_com_msg(self,  buffer, orientation):
+        """ This is called on termination of the RailCom Channel 1 message receipt window,
         whether a message has been received or not.
-        Any decoder on the associated block returns a channel 1 message. 
+        Any decoder on the associated block returns a channel 1 message.
+
+        Calls RailComRead.hw4_2_6b() to translate from raw byte to internal value.
 
         args:
             self:
-            buffer:   translated data
+            buffer:   raw data
             orientation: orientation of DCC decoder wrt DCC signal
         """
         self._cb_count += 1 
@@ -231,7 +227,8 @@ class RComBlkDet(Device):
         except IndexError:
             return # nothing there - not logged
 
-        # other errors indicate datagram corruption - possibly due to >1 decoder in block
+        # other errors indicate datagram corruption - possibly due to >1
+        # decoder in block or crossing block boundary
         try:
             rx2 = RailComRead.hw4_2_6b(buffer[1])
         except IndexError:
@@ -262,24 +259,34 @@ class RComBlkDet(Device):
         # both values need to be present to get this far
         # there's a valid response so reset the 'no response' count
         self._no_resp_count =  _MAX_NO_READ
-        self._id_val[dg_id] =  ((rx1 & 0x03) << 6) | rx2
+        self._id_val[dg_id] =  ((rx1 & 0x03) << 6) | rx2 # assemble payload
   
         # try and build decoder address
         try:
             if self._id_val[1] == 0:
-            # short address
-                address_type = 's'
+                # short address
                 address = self._id_val[2]
+                if not (0 < address < 128):
+                    # invalid short address - must be 1 to 127
+                    self._log_error(RailComRead.ERR_PL)
+                    self._id_val = {} # clear both - either could be wrong
+                    return
+                address_type = 's'
             elif self._id_val[1] == 0x60:
                 # consist address
                 address_type = 'c'
-                address = self._id_val[2]
+                address = self._id_val[2] & _CONSIST_ADDR_MASK
             elif (self._id_val[1] & 0xc0) == 0x80:
                 # long address
                 address_type = 'l'
                 address = (self._id_val[1] & 0x3f) << 8 + self._id_val[2]
+                if address > _MAX_LONG_ADDR:
+                    self._log_error(RailComRead.ERR_PL)
+                    self._id_val = {} # clear both - either could be wrong
+                    return
             else:
                 # ID1 content invalid - ignore
+                self._log_error(RailComRead.ERR_PL)
                 return
         except KeyError:
             # missing id 1 or id 2

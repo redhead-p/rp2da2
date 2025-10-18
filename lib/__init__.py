@@ -6,6 +6,6 @@ This contains the device library modules.
     :width: 800px
     :align: center
 
-    Lib Class Diagram
+    **Lib Class Diagram**
 
 """

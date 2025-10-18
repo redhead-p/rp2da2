@@ -182,7 +182,7 @@ class DCCCmdTx:
 
         As this is output only we can use the Input Shift Register (ISR/isr) as an additional store.
 
-        TODO There needs to be an option to allow for generation of DCC without the RailCom cutout.
+        **TODO** There needs to be an option to allow for generation of DCC without the RailCom cutout.
         """
     
         wrap_target()

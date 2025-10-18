@@ -6,11 +6,12 @@ This is the main entry point for the RP2 application running a layout distribute
 It starts the MQTT client and the RailCom block detector objects on the first core.
 It also starts the screen and NeoString objects on the second core.
 
-All interrupt service routines and timer callbacks run on core 0.  No pre-emptive code
+All interrupt service routines and timer callbacks run on core 0. Asyncio is used for
+co-operative multitasking on core 0.  No pre-emptive code
 runs on core 1.
 
 It is designed to run on the Raspberry Pi Pico or Arduino Nano RP2040 Connect.
-It uses the micropython, machine, and mqtt libraries.
+It uses the micropython, machine, _thread, sys, network and asyncio modules.
 It also uses the dcc_rc_ch1, neoled, screen, mqtt_cmd, mqtt, mqtt_client, and device modules.
 """
 """       Copyright 2025  Paul Redhead
@@ -33,7 +34,7 @@ It also uses the dcc_rc_ch1, neoled, screen, mqtt_cmd, mqtt, mqtt_client, and de
 import _thread, sys, network, asyncio
 
 # micropython imports 
-from micropython import const,alloc_emergency_exception_buf
+from micropython import const, alloc_emergency_exception_buf
 from machine import Pin
 
 # lib imports
@@ -42,6 +43,7 @@ from screen import Screen
 
 # DCC and RailCom imports
 from dcc_rc_ch1 import RComBlkDet
+from dcc_rc_pio import RailComRead
 
 # MQTT imports
 from mqtt import Will, Block
@@ -67,7 +69,7 @@ def screen_splash():
     for _, dev in Device.get_items():
         if dev.get_type() == MQTTClient.DEVICE_TYPE:
             t3 = (3, f'MQTT {dev.get_broker()}', 0)
-        elif dev.get_type() == RComBlkDet.DEVICE_TYPE:
+        elif dev.get_type() == RailComRead.LCL_DEVICE_TYPE:
             t1 = (1, 'RailCom Block', 0)
     return (t0, t1, t2, t3)
 
@@ -114,9 +116,7 @@ async def main():
 
     # List of MQTT agents to be started.
     MQTT_LIST = [Block(RComBlkDet('1011', RC1A_STATE_MC, c1a_rx_pin)),
-                Block(RComBlkDet('1012', RC1B_STATE_MC, c1b_rx_pin)),
-                Block(RComBlkDet('1013', RC1C_STATE_MC, c1c_rx_pin)),
-                Block(RComBlkDet('1014', RC1D_STATE_MC, c1d_rx_pin)),        
+                Block(RComBlkDet('1012', RC1B_STATE_MC, c1b_rx_pin)), 
                 Will("track/state", MQTTClient.QoS1)]
 
     await MQTTClient.get_instance().run(MQTT_LIST)  # runs forever

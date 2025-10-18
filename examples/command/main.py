@@ -6,8 +6,12 @@ This is the main entry point for the RP2 application running on the central comm
 It starts the MQTT client and the DCC command and RailCom command response objects on the first core.
 It also starts the screen and NeoString objects, and the DCC monitor on the second core.
 
+All interrupt service routines and timer callbacks run on core 0. Asyncio is used for
+co-operative multitasking on core 0.  No pre-emptive code
+runs on core 1.
+
 It is designed to run on the Raspberry Pi Pico or Arduino Nano RP2040 Connect.
-It uses the micropython, machine, and mqtt libraries.
+It uses the micropython, machine, _thread, sys, network and asyncio modules.
 It also uses the dcc_command, dcc_rc_ch2, neoled, screen, mqtt_cmd, mqtt, mqtt_client, dcc_mon, and device modules.
 """
 """       Copyright 2025  Paul Redhead
@@ -87,6 +91,7 @@ async def main():
     
     build = sys.implementation._build # get build description
     if build.find("PICO") > -1:
+        # This includes Pico2 and W variants.
         # Detector pin allocations - Raspberry Pi Pico format
         # orientation pins are initiated but not specifically allocated
         c2_rx_pin = Pin(16, Pin.IN)

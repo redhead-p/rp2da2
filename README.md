@@ -23,7 +23,7 @@ need a suitable DC power supply.
 RailCom detectors have been specifically designed for this project with circuit
 schematics and PCB designs for both global and local detectors. The PCB designs
 and applications have been designed around a standard set of GPIO pin
-allocations. See the following tables.
+allocations. The following table shows pin allocations for a local detector.
 
 | GPIO Pin | Pico / Pico W |Arduino Nano|
 | --- | --- | --- |
@@ -34,26 +34,35 @@ allocations. See the following tables.
 |12| - | OLED I2C0:sda |
 |13| - | OLED I2C0:scl |
 |14|RailCom ch 1 (a) rx | - |
-|15|RailCom ch 1 (a) orientation|RailCom ch 1 (b) / ch 2 rx|
-|16|RailCom ch 1 (b) / ch 2 rx|RailCom ch 1 (b) orientation|
-|17|RailCom ch1 (b) orientation| - |
+|15|RailCom ch 1 (a) orientation|RailCom ch 1 (b)|
+|16|RailCom ch 1 (b)|RailCom ch 1 (b) orientation|
+|17|RailCom ch 1 (b) orientation| - |
+|18|RailCom ch 1 (c) rx|RailCom ch 1 (c) rx|
+|19|RailCom ch 1 (c) orientation|RailCom ch 1 (c) orientation|
+|20|RailCom ch 1 (d) rx|RailCom ch 1 (d) rx|
+|21|RailCom ch 1 (d) orientation|RailCom ch 1 (d) orientation|
+|22|NeoPixel chain|NeoPixel chain|
 
 When configured as a command station one channel 2 global detector is
-available (ch 2 rx in the above table). When configured for block
-detection two local channel 1 detectors are available (ch 1 (a/b) in the
-above table).
+available. Pin allocations for the command station are as follows.
 
-| Pin(Pico & Nano)| Function|
+|GPIO Pin (Pico & Nano)| Function|
 |---|---|
-|GPIO 18|DRV8874 EN|
-|GPIO 19|DRV8874 nSleep|
-|GPIO 20|DRV8874 PH|
-|GPIO 21|DRV8874 nFault|
-|GPIO 26|DRV8874 Current Sense|
+|4| OLED I2C0:sda (Pico)|
+|5| OLED I2C0:scl (Pico)|
+|12|OLED I2C0:sda (Nano)|
+|13| OLED I2C0:scl (Nano)|
+|15| RailCom Ch 2 rx (Nano)|
+|16| RailCom Ch 2 rx (Pico)|
+|18|DRV8874 EN|
+|19|DRV8874 nSleep|
+|20|DRV8874 PH|
+|21|DRV8874 nFault|
+|26|DRV8874 Current Sense|
 |Ground|DRV8874 iMode|
 |Ground|DRV8874 pMode|
 |NC|DRV8874 Vref|
-|GPIO 22|NeoPixel chain|
+|22|NeoPixel chain|
 
 ## Software Modules
 
@@ -173,17 +182,19 @@ You can enter DCC API commands at the REPL preceded by
 
 ### Block Detector
 
-The main.py in the layout directory is the block detector version.It provides MQTT connectivity
+The main.py scripts in the dual\_ and quad\_ local_detect directories are the block detector versions. The version in the dual directory monitors two blocks, and that in the quad directory four.
+They provide MQTT connectivity
 allowing the block detector to report to JMRI or similar.
-Copy this main.py from the layout directory to the top level directory on the target device.
+Copy the main.py from the dual or quad directory to the top level directory on the target device.
 
 Alternatively there is a test harness test_dccrc1.py in the test directory.
 This may be run using Thonny. Load this into the Thonny editor window and ‘Run current script’
 (green play button). It will auto-detect whether on a RP Pico or
 Arduino Nano RP2040 Connect and allocate the detector pins accordingly.
-It creates the channel 1 block detector objects for two blocks, rc_ch1a and rc_ch1b.
+It creates the channel 1 block detector objects for the blocks.
 
-If OK you will get an invitation to type at the REPL, but the program will still be running in the background. The OLED display shows a ’splash’.
+If OK you will get an invitation to type at the REPL, but the program will still be running
+in the background. The OLED display shows a ’splash’.
 Block occupancy details will be displayed on the OLED screen.
 
 ---
@@ -382,16 +393,52 @@ RailCom information, if available, is a tuple:
 
 ---
 
+method **get_error_counts** *()*
+
+Get Error Counts
+
+Counts of errors are kept. Broadly errors are communication errors or content errors. Content errors
+may be caused by faulty decoders, but typically are the result of undetected communicaton errors.
+
+Communication errors are:
+
+- Overrun error (missing stop bit)
+- Hamming Weighting high or low (not 4)
+
+See code for other errors.
+
+---
+
+method **get_cb_count** *()*
+
+Get Read Count
+
+The number of calls to the read routine. I.e the number of times
+that data has been received during a channel 1 window.
+
+---
+
+method **reset_stats** *()*
+
+Reset Statistics
+
+Reset error counts etc.
+
+---
+
 ### DCC Diagnostics
 
 ---
-Module test_dcccmd
 
 function **print_stats** *(reset = True)*
 
 This prints diagnostic information on DCC commands
 and RailCom. By default the diagnostics are cleared after being printed.
+Available in both test_dcccmd and dccrc1 modules.
+
+---
 
 function **print_dyn_info** *()*
 
 This prints dynamic information received from decoders (datagram id 7).
+Available in test_dcccmd module.
