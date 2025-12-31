@@ -39,11 +39,12 @@ from machine import Pin, ADC
 
 # lib imports
 from device import Device
-from led import NeoString
+from led_pio import NeoString
 from screen import Screen
 
 # DCC and RailCom imports
 from dcc_command import DCCCommand
+from dcc_rc_pio import RailComRead
 from dcc_rc_ch2 import RComCmdRsp
 from trk_mon import TrkMon
 
@@ -70,7 +71,7 @@ def screen_splash():
     for _, dev in Device.get_items():
         if dev.get_type() == MQTTClient.DEVICE_TYPE:
             l3 = (3, f'MQTT {dev.get_broker()}', 0)
-        elif dev.get_type() == RComCmdRsp.DEVICE_TYPE:
+        elif dev.get_type() == RailComRead.GBL_DEVICE_TYPE:
             l1 = (1, 'RailCom Global', 0)
     return (l0, l1, l2, l3)
 
@@ -109,9 +110,9 @@ async def main():
     RComCmdRsp(RC2_STATE_MC, c2_rx_pin, enable_pin)
     
     # list of MQTT Agents to be started.
-    MQTT_LIST = [Power("track/power/set", MQTTClient.QoS1, "track/power/event"),
-                    Will("track/state", MQTTClient.QoS1),
-                    Cab("cab/+/+/#", MQTTClient.QoS1)]
+    MQTT_LIST = [Power("track/power/set", MQTTClient.QOS1, "track/power/event"),
+                    Will("track/state", MQTTClient.QOS1),
+                    Cab("cab/+/+/#", MQTTClient.QOS1)]
   
     await MQTTClient.get_instance().run(MQTT_LIST)  # runs forever
 
@@ -125,7 +126,6 @@ def main1():
     fault_pin = Pin(21, Pin.IN, Pin.PULL_UP)  # low for true - DRV8874 Open Drain OP
     sense_pin = ADC(Pin(26)) # current sense input
     s = Screen().get_instance()
-    np = NeoString(Pin(22),2)
     trk_mon = TrkMon(sleep_pin, enable_pin, fault_pin, sense_pin)
     s.show_screen(screen_splash())
     
@@ -134,7 +134,6 @@ def main1():
         report = Device.get_event_report(False) # return immediately
         if report is not None:
             s.show_event(report)
-            np.show_event(report)
         trk_mon.scan()
 
 

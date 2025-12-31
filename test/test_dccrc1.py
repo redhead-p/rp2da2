@@ -80,8 +80,8 @@ if __name__ == '__main__':
     time_stamp = time.ticks_ms()
 
     block_list = (RComBlkDet('t001', 0, c1a_rx_pin),
-                RComBlkDet('t002', 2, c1b_rx_pin))
-                #RComBlkDet('t003', 4, c1c_rx_pin),
+                RComBlkDet('t002', 2, c1b_rx_pin),
+                RComBlkDet('t003', 6, c1c_rx_pin))
                 #RComBlkDet('t004', 6, c1d_rx_pin))
     
     def main1():

@@ -12,7 +12,7 @@ runs on core 1.
 
 It is designed to run on the Raspberry Pi Pico or Arduino Nano RP2040 Connect.
 It uses the micropython, machine, _thread, sys, network and asyncio modules.
-It also uses the dcc_rc_ch1, neoled, screen, mqtt_cmd, mqtt, mqtt_client, and device modules.
+It also uses the dcc_rc_ch1, neoled, screen, mqtt_lcl, mqtt, mqtt_client, and device modules.
 """
 """       Copyright 2025  Paul Redhead
 
@@ -45,10 +45,10 @@ from screen import Screen
 from dcc_rc_ch1 import RComBlkDet
 from dcc_rc_pio import RailComRead
 from blk_mon import DCCBlkDet
-from led import NeoString
 
 # MQTT imports
-from mqtt import Will, Block, Sensor
+from mqtt import Will
+from mqtt_lcl import Block, Sensor
 from mqtt_client import MQTTClient
 
 from wifi import WiFi
@@ -84,11 +84,10 @@ async def main():
     MQTT agents are set for the channel 1 block detectors
     The main loop polls the MQTT client
     """
-    RC1A_STATE_MC = const(0) #RailCom Block A (channel 1) detector state machine number
-
-    RC1B_STATE_MC = const(2) #RailCom Block B (channel 1) detector state machine number
-    RC1C_STATE_MC = const(4)
-    RC1D_STATE_MC = const(6)
+    RC1A_STATE_MC = const(0) # RailCom Block A detector state machine number
+    RC1B_STATE_MC = const(2) # RailCom Block B detector state machine number
+                            
+    RC1C_STATE_MC = const(6) # RailCom Block C detector state machine number
 
     build = sys.implementation._build # get build details
     if build.find("PICO") > -1:
@@ -98,43 +97,38 @@ async def main():
         _ = Pin(15, Pin.IN)
         c1b_rx_pin = Pin(16, Pin.IN)
         _ = Pin(17, Pin.IN)
-    elif build.find("NANO") > -1:
-        # Detector pin allocations - Arduino Nano  format
-        # orientation pins are initiated but not specifically allocated
-        c1a_rx_pin = Pin(0, Pin.IN)
-        _ = Pin(1, Pin.IN)
-        c1b_rx_pin = Pin(15, Pin.IN)
-        _ = Pin(16, Pin.IN)
-
+        c1c_rx_pin = Pin(18, Pin.IN)
+        _ = Pin(19, Pin.IN)
     else:
         print (build, "invalid")
 
     # List of MQTT agents to be started.
-    MQTT_LIST = [Block(RComBlkDet('1011', RC1A_STATE_MC, c1a_rx_pin)),
+    mqtt_list = [Block(RComBlkDet('1011', RC1A_STATE_MC, c1a_rx_pin)),
                 Block(RComBlkDet('1012', RC1B_STATE_MC, c1b_rx_pin)),
+                Block(RComBlkDet('1013', RC1C_STATE_MC, c1c_rx_pin)),
                 Sensor(DCCBlkDet('1011', ADC(26))),
                 Sensor(DCCBlkDet('1012', ADC(27))),
+                Sensor(DCCBlkDet('1013', ADC(28))),
                 Will("track/state", MQTTClient.QOS1)]
 
 
-    await MQTTClient.get_instance().run(MQTT_LIST)  # runs forever
+    await MQTTClient.get_instance().run(mqtt_list)  # runs forever
 
 
 def main1():
     """ Main function for the RP2 second core (core 1) application.
     
-    This function sets up the screen and NeoString objects.
+    This function sets up the screen.
     It also enters a loop to read event reports and update the screen and
     NeoString accordingly.
     """
     s = Screen().get_instance()
-    np = NeoString(Pin(22),2)
+
     s.show_screen(screen_splash())
 
     while True:
         report = Device.get_event_report() # wait until event received
         s.show_event(report)
-        np.show_event(report)
 
 
 if __name__ == '__main__':

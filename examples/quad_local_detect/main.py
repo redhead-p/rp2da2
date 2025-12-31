@@ -36,7 +36,7 @@ import _thread, sys, network, asyncio
 
 # micropython imports 
 from micropython import const,alloc_emergency_exception_buf
-from machine import Pin
+from machine import Pin, ADC
 
 # lib imports
 from device import Device
@@ -45,9 +45,10 @@ from screen import Screen
 # DCC and RailCom imports
 from dcc_rc_ch1 import RComBlkDet
 from dcc_rc_pio import RailComRead
+from blk_mon import DCCBlkDet
 
 # MQTT imports
-from mqtt import Will, Block
+from mqtt import Will, Block, Sensor
 from mqtt_client import MQTTClient
 
 from wifi import WiFi
@@ -88,15 +89,10 @@ async def main():
     RC1D_STATE_MC = const(6)
 
     build = sys.implementation._build # get build details
-    if build.find("PICO2") > -1:
-        # Detector pin allocations - Raspberry Pi Pico format
-        # Must be Pico2 for quad board and Wi-Fi
-        # orientation pins are initiated but not specifically allocated
-        c1a_rx_pin = Pin(14, Pin.IN)
-        _ = Pin(15, Pin.IN)
-        c1b_rx_pin = Pin(16, Pin.IN)
-        _ = Pin(17, Pin.IN)
-    elif build.find("NANO") > -1:
+
+    if build.find("NANO") > -1:
+        # The Nano is required for a quad configuration
+        # RP Picos only have three ADC channels available.
         # Detector pin allocations - Arduino Nano  format
         # orientation pins are initiated but not specifically allocated
         c1a_rx_pin = Pin(0, Pin.IN)
@@ -118,8 +114,9 @@ async def main():
     MQTT_LIST = [Block(RComBlkDet('1011', RC1A_STATE_MC, c1a_rx_pin)),
                 Block(RComBlkDet('1012', RC1B_STATE_MC, c1b_rx_pin)),
                 Block(RComBlkDet('1013', RC1C_STATE_MC, c1c_rx_pin)),
-                Block(RComBlkDet('1014', RC1D_STATE_MC, c1d_rx_pin)),        
-                Will("track/state", MQTTClient.QoS1)]
+                Block(RComBlkDet('1014', RC1D_STATE_MC, c1d_rx_pin)),
+                Sensor(DCCBlkDet('1011',ADC(26))),
+                Will("track/state", MQTTClient.QOS1)]
 
     await MQTTClient.get_instance().run(MQTT_LIST)  # runs forever
 

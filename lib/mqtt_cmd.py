@@ -48,7 +48,7 @@ class Power(MQTTAgent):
     ON_OFF = {'ON':DCCCommand.ON , 'OFF': DCCCommand.OFF}
     """On Off decode for power and decoder function commands"""
 
-    def __init__(self, topic_filter, QoS, pub_topic):
+    def __init__(self, topic_filter, qos, pub_topic):
         """Initialise the power manager
 
         This initialises the power manager with the topic filter and QoS for the subscription
@@ -59,12 +59,12 @@ class Power(MQTTAgent):
 
         Args:
             topic_filter: the topic filter to match against received topics
-            QoS: the Quality of Service for the subscription.  Must be either MQTTClient.QoS0 or MQTTClient.QoS1
+            qos: the Quality of Service for the subscription.  Must be either MQTTClient.QOS0 or MQTTClient.QOS1
             pub_topic: the topic used for publishing the power state
         """
-        if QoS not in (MQTTClient.QoS0, MQTTClient.QoS1):
-            raise ValueError("QoS must be either MQTTClient.QoS0 or MQTTClient.QoS1")
-        super().__init__(topic_filter, QoS)
+        if qos not in (MQTTClient.QOS0, MQTTClient.QOS1):
+            raise ValueError("qos must be either MQTTClient.QOS0 or MQTTClient.QOS1")
+        super().__init__(topic_filter, qos)
         self._publish_topic = pub_topic
         self._dcc = DCCCommand.get_instance()
 
@@ -109,7 +109,7 @@ class Power(MQTTAgent):
         while True:
             await self._dcc.wait_for_flag()
             tx_payload = "ON" if self._dcc.power() == DCCCommand.ON else "OFF"
-            await self._client.publish(self._publish_topic, tx_payload, True, MQTTClient.QoS1)
+            await self._client.publish(self._publish_topic, tx_payload, True, MQTTClient.QOS1)
         
 
 class Cab(MQTTAgent):
@@ -132,13 +132,13 @@ class Cab(MQTTAgent):
 
     _cab = {} #dictionary containing speed and direction for known cabs by address.
 
-    def __init__(self, topic_filter, QoS):
+    def __init__(self, topic_filter, qos):
         """Initialise the cab subscription
         Args:
             topic_filter: the topic filter to match against received topics
-            QoS: the Quality of Service for this subscription.  Must be either MQTTClient.QoS0 or MQTTClient.QoS1
+            qos: the Quality of Service for this subscription.  Must be either MQTTClient.QOS0 or MQTTClient.QOS1
         """
-        super().__init__(topic_filter, QoS)
+        super().__init__(topic_filter, qos)
         self._dcc = DCCCommand.get_instance()
 
     def handle_publication(self, topic, dup_flag, ret_flag, payload):

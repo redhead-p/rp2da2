@@ -134,11 +134,12 @@ class Device():
     _device_table = {}
 
     @classmethod 
-    def by_name(cls, name):
-        """Find a device object by name
+    def by_type_name(cls, type, name):
+        """Find a device object by type and name
         
         Args:
             cls:
+            type: the type of the device
             name: the name of the device
             
         Returns:
@@ -146,13 +147,14 @@ class Device():
             
         Raises:
             IndexError if not found"""
-        return cls._device_table[name]
+        return cls._device_table[(type, name)]
     
     @classmethod
     def get_items(cls):
         """Get items from the device table.
 
-        The device table holds a list of the device objects keyed by their name.
+        The device table holds a list of the device objects keyed by their type and
+        name.
         
         returns:
             a list of items - name and device object pairs"""
@@ -227,7 +229,7 @@ class Device():
         
         self._name = name
         self._type = type
-        Device._device_table[name] = (self)
+        Device._device_table[(type, name)] = (self)
 
     def get_name(self):
         """Get the device name

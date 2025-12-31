@@ -23,46 +23,98 @@ need a suitable DC power supply.
 RailCom detectors have been specifically designed for this project with circuit
 schematics and PCB designs for both global and local detectors. The PCB designs
 and applications have been designed around a standard set of GPIO pin
-allocations. The following table shows pin allocations for a local detector.
+allocations.
 
-| GPIO Pin | Pico / Pico W |Arduino Nano|
-| --- | --- | --- |
-|0| - | RailCom ch 1 (a) rx |
-|1| - | RailCom ch 1 (a) orientation|
-|4| OLED I2C0:sda | - |
-|5| OLED I2C0:scl |- |
-|12| - | OLED I2C0:sda |
-|13| - | OLED I2C0:scl |
-|14|RailCom ch 1 (a) rx | - |
-|15|RailCom ch 1 (a) orientation|RailCom ch 1 (b)|
-|16|RailCom ch 1 (b)|RailCom ch 1 (b) orientation|
-|17|RailCom ch 1 (b) orientation| - |
-|18|RailCom ch 1 (c) rx|RailCom ch 1 (c) rx|
-|19|RailCom ch 1 (c) orientation|RailCom ch 1 (c) orientation|
-|20|RailCom ch 1 (d) rx|RailCom ch 1 (d) rx|
-|21|RailCom ch 1 (d) orientation|RailCom ch 1 (d) orientation|
-|22|NeoPixel chain|NeoPixel chain|
+### GPIO Pins, I2C & SPI
+
+The following table shows pin allocations for a local detector on a Pico series
+platform. Pin allocations on other platforms may differ. Other platforms may be able to
+support additional local detectors.
+
+I2C0 and SPI1 pin assignments follow the MicroPython default pin assignments for
+these peripherals.
+
+|GPIO Pin|Pico / Pico W|
+|---|---|
+|4|OLED I2C0:sda|
+|5|OLED I2C0:scl|
+|6|SPI1 CS(secondary)|
+|8|SPI1 MISO|
+|9|SPI1 CS(primary)|
+|10|SPI1 SCK|
+|11|SPI1 MOSI|
+|14|RailCom ch 1 (a) rx|
+|15|RailCom ch 1 (a) orientation|
+|16|RailCom ch 1 (b) rx|
+|17|RailCom ch 1 (b) orientation|
+|18|RailCom ch 1 (c) rx|
+|19|RailCom ch 1 (c) orientation|
+|22|NeoPixel chain (4 LEDs)|
+|26|Current Detector (a)|
+|27|Current Detector (b)|
+|28|Current Detector (c)|
 
 When configured as a command station one channel 2 global detector is
-available. Pin allocations for the command station are as follows.
+available. Pin allocations for a Pico based command station are as follows.
+Pin allocations on other platforms may differ.
 
-|GPIO Pin (Pico & Nano)| Function|
+|GPIO Pin (Pico & Nano)|Function|
 |---|---|
-|4| OLED I2C0:sda (Pico)|
-|5| OLED I2C0:scl (Pico)|
-|12|OLED I2C0:sda (Nano)|
-|13| OLED I2C0:scl (Nano)|
-|15| RailCom Ch 2 rx (Nano)|
-|16| RailCom Ch 2 rx (Pico)|
+|4|OLED I2C0:sda|
+|5|OLED I2C0:scl|
+|16|RailCom Ch 2 rx|
 |18|DRV8874 EN|
 |19|DRV8874 nSleep|
 |20|DRV8874 PH|
 |21|DRV8874 nFault|
+|22|NeoPixel chain (2 LEDs)|
 |26|DRV8874 Current Sense|
 |Ground|DRV8874 iMode|
 |Ground|DRV8874 pMode|
 |NC|DRV8874 Vref|
-|22|NeoPixel chain|
+|22|NeoPixel chain (2 LEDs)|
+
+### Programmable Input/Output & State Machines
+
+The DCC and RailCom components make extensive use of the RP2 Programmable
+Input/Output (PIO) peripherals. Each PIO peripheral has four State Machines.
+On the Pico W and Pico2 W use of the radio module also requires use of a PIO
+State Machine and a State Machine may also be used to drive a NeoPixel chain.
+The RP2040 has 2 PIO peripherals and the RP2350 has 3.  MicroPython numbers
+the State Machines on these as 0 to 7 and 0 to 11 respectively.
+
+Note that the tables show the default radio state
+machines as grabbed if available by the MicroPython
+Wi-Fi module/RP SDK library.
+The MicroPython application leaves these
+free for the radio rather than specifically
+allocating them.
+
+#### Command Station/Global Detector
+
+|State Machine|Function|
+|---|---|
+|0|DCC generation.|
+|1 - 3|Not available. DCC generation uses virtually all PIO 0 memory|
+|4|Radio on Pico W|
+|5|NeoPixel on Pico|
+|6|RailCom Channel 2 timing|
+|7|RailCom Channel 2 RX|
+|8|Radio on Pico2 W|
+|9|NeoPixel on Pico2|
+
+#### Local Detector
+
+|State Machine|Function|
+|---|---|
+|0|Block A RailCom Channel 1 timing|
+|1|Block A RailCom RX|
+|2|Block B RailCom Channel 1 timing|
+|3|Block B RailCom RX|
+|6|Block C RailCom Channel 1 timing|
+|7|Block C RailCom RX|
+|8|Radio on Pico2 W|
+|9|NeoPixel on Pico2|
 
 ## Software Modules
 
@@ -71,11 +123,11 @@ available. Pin allocations for the command station are as follows.
 **device** - This provides the Device class, a base class for hardware device
 drivers and similar objects.
 
-**oled0_91** - Module for 0.91 inch OLED on i2c
+**oled0_91** - Module for 0.91 inch OLED on i2c0
 
-**led** - Module to drive ws2812 LEDs or similar.  A string of 2 LEDs is supported.
-The first LED displays the backend communications state, the second
-displays the command station track status.
+**led** - Module to drive ws2812 LEDs or similar.  A string of up to 4 LEDs is supported.
+The first LED displays the backend communications state. Additional LEDs display the
+command station track status or local block status as appropriate.
 
 **screen** - This is the screen application module. It specifies the Screen class.
 
@@ -86,7 +138,7 @@ displays the command station track status.
 **mqtt\*** - Other MQTT modules provide interfaces for MQTT devices and agents.
 These may be used with JMRI but JMRI MQTT specifications will need to be
 changed from the default. Initially we support cabs, power and blocks.
-Blocks have combined occupancy sensor and reporter.
+Blocks include occupancy sensor and RailCom reporter.
 
 **wifi** - This acts as wrapper for the standard MicroPython network/Wi-Fi functions.
 
@@ -94,6 +146,8 @@ Blocks have combined occupancy sensor and reporter.
 
 These modules are dependent on RP2 series processor programable input/output peripherals (PIO)
 for DCC command serialisation and RailCom response processing.
+
+#### Command Station Modules
 
 **dcc_command** - This module provides high level APIs. It and associated modules contain
 the functions and classes for DCC command station.
@@ -103,18 +157,25 @@ the functions and classes for DCC command station.
 **dcc_cmd_pio** - This module contains the class and functions for low level
 DCC Command Serialisation for use with RailCom detection.
 
+**dcc_rc_ch2** - This module contains the functions and classes for DCC RailCom
+command station global detector mobile responses on Channel 2.
+
+**trk_mon** - This module monitors the booster and track status by looking at the DRV8874
+enable, fault and current sense pins.
+
+#### Local RailCom Detector Modules
+
 **dcc_rc_ch1** - This module contains the functions and classes for DCC RailCom
 block detection on Channel 1.
 
-**dcc_rc_ch2** - This module contains the functions and classes for DCC RailCom
-command station mobile responses on Channel 2.
+**blk_mon** - This module contains classes for block occupancy detection based on current
+consumption. It works in parallel with the RailCom Channel 1 detector.
+
+#### Common Module
 
 **dcc_rc_pio**  - This module contains the functions and classes for low level
 RailCom datagram reading. It's applicable for block occupancy detection on
 Channel 1 and central dcc command decoder responses on Channel 2.
-
-**trk_mon** - This module monitors the booster and track status by looking at the DRV8874
-enable, fault and current sense pins.
 
 ---
 
@@ -151,13 +212,17 @@ The config file specifies:
 ### General
 
 Copy the python (.py) files from the lib and rp2dcc directories to the Pico using Thonny or similar.
-Don’t replicate the repository directory structure, just copy to the top level or if you want to be tidier
+Don’t replicate the repository directory structure,
+just copy to the top level or if you want to be tidier
 you can copy the .py files to the lib directory. Don’t bother with the \_\_init\_\_.py  files.
 These are purely documentary at the moment.
 Also ignore the test directory.
 
 The screen driver will object if it can’t find the OLED on the i2c bus.
 Most 0.91" OLEDs include i2c pull-ups so these should not be needed.
+
+Copy the files from the conf directory to a directory on the Pico named conf.  Edit the configuration files
+as required.
 
 ### Command Station
 
@@ -182,7 +247,9 @@ You can enter DCC API commands at the REPL preceded by
 
 ### Block Detector
 
-The main.py scripts in the dual\_ and quad\_ local_detect directories are the block detector versions. The version in the dual directory monitors two blocks, and that in the quad directory four.
+The main.py scripts in the dual\_, quad\_ and triple\_ local_detect directories are the block detector versions. The monitor two,
+four and blocks respectively.
+
 They provide MQTT connectivity
 allowing the block detector to report to JMRI or similar.
 Copy the main.py from the dual or quad directory to the top level directory on the target device.
@@ -352,13 +419,12 @@ ON = const(1)
 
 ---
 
-class **RComBlkDet** *(blk_name, rc_sm_num, rx_pin, enable_pin = None)*
+class **RComBlkDet** *(blk_name, rc_sm_num, rx_pin)*
 
 Parameters
 
 - *blk_name* the name of the block
 - *rc_sm_num*  the first state machine number.
-- *enable_pn* the pin as used by the DCC generator to assert the RailCom cutout (optional).
 
 ---
 
@@ -381,9 +447,7 @@ This returns the current block state. The block state is a tuple of the block
 status and any RailCom information available. The block status may be:
 
 - *Device.UNKNOWN* the block state is unknown
-- *Device.EMPTY* the block is empty
-- *Device.BLK_OCC* the block is occupied, but no RailCom Channel 1 information is available
-- *Device.BLK_CH1* the block is occupied and RailCom Channel 1 information is available
+- *Device.BLK_CH1* RailCom Channel 1 information has changed.
 
 RailCom information, if available, is a tuple:
 

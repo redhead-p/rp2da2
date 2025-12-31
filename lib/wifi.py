@@ -34,7 +34,7 @@ import asyncio
 from micropython import const
 import network
 from device import Device
-from led import Led, TriLed
+from led_pio import NeoLed
 
 
 import json
@@ -47,7 +47,6 @@ class WiFi(Device):
     credentials as held in the wifi configuration file.
     The connection is checked periodically and if the connection is lost, it will attempt to reconnect.
     The LED is set to red when not connected and cleared when connected.
-    The LED is controlled by the TriLed class.
 
     Attributes:
         DEVICE_TYPE: Wi-Fi device identifier.
@@ -83,8 +82,7 @@ class WiFi(Device):
         """
         if (WiFi._wi_fi) != None and (WiFi._wi_fi is not self):
             raise RuntimeError('only one instance allowed')
-        #self._led = NeoString.get_instance().get_led(NeoString.COMMS_LED)
-        self._tri_led = TriLed.get_instance() # this will be None on a Pico
+        self._led = NeoLed(NeoLed.COMMS_LED)
         with open('/conf/wifi.json', 'r') as fd:
             conf = json.load(fd)
         super().__init__(conf['hostname'], WiFi.DEVICE_TYPE)
@@ -95,25 +93,13 @@ class WiFi(Device):
         self._wlan.active(True)
         if not self._wlan.isconnected():
             # set led red for not connected
-            self.report_event(Device.WF_SET_LED, (Led.LED_R, 1))
+            self._led.set(NeoLed.LED_R)
             self._connected = False # so we can spot a change
             self._wlan.connect(*self._credentials)
         else:
             self._connected = True
-        #self._check_timer = Timer(mode = Timer.PERIODIC, period = _REOPEN_TIME, callback = self._check_OK)
         asyncio.create_task(self.check_OK())
 
-    def report_event(self, event, data):
-        """Report an event
-
-        This reports an event, overriding the Device version, so that the on board led is used
-        if on an Arduino RP2040 Connect.
-        """
-        if self._tri_led is None:
-            return super().report_event(event, data)
-        else:
-            # set the led here.
-            self._tri_led.set(data[0], data[1])
  
     def isconnected(self):
         """Check if the WiFi is connected
@@ -145,13 +131,13 @@ class WiFi(Device):
                 continue  # nothing to do
             if self._wlan.isconnected():
                 # turn red led off
-                self.report_event(Device.WF_SET_LED, (Led.LED_R, 0))
+                self._led.clear(NeoLed.LED_R)
                 self._connected = True
                 continue
             # not connected - do we need to report it
             if self._connected:
                 # red led on
-                self.report_event(Device.WF_SET_LED, (Led.LED_R, 1))
+                self._led.set(NeoLed.LED_R)
                 self._connected = False
             if self._wlan.active(): # toggle active and await next tick
                 self._wlan.active(False)

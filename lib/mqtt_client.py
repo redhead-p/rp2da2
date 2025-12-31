@@ -48,7 +48,7 @@ from micropython import const
 
 # lib imports
 from device import Device
-from led import Led, TriLed
+from led_pio import NeoLed
 from wifi import WiFi
 
 MQTT_BROKER_PORT = const(1883)
@@ -88,10 +88,10 @@ class MQTTPacketOut():
     It provides methods to add bytes, strings and payloads to the packet.
     The packet is constructed as a bytearray and the write method sends the
     complete packet.
-    The first byte is the control packet type and flags, the second byte
-    is the length of the packet.
-    The length is calculated as the number of bytes in the packet minus 2
-    (the first two bytes).
+    The first byte is the control packet type and flags, the following bytes
+    hold the remaining packet length.
+    The remaining length is calculated as the number of bytes in the packet excluding the 
+    control byte and length bytes.
     The packet is constructed in the order of the MQTT protocol specification.
     """
 
@@ -106,7 +106,8 @@ class MQTTPacketOut():
             pkt_type:   MQTT Control Packet type
             flags:      
         """
-        self._buffer = bytearray(((pkt_type << 4 | flags & 0xf),0))
+        self._buffer = bytearray()
+        self._header= bytearray(((pkt_type << 4 | flags & 0xf),))
 
     def add_byte(self, b):
         """Add a byte to the packet
@@ -150,8 +151,10 @@ class MQTTPacketOut():
     async def write_buff(self, writer):
         """Write the complete packet
 
-        The first byte is the control packet type and flags, the second byte is the length of the packet.
-        The length is calculated as the number of bytes in the packet minus 2 (the first two bytes).
+        The first byte is the control packet type and flags, the following bytes are the
+        remaining length of the packet.
+
+        See MQTT spec 2.2.3 for remaining length bytes generation psuedo code.
         
         args:
             writer: the write stream
@@ -159,8 +162,16 @@ class MQTTPacketOut():
         Returns:
             True if write successful else False
         """
-        self._buffer[1] = len(self._buffer) - 2
+        quot = len(self._buffer)
+        while True:
+            quot, remainder = divmod(quot, 128)
+            if quot > 0:
+                remainder = remainder | 128
+            self._header.append(remainder)
+            if quot == 0:
+                break  
         try:
+            writer.write(self._header)
             writer.write(self._buffer)
             await writer.drain()
         except OSError:
@@ -185,7 +196,7 @@ class MQTTClient(Device):
     asyncio.Streams are used for reading and writing.
 
     Attributes:
-        QoS_MASK:  mask for QoS bits
+        QOS_MASK:  mask for QoS bits
         RETAIN: MQTT retain flag     
         DUP: MQTT duplicate flag   
         PROTOCOL_LVL: MQTT Protocol Level 4 (MQTT version 3.1.1)
@@ -203,12 +214,12 @@ class MQTTClient(Device):
         ERR_SUBACK: invalid subscription acknowledgement
         ERR_UTF8: invalid UTF8 character
         DEVICE_TYPE: MQTT client device type
-        QoS0: Quality of service 0
-        QoS1: Quality of service 1
+        QOS0: Quality of service 0
+        QOS1: Quality of service 1
         errors: counts of errors by type
     """
 
-    QoS_MASK    = const(0x06) # mask for QoS bits
+    QOS_MASK    = const(0x06) # mask for QoS bits
     RETAIN      = const(1)
     DUP         = const(8)
 
@@ -229,9 +240,9 @@ class MQTTClient(Device):
     ERR_SUBACK = const(6)
     ERR_UTF8   = const(7)
 
-    QoS0        = const(0)      # Quality of service 0
+    QOS0        = const(0)      # Quality of service 0
 
-    QoS1        = const(1)      # Quality of service 1
+    QOS1        = const(1)      # Quality of service 1
 
     DEVICE_TYPE = const('m')
 
@@ -264,8 +275,8 @@ class MQTTClient(Device):
 
         self._con_params = conf['broker'], port
         self._client_id = conf['clientId']
-        
-        self._tri_led = TriLed.get_instance() # this will be None on a Pico
+        self._led = NeoLed(NeoLed.COMMS_LED)
+
 
         self._wifi = WiFi.get_instance()
 
@@ -275,19 +286,6 @@ class MQTTClient(Device):
 
         super().__init__(self._client_id, MQTTClient.DEVICE_TYPE)
 
-    def report_event(self, event, data):
-        """Report an event
-
-        This overrides the version in the base class.
-
-        This reports an event. WiFi LED events are shown on the communications LED if available.
-        Other events are reported via the device.
-        """
-        if self._tri_led is None or event != Device.MC_SET_LED:
-            super().report_event(event, data)
-        else:
-            # set the led here.
-            self._tri_led.set(data[0], data[1])
 
     def get_broker(self):
         """ Get the MQTT Broker ID
@@ -346,7 +344,7 @@ class MQTTClient(Device):
                     # and 1 is too short
                     await self._close()
 
-    async def publish(self, topic, payload,  retain = True, QoS = QoS1):
+    async def publish(self, topic, payload,  retain = True, qos = QOS1):
         """ MQTT Publish
 
         At the moment we will assume no duplicates will be sent
@@ -360,36 +358,36 @@ class MQTTClient(Device):
             topic: MQTT topic
             payload: the payload message to be sent
             retain: boolean
-            QoS: Quality of Service
+            qos: Quality of Service
         """
         
         if ((self._state != MQTTClient.M_CONNECTED)
                 and (self._state != MQTTClient.M_PING_SENT)):
             return False;      # unlike subscriptions we don't hold publications pending connection
     
-        self.report_event(Device.MC_SET_LED, (Led.LED_B, 1))
-        flags = (QoS << 1) | (MQTTClient.RETAIN if retain else 0)
+        self._led.set(NeoLed.LED_B)
+        flags = (qos << 1) | (MQTTClient.RETAIN if retain else 0)
     
         packet = MQTTPacketOut(_PUBLISH, flags)
         packet.add_str(topic)
 
-        if QoS > 0:
+        if qos > 0:
             # add a currently unused pid
             packet.add_uint16(self._clientPidTx.pop())
 
         packet.add_payload(payload)
         if await packet.write_buff(self._writer):
             self._ping_deferred.set()
-            if QoS == 0:
+            if qos == 0:
                 # we won't get an acknowledgement so return to idle immediately
-                self.report_event(Device.MC_SET_LED, (Led.LED_B, 0), _PUBLISH)
+                self._led.clear(NeoLed.LED_B)
             return True
         await self._close()
         return False
     
     async def _subscribe(self):
-        self.report_event(Device.MC_SET_LED, (Led.LED_B, 1))
-        packet = MQTTPacketOut(_SUBSCRIBE, MQTTClient.QoS1 << 1)
+        self._led.set(NeoLed.LED_B)
+        packet = MQTTPacketOut(_SUBSCRIBE, MQTTClient.QOS1 << 1)
 
         # add a currently unused pid
         packet.add_uint16(self._clientPidTx.pop())
@@ -398,7 +396,7 @@ class MQTTClient(Device):
         # next is the subscribe payload 
             packet.add_uint16(len(sub_topic._topic_filter))
             packet.add_payload(sub_topic._topic_filter)
-            packet.add_byte(sub_topic._QoS)
+            packet.add_byte(sub_topic._qos)
         if await packet.write_buff(self._writer):
             self._ping_deferred.set()
             return True
@@ -412,7 +410,7 @@ class MQTTClient(Device):
         packet.add_uint16(pid)
         if await packet.write_buff(self._writer):
             self._ping_deferred.set()
-            self.report_event(Device.MC_SET_LED, (Led.LED_G, 0))
+            self._led.clear(NeoLed.LED_G)
             return True
         await self._close()        
         return False
@@ -425,7 +423,7 @@ class MQTTClient(Device):
             self._log_error(MQTTClient.ERR_CONACK)
             await self._close()
             return
-        self.report_event(Device.MC_SET_LED, (Led.LED_B, 0))
+        self._led.clear(NeoLed.LED_B)
         # allocate 10 pid values for tx usage
         self._clientPidTx = set(range(1, 11))
         self._set_state(MQTTClient.M_SUBSCRIBING)
@@ -439,7 +437,7 @@ class MQTTClient(Device):
             self._log_error(MQTTClient.ERR_SUBACK)
             await self._close()
             return
-        self.report_event(Device.MC_SET_LED, (Led.LED_B, 0))
+        self._led.clear(NeoLed.LED_B)
         pid = packet[0] * 256 + packet[1]
         if pid in self._clientPidTx:
             # shouldn't be there if in use!
@@ -453,17 +451,17 @@ class MQTTClient(Device):
 
     async def _handle_publish(self, pf, packet):
         """PUBLISH received"""
-        self.report_event(Device.MC_SET_LED, (Led.LED_G, 1))
+        self._led.set(NeoLed.LED_G)
         dup_flag = pf & MQTTClient.DUP
-        QoS = (pf & MQTTClient.QoS_MASK) >> 1
+        qos = (pf & MQTTClient.QOS_MASK) >> 1
         ret_flag = pf & MQTTClient.RETAIN
         topic_len = packet[0] * 256 + packet[1]
         # acknowledge publication - with pid extracted from packet
-        if QoS != MQTTClient.QoS0:
+        if qos != MQTTClient.QOS0:
             await self._puback(packet[topic_len + 2] * 256 + packet[topic_len + 3])
         else:
             # clear led here
-            self.report_event(Device.MC_SET_LED, (Led.LED_G, 0))
+            self._led.clear(NeoLed.LED_G)
         try:
             topic = packet[2:2 + topic_len].decode("utf8")
             payload = packet[topic_len+4:].decode("utf8")
@@ -492,7 +490,7 @@ class MQTTClient(Device):
             await self._close()
             return
         self._clientPidTx.add(pid) # put back in list as being available.
-        self.report_event(Device.MC_SET_LED, (Led.LED_B, 0))
+        self._led.clear(NeoLed.LED_B)
 
     async def _handle_pingresp(self, pf, packet):
         if packet != b'' or pf != 0:
@@ -500,7 +498,7 @@ class MQTTClient(Device):
             self._log_error(MQTTClient.ERR_PINGRESP)
             await self._close()
             return
-        self.report_event(Device.MC_SET_LED, (Led.LED_B, 0))
+        self._led.clear(NeoLed.LED_B)
         self._set_state(MQTTClient.M_CONNECTED)
 
     def _log_error(self, error):
@@ -522,12 +520,12 @@ class MQTTClient(Device):
             # occurs if writer not created
             pass
         self._set_state(MQTTClient.M_CLOSED)
-        self.report_event(MQTTClient.MC_SET_LED, (Led.LED_B, 1))
+        self._led.set(NeoLed.LED_B)
 
     async def _re_open(self):
         """Open or Re-open the MQTT connection"""
         if self._wifi.isconnected():
-            self.report_event(MQTTClient.MC_SET_LED, (Led.LED_B, 1))
+            self._led.set(NeoLed.LED_B)
             try:
                 self._reader, self._writer = await asyncio.open_connection(*self._con_params)
             except OSError:
@@ -566,7 +564,7 @@ class MQTTClient(Device):
 
                 if await MQTTPacketOut(_PINGREQ).write_buff(self._writer):
                     self._set_state(MQTTClient.M_PING_SENT)
-                    self.report_event(MQTTClient.MC_SET_LED, (Led.LED_B, 1))      # Ping response pending
+                    self._led.set(NeoLed.LED_B)     # Ping response pending
                     continue
                 await self._close()
                 break # terminate task

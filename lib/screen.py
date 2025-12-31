@@ -120,6 +120,10 @@ class Screen():
         self._oled.scroll_write(f'{src.get_name()} empty')
 
     def _handle_blk_ch1(self,src, data):
+        if data is None:
+            self._oled.scroll_write(f'{src.get_name()} No Ch1 Resp')
+            return
+
         addr_t, address, orientation = data
         self._oled.scroll_write(f'{src.get_name()} {addr_t}{address} {orientation}')
 

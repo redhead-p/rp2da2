@@ -5,7 +5,7 @@
 This module provides access to the MQTT interface via MQTT agents which manage subscriptions and
 publications on behalf of relevant hardware and applications software.
 
-This module provides common functions. e.g. the abstract base class for MQTT agents. 
+This module provides common functions. e.g. the abstract base class for MQTT agents and the Will agent.
 
 MQTT version 3.1.1 as documented https://docs.oasis-open.org/mqtt/mqtt/v3.1.1/os/mqtt-v3.1.1-os.html
         
@@ -32,13 +32,8 @@ immutable.
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-import asyncio
 
 from mqtt_client import MQTTClient
-
-
-from dcc_rc_ch1 import RComBlkDet
-
 
 class MQTTAgent():
     """ MQTT Agent
@@ -53,16 +48,16 @@ class MQTTAgent():
     # but OK here because get_instance will instantiate the client
     _client = MQTTClient.get_instance()
     
-    def __init__(self, topic_filter, QoS):
+    def __init__(self, topic_filter, qos):
         """Initialise the subscription
 
         Args:
             topic_filter: the topic filter to match against received topics
-            QoS: the Quality of Service for this subscription.  Must be either MQTTClient.QoS0 or MQTTClient.QoS1
+            qos: the Quality of Service for this subscription.  Must be either MQTTClient.QOS0 or MQTTClient.QOS1
 
         """
         self._topic_filter = topic_filter
-        self._QoS = QoS
+        self._qos = qos
         self._create_pub_check() # create the publication check task
 
     def matches(self, topic):
@@ -141,14 +136,14 @@ class Will(MQTTAgent):
     This agent does not publish. 
     """
 
-    def __init__(self, topic_filter, QoS):
+    def __init__(self, topic_filter, qos):
         """Initialise the will subscription
 
         Args:
             topic_filter: the topic filter to match against received topics
-            QoS: the Quality of Service for this subscription.  Must be either MQTTClient.QoS0 or MQTTClient.QoS1
+            qos: the Quality of Service for this subscription.  Must be either MQTTClient.QoS0 or MQTTClient.QoS1
         """
-        super().__init__(topic_filter, QoS)
+        super().__init__(topic_filter, qos)
 
     def handle_publication(self, topic, dup_flag, ret_flag, payload):
         """Handle will publication
@@ -168,87 +163,3 @@ class Will(MQTTAgent):
             payload: the payload of the publication as a string
         """
         print('will', ret_flag, payload)
-
-class Block(MQTTAgent):
-    """Block Agent
-
-    This agent is used to handle publications to the block topic and
-    any publications it makes.
-    """
-    SENSOR_TOPIC_PREFIX = "track/sensor"
-    REPORTER_TOPIC_PREFIX = "track/reporter"
-
-    SENSOR_PAYLOAD = {RComBlkDet.BLK_EMPTY:"INACTIVE",
-                       RComBlkDet.BLK_OCC:"ACTIVE",
-                       RComBlkDet.BLK_CH1:"ACTIVE"}
-    
-    _ACTIVE_STATE = (RComBlkDet.BLK_OCC, RComBlkDet.BLK_OCC)
-
-    def __init__(self, rc_block):
-        self._rc_block = rc_block # RailCom block
-        self._name = rc_block.get_name()
-        self._last_blk_state = RComBlkDet.UNKNOWN
-        super().__init__(f'{Block.SENSOR_TOPIC_PREFIX}/{self._name}/set', MQTTClient.QoS1)
-
-    def _create_pub_check(self):
-        """Overrides version in base class"""
-        asyncio.create_task(self._pub_check())
-        return
-
-    def handle_publication(self, topic, dup_flag, ret_flag, payload):
-        """Handle a publication
-        This method is called by the MQTT client when a publication is received.
-        Args:
-            topic: the topic of the publication
-            dup_flag: True if this is a duplicate publication
-            ret_flag: True if this is a retained publication
-            payload: the payload of the publication as a string
-        """
-        print("Sensor", topic, payload)
-
-    async def _pub_check(self):
-        """ Publication check
-        
-            Check to see if block state has changed and publish it.
-        
-            This coroutine runs forever.
-        """
-        while True:
-            await self._rc_block.wait_for_flag()
-
-            # Get the new block state from the channel 1 detector
-            state, data = self._rc_block.get_block_state()
-            # the detector treats OCCUPIED to CH1 data available
-            # or vice versa as a state change - but they are both reported as
-            # ACTIVE so are ignored here
-
-            if not((state in Block._ACTIVE_STATE)
-                    and (self._last_blk_state in Block._ACTIVE_STATE)):
-                # Publish the new block state
-                try:
-                    tx_payload = Block.SENSOR_PAYLOAD[state]
-                except KeyError:
-                    # not valid status (yet)
-                    continue
-                if not await self._client.publish(
-                        f'{Block.SENSOR_TOPIC_PREFIX}/{self._name}/event',
-                        tx_payload,
-                        False,
-                        MQTTClient.QoS1):
-                    continue # publish failed - retry later
-            if state == RComBlkDet.BLK_CH1:
-                # channel 1 info available - always published 
-                # likelyhood of a change without intervening INACTIVE low
-                _, address, orientation = data
-                await self._client.publish(
-                        f'{Block.REPORTER_TOPIC_PREFIX}/{self._name}',
-                        f'{address} {orientation}',
-                        False, MQTTClient.QoS1)
-            elif self._last_blk_state == RComBlkDet.BLK_CH1:
-                # clear reporter info
-                await self._client.publish(
-                        f'{Block.REPORTER_TOPIC_PREFIX}/{self._name}',
-                        '',
-                        False,
-                        MQTTClient.QoS1)
-            self._last_blk_state = state

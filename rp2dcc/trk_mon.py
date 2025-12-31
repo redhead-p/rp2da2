@@ -18,7 +18,7 @@ This module contains the class and functions for monitioring track / booster sta
 
 from micropython import const
 import time
-from led import NeoString, Led
+from led_pio import NeoLed
 
 
 class TrkMon:
@@ -72,6 +72,8 @@ class TrkMon:
 
     _this_mon = None # the singleton DCC monitor instance
 
+    STAT_MEDIAN_SIZE = const(5) # size of statistical median filter (must be odd)
+    STAT_MEDIAN_INDEX = const(STAT_MEDIAN_SIZE // 2) # index for median value
     FILTER_FACTOR = const(10)   # IIR filter factor (reading)
     FILTER_RATIO =  const((FILTER_FACTOR - 1) / FILTER_FACTOR)
 
@@ -85,7 +87,7 @@ class TrkMon:
 
     DRV_CURRENT_RATIO = const(3300 / (0.45 * 2.49 * 65535))  #mA per unit ADC read
 
-    LED_B = 12 # default brightness
+    BRIGHT = 12 # default brightness
 
     @classmethod
     def get_instance(cls):
@@ -124,20 +126,29 @@ class TrkMon:
         self._sense = 0.0
         self._sense_zero = float(sense_pin.read_u16())
         # initialise the NeoPixel LED
-        self._led = NeoString.get_instance().get_led(Led.DCC_LED)
+        self._led = NeoLed(NeoLed.DCC_LED)
+        self._readings = [sense_pin.read_u16() for _ in range(TrkMon.STAT_MEDIAN_SIZE)]
+        self.read_log = []
 
     def scan(self):
         """ Scan the DCC status and update the NeoPixel accordingly.
         
         This scans the DCC status and updates the NeoPixel accordingly. 
         This method is called periodically to update the DCC status and NeoPixel.
-        It checks the fault pin, sleep pin, and enable pin to determine the DCC status
-        and updates the NeoPixel accordingly. If the fault pin is low, it indicates a fault
-        condition and the NeoPixel is set to blue. If the sleep pin is low, it indicates that the DCC is asleep
-        and the current sense reading is updated to the zero offset. If the enable pin is low,
-        it indicates that the DCC is in a cutout condition and the NeoPixel is set to blue if the fault pin is low, otherwise it is set to red.
-        If the DCC is awake, the current sense reading is updated and the NeoPixel is set to green, yellowish, or orange depending on the current sense reading.
-        The NeoPixel is updated with the appropriate RGB values based on the current sense reading.
+        It checks the fault pin, sleep pin, and enable pin to determine the DCC
+        status and updates the NeoPixel accordingly. If the fault pin is low,
+        it indicates a fault condition and the NeoPixel is set to blue. If
+        the sleep pin is low, it indicates that the DCC is asleep and the
+        current sense reading is updated to the zero offset. If the enable
+        pin is low, it indicates that the DCC is in a cutout condition and
+        the NeoPixel is set to blue if the fault pin is low, otherwise it is
+        set to red.
+        
+        If the DCC is awake, the current sense reading is updated and the
+        NeoPixel is set to green, yellowish, or orange depending on the current sense reading.
+        The NeoPixel is updated with the appropriate RGB values based on the
+        current sense reading.
+        
         The method also updates the next run time to be 100 ms in the future.
         """
         if self._fault_pin() == 0:
@@ -145,39 +156,50 @@ class TrkMon:
             # if enable is true assume it's overcurrent but if 
             # enable is false then we're in a cutout and it must be one of the 
             # other conditions - add blue to indicate this
-            self._led.set_rgb((TrkMon.LED_B,
-                               0,
-                               TrkMon.LED_B if self._enable_pin() == 0 else 0))
-            time.sleep_us(100) # allow for string transmission termination time
+            if self._enable_pin() == 0:
+                self._led.set(NeoLed.LED_B, False, val = TrkMon.BRIGHT)
+            self._led.clear(NeoLed.LED_G,False)
+            self._led.set(NeoLed.LED_R, val = TrkMon.BRIGHT)
+            time.sleep_us(50) # allow for string transmission termination time
             return
         
         ts = time.ticks_ms()
         if time.ticks_diff(self._next_run_time,ts) > 0:
             # not time for next run yet
             return
+        # get reading and apply statistical median filter
+        self._readings.append(self._sense_pin.read_u16())
+        if len(self._readings) > TrkMon.STAT_MEDIAN_SIZE:
+            self._readings.pop(0)
+        f_reading = sorted(self._readings)[TrkMon.STAT_MEDIAN_INDEX]
+
         if self._sleep_pin() == 0:
             # power off (asleep) so no current - update the zero reference 
             self._sense_zero = ((self._sense_zero * TrkMon.Z_FILTER_RATIO)
-                + (self._sense_pin.read_u16() / TrkMon.Z_FILTER_FACTOR))
+                + (f_reading / TrkMon.Z_FILTER_FACTOR))
             self._sense = 0.0
-            self._led.set_rgb((0, 0, 0))
+            self._led.clear(NeoLed.LED_B, False)
+            self._led.clear(NeoLed.LED_G, False)
+            self._led.clear(NeoLed.LED_R)
         else:
             # update the filtered reading
-            current = self._sense_pin.read_u16() - self._sense_zero
+            current = f_reading - self._sense_zero
+            self._led.clear(NeoLed.LED_B, False)
             self._sense = ((self._sense * TrkMon.FILTER_RATIO)
                             + (current / TrkMon.FILTER_FACTOR))
             if self._sense < TrkMon.THRESHOLD_1:
                 # pure green
-                rgb = (0, TrkMon.LED_B, 0)  # pure green for < 1A               
+                self._led.clear(NeoLed.LED_R, False)
+                self._led.set(NeoLed.LED_G, val = TrkMon.BRIGHT)            
             elif self._sense < TrkMon.THRESHOLD_2:
                 # yellowish
-                rgb = (TrkMon.LED_B // 3, (TrkMon.LED_B * 2) // 3, 0)
+                self._led.set(NeoLed.LED_R, False,  val = TrkMon.BRIGHT // 3)
+                self._led.set(NeoLed.LED_G, val = (TrkMon.BRIGHT * 2 // 3))      
             else:
                 # more orange
-                rgb = ((TrkMon.LED_B * 2) // 3, TrkMon.LED_B // 3, 0)
-            self._led.set_rgb(rgb)
+                self._led.set(NeoLed.LED_R, False,  val = (TrkMon.BRIGHT * 2) // 3)
+                self._led.set(NeoLed.LED_G, val = (TrkMon.BRIGHT // 3))      
         self._next_run_time = time.ticks_add(ts, 100) # next run in 100 ms
-        
 
     def get_current(self):
         """ Get the current

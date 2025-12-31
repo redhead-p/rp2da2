@@ -60,6 +60,7 @@ class RComCmdRsp(RailComRead):
         DYN_RECEP_STATS: reception stats datagram identifier.
         DYN_TRACK_VOLT: track voltage
         DYN_DIRECTION: direction status byte
+        DYN_TEMP: decoder temperature
         ERR_CODE: list of error codes
     """
     # class constants

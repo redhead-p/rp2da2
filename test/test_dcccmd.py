@@ -22,7 +22,7 @@ from dcc_rc_ch2 import RComCmdRsp
 from dcc_rc_pio import RailComRead
 from trk_mon import TrkMon
 from screen import Screen
-from led import NeoString
+from led_pio import NeoString
 if __name__ == '__main__':
 
     alloc_emergency_exception_buf(100)
@@ -64,15 +64,12 @@ if __name__ == '__main__':
     if build.find("PICO") > -1:
         # Detector pin allocations - Raspberry Pi Pico format
         # orientation pins are initiated but not specifically allocated
-        c1_rx_pin = Pin(14, Pin.IN)
-        _ = Pin(15, Pin.IN)
         c2_rx_pin = Pin(16, Pin.IN)
         _ = Pin(17, Pin.IN)
     elif build.find("NANO") > -1:
         # Detector pin allocations - Arduino Nano  format
         # orientation pins are initiated but not specifically allocated
-        c1_rx_pin = Pin(0, Pin.IN)
-        _ = Pin(1, Pin.IN)
+
         c2_rx_pin = Pin(15, Pin.IN)
         _ = Pin(16, Pin.IN)
     else:
@@ -88,7 +85,6 @@ if __name__ == '__main__':
     def main1():
         s = Screen()
         s.show_screen(((3, "DCC Test", 0),))
-        np = NeoString(Pin(22),2)
         trk_mon = TrkMon(sleep_pin, enable_pin, fault_pin, sense_pin)
 
         while True:

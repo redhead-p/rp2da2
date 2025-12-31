@@ -38,8 +38,6 @@ from micropython import const, schedule
 import array
 import rp2
 
-import time
-
 from device import Device
 
 # module constants - not for importing elsewhere
@@ -99,7 +97,6 @@ class RailComRead(Device):
 
     Attributes:
         ACK: acknowledgement from decoder (may be used as padding)
-        BUSY: busy response from decoder
         RES:  reserved
         NAK: negative acknowledgement from decoder (may follow ACK!)
         IMP_ACK: no explicit ACK but datagram received (implicit ACK)
@@ -121,7 +118,6 @@ class RailComRead(Device):
     # these are internal values post Hamming W4 translation
     # bit 7 set to differentiate from datagram value 6 bit translation
     ACK =  const(0x80)
-    BUSY = const(0x81)
     RES =  const(0x82)
     NAK =  const(0x83)
     # locally interpreted responses
@@ -136,15 +132,15 @@ class RailComRead(Device):
     ERR_FE = const(0x8B)
     ERR_PL = const(0x8C)
 
-    PROT_BYTE = (ACK, BUSY, NAK, RES)
+    PROT_BYTE = (ACK, NAK, RES)
 
-    LCL_DEVICE_TYPE = const('b')
-    GBL_DEVICE_TYPE = const('r')
+    LCL_DEVICE_TYPE = const('l')
+    GBL_DEVICE_TYPE = const('g')
     
     # datagram IDs (incomplete at present) - ID's are 6 bits 
     # IDs >= 64 are internally generated datagrams
     DG_RESP = const(0x40) # protocol control byte
-    # DG_SIDE = const(0x41) # side - originating decoder orientation
+
 
     _H4LU = {
     0xAC:0x00, 0xAA:0x01, 0xA9:0x02, 0xA5:0x03,
@@ -163,7 +159,7 @@ class RailComRead(Device):
     0x1B:0x34, 0x1D:0x35, 0x1E:0x36, 0x2E:0x37,
     0x36:0x38, 0x3A:0x39, 0x27:0x3A, 0x2B:0x3B,
     0x2D:0x3C, 0x35:0x3D, 0x39:0x3E, 0x33:0x3F,
-    0x0F:ACK, 0xF0:ACK, 0xE1:BUSY, 0xC3:RES, 0x87:RES, 0x3C:NAK
+    0x0F:ACK, 0xF0:ACK, 0xE1:RES, 0xC3:RES, 0x87:RES, 0x3C:NAK
     }
     """ Hamming Look Up Table
 
@@ -185,7 +181,7 @@ class RailComRead(Device):
     _IP_MEM = {1:PIO0_BASE + 0xec,
                     3:PIO0_BASE + 0x11c,
                     5:PIO1_BASE + 0xec,
-                    7:PIO1_BASE +  0x11c}
+                    7:PIO1_BASE + 0x11c}
     
     av_time = 0
 
@@ -244,12 +240,14 @@ class RailComRead(Device):
             self._sm = rp2.StateMachine(cu_sm_num, self._cut_out1_bd,
                                             freq = _PIO_CU_D_FREQ,
                                             in_base = rc_rx_pin, jmp_pin = rc_rx_pin)
+            self._rx = self._rx_lcl
         else:
             # Channel 2 on command station
             self._max_buf = 6
             self._sm = rp2.StateMachine(cu_sm_num, self._cut_out2,
                                         freq = _PIO_CU_FREQ,
                                         in_base = cu_pin)
+            self._rx = self._rx_gbl
         
         self._sm.irq(self._read_isr, hard = True) # read from the state machine at the end of the cutout
 
@@ -381,7 +379,7 @@ class RailComRead(Device):
                  in_shiftdir = rp2.PIO.SHIFT_RIGHT,           # lsb first so shift right
                  out_shiftdir = rp2.PIO.SHIFT_RIGHT,
                  fifo_join = rp2.PIO.JOIN_RX)                # no tx so both fifos for rx
-    def _rx():
+    def _rx_lcl():
         """ The RailCom data receiver state machine program
         
         This implements a simplified version of an asynchronous communications receiver as
@@ -444,7 +442,69 @@ class RailComRead(Device):
         in_(osr,1)              [0] # shift orientation bit into isr
         in_(null, 23)           [0] # shift all bits to l.s. end of isr
         push(noblock)           [0] # and save isr to rx FIFO - data lost if FIFO overrun
+        wrap()                      # wait for next start bit
 
+
+    @rp2.asm_pio(
+                 in_shiftdir = rp2.PIO.SHIFT_RIGHT,           # lsb first so shift right
+                 out_shiftdir = rp2.PIO.SHIFT_RIGHT,
+                 fifo_join = rp2.PIO.JOIN_RX)                # no tx so both fifos for rx
+    def _rx_gbl():
+        """ The RailCom data receiver state machine program
+        
+        This implements a simplified version of an asynchronous communications receiver as
+        typically employed in a UART. There's no transmission function.
+
+        The receiver is enabled at the start of the channel window
+        by another state machine setting the interrupt flag. It is disabled once the data has
+        been read by the application, which restarts the state machine.
+
+        The first input pin is the 'or' of the two sides of the detector circuit. One side detects
+        +ve going RailCom pulses and the second -ve going pulses. A RailCom pulse indicates a logic '0',
+        the line idle (no RailCom current) is a logic '1'.
+        Low indicates logic '0' and vice versa.
+        
+        A second input pin is not  used to determine the orientation and the code
+        does not process it, thereby saving 3 instructions when compared with the local
+        verstion. In other respects the code is identical.
+
+        The state machine clock is set at 16 x the bit rate. (4 MHz)
+
+        There's no programatic way back to the first instruction within the PIO program.  The
+        state machine is restarted by the controlling application externally forcing execution
+        of a jump to the first instruction.
+
+        Reading is stopped if an overrun error occurs.
+
+        14 instructions
+        """
+        wait(1, irq, rel(4))    [0] # wait to be enabled
+        wrap_target()               # restart calculated on basis that this labels 2nd instruction
+
+        label("await_start")
+        # we want a confirmed start bit to be at least 3/4 bit time 
+        # so we sample it 6 times following the initial edge
+        set(y,5)                [0]       
+        wait(0, pin, 0)         [0] # wait for start bit leading edge - 2 ticks between samples
+        label("spin")
+        jmp(pin,"await_start")  [0] # back to '1', not long enough for start bit
+        jmp(y_dec, "spin")      [0] # spin for next sample
+
+        label("start_ok")
+        set(y, 7)               [8] # 11 ticks in total from last sample to mid 1st bit.
+
+        label("next_bit")
+        in_(pins,1)             [0] # read next bit into isr
+        jmp(y_dec,"next_bit")   [14] # wait 15 more ticks - 16 ticks in total  
+        jmp(pin,"stop_ok")      [0] # if all data bits read check stop bit
+        mov(isr, invert(null))  [0] # clear the isr - to all '1's for overrun
+        push(noblock)           [0] # and save isr to rx FIFO
+        label("freeze")
+        jmp("freeze")           [0] # lock after overrun pending external reset
+
+        label("stop_ok")            # stop bit OK
+        in_(null, 24)           [0] # shift all bits to l.s. end of isr
+        push(noblock)           [0] # and save isr to rx FIFO - data lost if FIFO overrun
         wrap()                      # wait for next start bit
 
     def _read_isr(self, _):
