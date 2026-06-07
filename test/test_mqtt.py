@@ -1,13 +1,36 @@
-"""MQTT Connection Initial Confidence Check
+# ============================================================
+""" MQTT Connection Initial Confidence Check
 
-To be run as part of commissioning a newly constructed board as a check on
-MQTT broker connectivity, publish and subscribe operability.
+    To be run as part of commissioning a newly constructed board as a check on
+    MQTT broker connectivity, publish and subscribe operability.
 
-NOTE: This test uses the 'umqtt.simple' library (install via Thonny:
-Tools > Manage Packages > umqtt.simple) as an independent infrastructure
-check. It does NOT test Paul Redhead's mqtt_client.py library. A passing
-result confirms the MQTT broker is reachable and anonymous access is
+NOTE:
+A passing result confirms the MQTT broker is reachable and anonymous access is
 working correctly, which is a prerequisite for the main application.
+
+This test uses the 'umqtt.simple' library
+(install via Thonny: Tools > Manage Packages > umqtt.simple)
+It is an independent infrastructure check and NOT a test of Paul Redhead's mqtt_client.py library. 
+
+Includes Verbose logging to the Thonny REPL console output.
+ - reads wifi configuration details from conf\wifi.json
+ - proceeds to log into the wifi network
+ - reads mqtt configuration details from conf\mqtt.json
+ - contacts the broker and subscribes to a test topic.
+ - publishes a 'ping' test to that test topic. (send and receive)
+ - reports as pass or fail to the REPL console in Thonny
+ - prepared with assistance from Claude.AI
+"""
+"""     Copyright (C) 2026 Alan Lomax
+
+        This program is free software: you can redistribute it and/or modify it
+        under the terms of the GNU General Public License as published by the Free Software Foundation, 
+        either version 3 of the License, or (at your option) any later version.
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+        See the GNU General Public License for more details.
+        You should have received a copy of the GNU General Public License along with this program.
+        If not, see <http://www.gnu.org/licenses/>.
 """
 import network
 import time
@@ -112,14 +135,10 @@ if missing:
 broker   = mqtt_conf["broker"]
 clientId = mqtt_conf["clientId"]
 port     = mqtt_conf.get("port", 1883)
-user     = mqtt_conf.get("user", None)
-password = mqtt_conf.get("password", None)
 
 log(f"  broker  : {broker}")
 log(f"  clientId: {clientId}")
 log(f"  port    : {port}")
-log(f"  user    : {user if user else '(none)'}")
-log(f"  password: {'*' * len(password) if password else '(none)'}")
 
 # 6. Define test topic and message
 TEST_TOPIC   = b"pico/test"
@@ -143,8 +162,6 @@ try:
         client_id = clientId,
         server    = broker,
         port      = port,
-        user      = user,
-        password  = password,
         keepalive = 30
     )
     client.set_callback(on_message)
