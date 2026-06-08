@@ -1,6 +1,29 @@
 # ============================================================
 # WiFi Connection Test — Raspberry Pi Pico W
-# MicroPython — reads credentials from conf/wifi.json
+""" To be run as part of commissioning a newly constructed board as a check on
+    WiFi network connectivity and the validaty of the \conf\wifi.json config file.
+
+Includes Verbose logging to the Thonny REPL console output.
+ - reads credentials from conf\wifi.json
+ - scans for available networks
+ - reports if configuraton matches an available network
+ - continues logging in using the provided credentials
+ - reports success by reporting the assigned details (IP address for example)
+ - adapted from an earlier version by Paul Redhead with assistance from Claude.AI
+"""
+"""     Copyright (C) 2026 Paul Redhead
+        Copyright (C) 2026 Alan Lomax
+
+        This program is free software: you can redistribute it and/or modify it
+        under the terms of the GNU General Public License as published by the Free Software Foundation, 
+        either version 3 of the License, or (at your option) any later version.
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+        See the GNU General Public License for more details.
+        You should have received a copy of the GNU General Public License along with this program.
+        If not, see <http://www.gnu.org/licenses/>.
+"""
+#
 # ============================================================
 
 import network
