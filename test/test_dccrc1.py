@@ -8,7 +8,17 @@ It also includes a thread to display event reports and prints statistics about d
 It uses the machine module for hardware interaction and the device module for event reporting.
 
 """
+"""        Copyright (C) 2023, 2024, 2025, 2026 Paul Redhead
 
+        This program is free software: you can redistribute it and/or modify it
+        under the terms of the GNU General Public License as published by the Free Software Foundation, 
+        either version 3 of the License, or (at your option) any later version.
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+        See the GNU General Public License for more details.
+        You should have received a copy of the GNU General Public License along with this program.
+        If not, see <http://www.gnu.org/licenses/>.
+"""
 
 
 import _thread, time, sys, asyncio
@@ -123,11 +133,11 @@ if __name__ == '__main__':
         while True:
             try:
                 await asyncio.sleep_ms(1)
-                if user_sw.value() == 0:
+                if not user_sw.value():
                     # button press
                     print_stats()
                     print()
-                    while user_sw() == 0:
+                    while not user_sw():
                         await asyncio.sleep_ms(0)
 
             except KeyboardInterrupt:

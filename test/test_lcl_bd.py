@@ -290,9 +290,6 @@ def test_adc():
             # i2c error - no track power most likely
             print("Is DCC power on?")
             return
-        
-
-
 
 tests = {
             0:("Flash Onboard LED", led_test,()),
@@ -334,7 +331,7 @@ if __name__ == '__main__':
         print()
         ip = input('>')
         print(ip)
-        if len(ip) > 0:
+        if ip:
             nxt_tst = int(ip)
         do_test(nxt_tst)
         nxt_tst += 1

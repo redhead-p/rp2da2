@@ -26,13 +26,14 @@ Only one string of max. length five LEDs is supported on GPIO 22
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from machine import Pin
 from micropython import const
 import rp2
 import array
 
+from hw_conf import HwConf
 from device import Device
 
+# stop pylance from reporting PIO assembler problems!
 # pyright: reportUndefinedVariable=false
 
 
@@ -40,7 +41,7 @@ from device import Device
              out_shiftdir=rp2.PIO.SHIFT_LEFT,
              autopull=True, pull_thresh=24)
 def ws2812_tx():
-    """ Write to ws2812 led string
+    """Write to ws2812 led string.
     
     This is a PIO program to write to a string of 
     ws2812 (neopixel leds)."""
@@ -56,9 +57,6 @@ def ws2812_tx():
 
 
 _MAX_LEN = const(5)
-_PIN = 22
-_SM = 5 # State Machine number for RP2040 (Pico, PicoW etc) 
-_SM_P2 = 9 # State Machine number for RP2350 (Pico2, Pico2W)
 
 
 class NeoLed():
@@ -126,7 +124,7 @@ class NeoLed():
             pass
 
     def clear(self, colour, flush = True):
-        """Clear a colour from the LED  
+        """Clear a colour from the LED.
 
         This clears the colour of the LED
         args:
@@ -142,15 +140,81 @@ class NeoLed():
             # quietly ignore invalid colour
             pass
 
+    def set_off(self, flush = True):
+        """Set the LED unlit.
+
+        This clears all colours from the LED leaving it unlit.
+        args:
+            flush: If true the led string is written following the update
+        """
+        self._rgb = [0, 0, 0]   # reset RGB values.
+        self._string.set_rgb(self._i, tuple(self._rgb))
+        if flush:
+            # write up to and including this LED
+            self._string.write(self._i + 1) 
+
+
+class ComsLed(NeoLed):
+    """ Led used to indicate communications status.
+    
+    This controls a NeoString led thats used to indictate overall communications status
+    as reported by Wi-Fi and MQTT client.
+    """
+    _comms_led = None
+
+    @classmethod
+    def get_instance(cls):
+        """Return the singleton instance
+
+        If the singleton already exists then it is returned.
+        Otherwise it is created and returned.
+        """
+        if cls._comms_led is None:
+            ComsLed()
+        return  cls._comms_led
+
+    def __init__(self):
+        """Comms Led Constructor."""
+        assert ComsLed._comms_led is None, 'Only one comms led allowed'
+        ComsLed._comms_led = self
+        super().__init__(self.COMMS_LED)
+
+
+    def update(self, event, _):
+        """Update the Comms Led.
+        
+        The led is updated to reflect the Wi-Fi MQTT state.
+
+        args:
+            event: event code from the report
+            _ : data from the report (not used)
+        """
+        if event == Device.WF_DISCON:
+            self.set(NeoLed.LED_R)
+        elif event == Device.WF_CONNECTING:
+            self.set(NeoLed.LED_R, False, val = 30)
+            self.set(NeoLed.LED_G, val = 20)
+        elif event == Device.WF_CONNECTED:
+            self.set_off()
+        elif event == Device.MC_SEND:
+            self.set(NeoLed.LED_B)
+        elif event == Device.MC_PUB_RX:
+            self.set(NeoLed.LED_G)
+        elif event == Device.MC_READY:
+            self.set_off()
+        elif event in [Device.MC_OS_ERR, Device.MC_PINGERR, Device.MC_PROT_ERR]:
+            self.set(NeoLed.LED_R)
+
+
 class BlkLed(NeoLed):
-    """ Led used to indicate block status
+    """ Led used to indicate block status.
     
     This controls a NeoString led thats used to indictate overall block status
-    as determined by both current sensing and RailCom channed 1 returns
+    as determined by both current sensing and RailCom channed 1 returns.
     """
-
-    def __init__(self, string_index):
-        super().__init__(string_index)
+    def __init__(self, block_num):
+        # first led (0) is comms - block leds start from index 1
+        super().__init__(block_num + 1) 
         self._rc_state = Device.UNKNOWN
         self._oc_state = Device.UNKNOWN
 
@@ -197,6 +261,51 @@ class BlkLed(NeoLed):
             self.set(NeoLed.LED_R, val = 10) # not too bright
 
 
+class LedMan():
+    """ Indication LED Manager
+    
+    A singleton helper to enable vectoring commands to the correct 
+    LED for the block or channel 1 detector."""
+
+    _this_lm = None
+
+    @classmethod
+    def get_instance(cls):
+        """Return the singleton instance
+
+        If the singleton already exists then it is returned.
+        Otherwise it is created and returned.
+        """
+        if cls._this_lm is None:
+            LedMan()
+        return cls._this_lm
+    
+    def __init__(self):
+        """ Construct the LED manager.
+        
+        Create a list of the block LEDS."""
+        LedMan._this_lm = self
+        self._leds = [BlkLed(x) for x in range(0 ,4)]
+        self._coms_led = ComsLed.get_instance()
+
+    def update(self, report):
+        """LED update
+        
+        Take a report and pass it to the relevant LED.
+        
+        args:
+            report: report as created by the report's source."""
+        src, event, data = report
+        if src.type in 'ld': # block current detector or RailCom ch 1
+            self._leds[src.index].update(event, data)
+        elif src.type in 'wm': # wifi or mqtt
+            self._coms_led.update(event, data)
+
+        
+
+
+
+
 class NeoString():
     """String of NeoPixels
     
@@ -237,15 +346,15 @@ class NeoString():
             raise RuntimeError("Only one LED string allowed")
         
         self._num_leds = _MAX_LEN
-        self._pin = _PIN
+        self._pin = HwConf.get_instance().np_pin
         try:
             # is RP2350 state machine available?
-            self._sm = rp2.StateMachine(_SM_P2)
+            self._sm = rp2.StateMachine(HwConf.NP_SM_P2)
         except ValueError:
             # No - go for RP2040 state machine
-            self._sm = rp2.StateMachine(_SM)
+            self._sm = rp2.StateMachine(HwConf.NP_SM)
         
-        self._sm.init(ws2812_tx, freq=8_000_000, sideset_base=Pin(_PIN))
+        self._sm.init(ws2812_tx, freq = 8_000_000, sideset_base = self._pin)
         self._sm.active(1)
         self._buff = array.array("I", [0] * _MAX_LEN) # 1 word per led
 

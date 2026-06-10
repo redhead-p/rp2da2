@@ -31,7 +31,7 @@ Three RP2040 PIO state machines are used by driver modules, one for DCC
 generation and two for RailCom. The two RailCom state machines must be
 on the same PIO block. 
 """
-"""        Copyright (C) 2023, 2024, 2025 Paul Redhead
+"""        Copyright (C) 2023, 2024, 2025, 2026 Paul Redhead
 
         This program is free software: you can redistribute it and/or modify it
         under the terms of the GNU General Public License as published by the Free Software Foundation, 
@@ -47,7 +47,7 @@ import asyncio
 from micropython import const
 from machine import Pin
 
-
+from hw_conf import HwConf
 from dcc_cmd_util import SpeedCommand, FGrp1Command, CommandPacket, IdlePacket, CV_Access
 from dcc_cmd_pio import DCCCmdTx
 
@@ -83,33 +83,26 @@ class DCCCommand():
         """ Get the DCC Command instance.
 
         This returns the singleton DCC Command instance.
+        It instantiates DCC Command on the first call.
 
         Returns:
             The DCC Command instance
         """
+        if cls._dcc_cmd is None:
+            DCCCommand()
         return cls._dcc_cmd
 
-    def __init__(self, DCC_pn, sleep_pn, gen_sm_num, enable_pn = None):
+    def __init__(self):
         """DCC Command object constructor
         
         This initialises the DCC command manager singleton.  An attempt to create a 2nd
-        instance will cause a runtime error.
+        instance will cause an assertion error.
         
         The dictionary for the packet list is created and the 
         FIFO buffer allocated.
 
-        If the enable pin is not supplied, it must be hard wired to true (high) on the DRV8874 and 
-        RailCom related parameters will be ignored if they are supplied.
-        The enable pin, and RailCom channel 2 processor must be supplied for RailCom.
-        
-        Args:
-            DCC_pn: Pin number allocated for DCC output.
-            sleep_pn: Pin number allocated to the booster for powering the track
-            gen_sm_num: PIO state machine number to be used for DCC Generation
-            enable_pn: Pin number to enable the DRV8874.
         """
-        if not DCCCommand._dcc_cmd is None:
-            raise RuntimeError ('Attempt to create 2nd DCC Cmd')
+        assert DCCCommand._dcc_cmd is None, 'Attempt to create 2nd DCC Cmd'
         DCCCommand._dcc_cmd = self
 
         # The packet list is used for commands that are currently scheduled for 
@@ -118,8 +111,7 @@ class DCCCommand():
         self._packet_list = {}              # create empty dictionary
         self._pom_packet = None             # and no outstanding pom command
         # instantiate dcc generator
-        # we use the entire PIO memory so only one state machine and the choice is arbitary!
-        self._dcc_gen_pio = DCCCmdTx(gen_sm_num, DCC_pn, sleep_pn, enable_pn)
+        self._dcc_gen_pio = DCCCmdTx.get_instance()
  
         self._idle_packet = IdlePacket()    # create an idle packet
 
@@ -127,7 +119,7 @@ class DCCCommand():
 
         # Set up interrupt on enable pin to schedule next packet when 
         # cutout period ends.
-        enable_pn.irq(self._nxt_packet, Pin.IRQ_RISING)
+        HwConf.get_instance().dcc_pins[0].irq(self._nxt_packet, Pin.IRQ_RISING)
 
         self._ready_flag = asyncio.ThreadSafeFlag()
 
@@ -350,7 +342,7 @@ class DCCCommand():
             # power now off - don't transmit.
             self._dcc_gen_pio.pio_off() # deactivate pio sm now cycle complete
             return
-        if len(self._packet_list) == 0:
+        if not self._packet_list:
             # list empty send the DCC idle packet
             self._idle_packet.send()
             return

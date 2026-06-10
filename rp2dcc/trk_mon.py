@@ -4,7 +4,7 @@
 This module contains the class and functions for monitioring track / booster status and updating NeoPixel accordingly.
 
 """
-"""        Copyright (C) 2023, 2024, 2025 Paul Redhead
+"""        Copyright (C) 2023, 2024, 2025, 2026 Paul Redhead
 
         This program is free software: you can redistribute it and/or modify it
         under the terms of the GNU General Public License as published by the Free Software Foundation, 
@@ -19,6 +19,7 @@ This module contains the class and functions for monitioring track / booster sta
 from micropython import const
 import time
 from led_pio import NeoLed
+from hw_conf import HwConf
 
 
 class TrkMon:
@@ -97,39 +98,39 @@ class TrkMon:
 
         This returns the singleton instance of the Track/Booster Monitor.
 
+        Instantiate the singleton on the first call.
+
         Args:
             cls:
 
         Returns:
             The Track monitor instance
         """
+        if cls._this_mon is None:
+            TrkMon()
         return cls._this_mon
     
-    def __init__(self, sleep_pin, enable_pin, fault_pin, sense_pin):
+    def __init__(self):
         """ Initialise the Track Monitor
 
         This initialises the Monitor with the pins that it will use to monitor the DCC status.
         
-        Args:
-            sleep_pin: The pin that is low when the DRV8874 is asleep.
-            enable_pin: The pin that is high when the DRV8874 is enabled.
-            fault_pin: The pin that is low when there is a fault.
-            sense_pin: The pin that reads the current sense voltage.
+        Reads the following from hardware configuration
+            _sleep_pin: The pin that is low when the DRV8874 is asleep.
+            _enable_pin: The pin that is high when the DRV8874 is enabled.
+            _fault_pin: The pin that is low when there is a fault.
+            _sense_pin: The pin that reads the current sense voltage.
         """
-        if (TrkMon._this_mon is not None):
-            raise RuntimeError('only one instance allowed')
+        assert TrkMon._this_mon is None, 'only one instance allowed'
         TrkMon._this_mon = self
+        self._enable_pin, self._fault_pin, self._sleep_pin, self._sense_pin = HwConf.get_instance().trk_pins
         self._next_run_time = 0 # time in ms for the next scan
-        self._sleep_pin = sleep_pin # low for true - high for track power on
-        self._enable_pin = enable_pin # high for true - low for RailCom cutout in progress
-        self._fault_pin = fault_pin # low for true - high for no fault
-        self._sense_pin = sense_pin # analogue input
         # initialise IIR filters
         self._sense = 0.0
-        self._sense_zero = float(sense_pin.read_u16())
+        self._sense_zero = float(self._sense_pin.read_u16())
         # initialise the NeoPixel LED
         self._led = NeoLed(NeoLed.DCC_LED)
-        self._readings = [sense_pin.read_u16() for _ in range(TrkMon.STAT_MEDIAN_SIZE)]
+        self._readings = [self._sense_pin.read_u16() for _ in range(TrkMon.STAT_MEDIAN_SIZE)]
 
     def scan(self):
         """ Scan the DCC status and update the NeoPixel accordingly.
@@ -152,12 +153,12 @@ class TrkMon:
         
         The method also updates the next run time to be 100 ms in the future.
         """
-        if self._fault_pin() == 0:
+        if not self._fault_pin():
             # fault condition - acted on immediately
             # if enable is true assume it's overcurrent but if 
             # enable is false then we're in a cutout and it must be one of the 
             # other conditions - add blue to indicate this
-            if self._enable_pin() == 0:
+            if not self._enable_pin():
                 self._led.set(NeoLed.LED_B, False, val = TrkMon.BRIGHT)
             self._led.clear(NeoLed.LED_G,False)
             self._led.set(NeoLed.LED_R, val = TrkMon.BRIGHT)
@@ -174,7 +175,7 @@ class TrkMon:
             self._readings.pop(0)
         f_reading = sorted(self._readings)[TrkMon.STAT_MEDIAN_INDEX]
 
-        if self._sleep_pin() == 0:
+        if not self._sleep_pin():
             # power off (asleep) so no current - update the zero reference 
             self._sense_zero = ((self._sense_zero * TrkMon.Z_FILTER_RATIO)
                 + (f_reading / TrkMon.Z_FILTER_FACTOR))

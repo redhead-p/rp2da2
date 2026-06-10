@@ -13,7 +13,7 @@ Example content:
 All entries are mandatory. Order is not significant. Alter myxxxxx to match the required configuration.
 
 """
-"""       Copyright 2024, 2025  Paul Redhead
+"""       Copyright 2024, 2025, 2026  Paul Redhead
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -31,10 +31,8 @@ All entries are mandatory. Order is not significant. Alter myxxxxx to match the 
 """
 
 import asyncio
-from micropython import const
 import network
 from device import Device
-from led_pio import NeoLed
 
 
 import json
@@ -54,8 +52,6 @@ class WiFi(Device):
 
     _wi_fi = None  # will be set on intantiation
 
-    DEVICE_TYPE = const('w')
-
 
     @classmethod
     def get_instance(cls):
@@ -65,52 +61,51 @@ class WiFi(Device):
 
         The connection is initiated and a timer is set up to check the success of the connection. If the
         connect fails or the connection is subsequently lost, reconnection is attempted.
-        
-        args:
-            cls:
-            """
+        """
         if cls._wi_fi is None:
-            cls._wi_fi = WiFi()
+            WiFi()
         return cls._wi_fi
 
     def __init__(self) -> None:
         """WiFi Initialiser
 
         This initialises the WiFi connection using the credentials from the configuration file.
-        If the singleton already exists then an exception is raised.
+        If the singleton already exists then an assert exception is raised.
         The LED is set to red if the connection is not established.
         """
-        if (WiFi._wi_fi) != None and (WiFi._wi_fi is not self):
-            raise RuntimeError('only one instance allowed')
-        self._led = NeoLed(NeoLed.COMMS_LED)
+        assert WiFi._wi_fi is None , 'only one Wi-Fi instance allowed'
+        WiFi._wi_fi = self
         with open('/conf/wifi.json', 'r') as fd:
             conf = json.load(fd)
-        super().__init__(conf['hostname'], WiFi.DEVICE_TYPE)
+        super().__init__(conf['hostname'], Device.WF_DEV_TYPE)
         network.country(conf['country'])
         network.hostname(conf['hostname'])
         self._credentials = (conf['ssid'], conf['password'])
+        self.report_event(Device.WF_START, (self.ssid, network.hostname()))
         self._wlan = network.WLAN(network.STA_IF)
         self._wlan.active(True)
         if not self._wlan.isconnected():
-            # set led red for not connected
-            self._led.set(NeoLed.LED_R)
+            self.report_event(Device.WF_DISCON, self._wlan.status())
             self._connected = False # so we can spot a change
-            self._wlan.connect(*self._credentials)
         else:
             self._connected = True
+            self.report_event(Device.WF_CONNECTED, self._wlan.ifconfig()[0])
         asyncio.create_task(self.check_OK())
 
  
     def isconnected(self):
-        """Check if the WiFi is connected
+        """Check if the WiFi is connected.
 
         A wrapper for the standard MicroPython network class method.
         """
         return self._wlan.isconnected()
     
-    def get_ssid(self):
-        """Get the SSID
+    @property
+    def ssid(self):
+        """ SSID.
         
+        Held as part of credentials tuple.
+
         returns:
             ssid
         """
@@ -130,14 +125,12 @@ class WiFi(Device):
             if self._wlan.isconnected() and self._connected:
                 continue  # nothing to do
             if self._wlan.isconnected():
-                # turn red led off
-                self._led.clear(NeoLed.LED_R)
                 self._connected = True
+                self.report_event(Device.WF_CONNECTED, self._wlan.ifconfig()[0])
                 continue
             # not connected - do we need to report it
             if self._connected:
-                # red led on
-                self._led.set(NeoLed.LED_R)
+                self.report_event(Device.WF_DISCON, self._wlan.status())
                 self._connected = False
             if self._wlan.active(): # toggle active and await next tick
                 self._wlan.active(False)
@@ -145,4 +138,5 @@ class WiFi(Device):
             self._wlan.active(True)
 
             self._wlan.connect(*self._credentials)
+            self.report_event(Device.WF_CONNECTING,  (self.ssid, network.hostname()))
 

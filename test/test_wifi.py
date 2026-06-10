@@ -21,6 +21,7 @@ import time
 import json
 
 wlan = None
+ssidd_set = set()
 
 def get_config():
     """ read wi-fi configuration from json file"""
@@ -43,10 +44,12 @@ def print_ifconfig():
         
 def chk_wifi():
     global wlan
-    
+    global ssid_set
+    ssid_set = set()
     print("Access points")
     print()
     for ssid, bssid, channel, rssi, sec, hidden in wlan.scan():
+        ssid_set.add(ssid.decode())
         print(f"ssid : {ssid.decode()}")
         bssid_out = ''
         for b in bssid:
@@ -54,8 +57,11 @@ def chk_wifi():
         print(f" bssid   : {bssid_out[:-1]}")
         print(f' channel : {channel}')
         print(f' rssi    : {rssi}')
-        print(f' security: {sec}') 
+        print(f' security: {sec}')
+        print(f' hidden  : {hidden}')
         print()
+    if conf['ssid'] not in ssid_set:
+        print(f'** Warning {conf["ssid"]} not in range.')
 
     if wlan.isconnected():
         print(f"wi-fi connected to {wlan.config('ssid')}")
@@ -99,7 +105,6 @@ tests = {
             1:("Check Wi-Fi State", chk_wifi, ()),
             2:("Connect", do_connect, ()),
             3:("Disconnect", disconnect, ())
-
         }
     
 def do_test(tn = None):
@@ -130,7 +135,7 @@ if __name__ == '__main__':
         print()
         ip = input('>')
         print(ip)
-        if len(ip) > 0:
+        if ip:
             nxt_tst = int(ip)
         do_test(nxt_tst)
         nxt_tst += 1

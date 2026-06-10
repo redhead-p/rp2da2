@@ -29,6 +29,8 @@ from machine import I2C
 
 from oled0_91 import OLED_0in91
 
+from hw_conf import HwConf
+
 from device import Device
 
 
@@ -66,12 +68,11 @@ class Screen():
         
         Initialise the oled and clear screen.
         """
-        if (Screen._scrn) != None and (Screen._scrn is not self):
-            raise RuntimeError ('Only one Screen object possible')
-        
-        self._oled = OLED_0in91(I2C(0))
+        assert Screen._scrn is None, 'Only one Screen object possible'
+        hc = HwConf.get_instance()
+        self._oled = OLED_0in91(I2C(hc.OLED_I2C))
         self.clear_screen()
-        self._just_started = True
+        self.show_line(0,hc.name, 0)
 
     def clear_screen(self):
         """Clear the screen
@@ -81,6 +82,21 @@ class Screen():
         for pg in self._oled.page:
             pg.fill(0)
         self._oled.show()
+
+    def show_line(self, pgn, text, x):
+        """Show a screen line.
+
+        This loads the screen page with the given line and then displays it.
+        Each line is described by page number, text and x position.
+
+        args:
+            pgn: page number (1 page per line)
+            text: text to be displayed
+            x:  horizontal offset
+        """
+        self._oled.page[pgn].fill(0)
+        self._oled.page[pgn].text(text, x, 0)
+        self._oled.show_page(pgn)
 
     def show_screen(self, lines):
         """Show the screen with the given lines.
@@ -93,11 +109,8 @@ class Screen():
         args:
             lines: A list of tuples, each containing (page number, text, x position).
         """
-        for pgn, text, x in lines:
-            self._oled.page[pgn].fill(0)
-            self._oled.page[pgn].text(text, x, 0)
-            self._oled.show_page(pgn)
-
+        for line in lines:
+            self.show_line(*line)
 
     def show_event(self, report):
         """Show an event report
@@ -117,18 +130,16 @@ class Screen():
             pass
 
     def _handle_blk_empty(self,src, _):
-        self._oled.scroll_write(f'{src.get_name()} empty')
+        txt = (f'{src.name}')
+        self.show_line(src.index, txt, 0)
 
     def _handle_blk_ch1(self,src, data):
-        if data is None:
-            self._oled.scroll_write(f'{src.get_name()} No Ch1 Resp')
-            return
-
-        addr_t, address, orientation = data
-        self._oled.scroll_write(f'{src.get_name()} {addr_t}{address} {orientation}')
-
-    def _handle_blk_occ(self,src, _):
-        self._oled.scroll_write(f'{src.get_name()} occupied')
+        if data:
+            addr_t, address, orientation = data
+            txt = (f'{src.name} {addr_t}{address} {orientation}')
+        else:
+            txt = (f'{src.name}')
+        self.show_line(src.index, txt, 0)
 
     def _handle_cv_val(self,src, data):
         address, cv_num, value = data
@@ -150,19 +161,37 @@ class Screen():
         si , v = data
         self._oled.scroll_write(f'!ID7 i:{si} v:{v}')
 
-    def _handle_mqtt_ready(self, src, data):
-        """MQTT connection established
-        (subscribption sent) - clear the screen if first time"""
-        if self._just_started:
-            # this is the first time
-            self._just_started = False
-            self.clear_screen()
+    def _handle_wifi_discon(self,src, data):
+        self.show_line(1,f'wifi discon:{data}',0)
+
+    def _handle_wifi_start(self, src, data):
+        ssid, host = data
+        self.show_line(1,f'{ssid}:{host}', 0)
+
+    def _handle_wifi_connected(self, src, data):
+        self.show_line(2,data,0)
+
+    def _handle_mqtt_connected(self, src, data):
+        broker, port = data
+        self.show_line(3,f'{broker}:{port}', 0)
+
+    def _handle_mqtt_closed(self, src, data):
+        self.show_line(3, f'Closed:{data}',0)
+
+    def _handle_mqtt_os_err(self, src, data):
+        rw, oserr = data
+        self.show_line(2,f'Er {rw}:{str(oserr)}', 0)
 
     _event_handler = {Device.BLK_EMPTY: _handle_blk_empty,
-                      Device.BLK_OCC:_handle_blk_occ,
                       Device.BLK_CH1: _handle_blk_ch1,
                       Device.POM_CV: _handle_cv_val,
                       Device.POM_TO: _handle_pom_to,
                       Device.POM_NAK: _handle_pom_nak,
-                      Device.MC_READY: _handle_mqtt_ready,
+                      Device.WF_START: _handle_wifi_start,
+                      Device.WF_CONNECTING: _handle_wifi_start,
+                      Device.WF_CONNECTED: _handle_wifi_connected,
+                      Device.WF_DISCON: _handle_wifi_discon,
+                      Device.MC_CONNECTED: _handle_mqtt_connected,
+                      Device.MC_CLOSED: _handle_mqtt_closed,
+                      Device.MC_OS_ERR: _handle_mqtt_os_err,
                       Device.MC_U_ID7: _handle_un_enc}

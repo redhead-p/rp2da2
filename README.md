@@ -53,7 +53,6 @@ Pin allocations on other platforms may differ.
 |Ground|DRV8874 iMode|
 |Ground|DRV8874 pMode|
 |NC|DRV8874 Vref|
-|22|NeoPixel chain (2 LEDs)|
 
 The following table shows pin allocations for a four block local detector on a Pico series
 platform. Pin allocations on other platforms may differ. Other platforms may be able to
@@ -142,9 +141,13 @@ allocating them.
 **device** - This provides the Device class, a base class for hardware device
 drivers and similar objects.
 
+**diagnostics** - This provides the singleton HeartBeat class and the logger function.
+
+**hw_conf** - This configures the Pico hardware.
+
 **oled0_91** - Module for 0.91 inch OLED on i2c0
 
-**led** - Module to drive ws2812 LEDs or similar.  A string of up to five LEDs is supported.
+**led_pio** - Module to drive ws2812 LEDs or similar.  A string of up to five LEDs is supported.
 The first LED displays the backend communications state. Additional LEDs display the
 command station track status or local block status as appropriate.
 

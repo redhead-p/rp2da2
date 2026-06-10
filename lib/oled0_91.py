@@ -8,7 +8,7 @@ Display is organised as 4 full width pages. Each may contain 1 line of text
 """
 
 from micropython import const
-from machine import Pin, I2C
+from machine import I2C
 import time
 from framebuf import FrameBuffer, MONO_VLSB
 

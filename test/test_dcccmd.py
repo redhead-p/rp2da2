@@ -6,7 +6,17 @@ It initializes the necessary pins and starts the DCC command processing.
 It also includes a thread to display event reports and prints statistics about command processing.
 
 It uses the machine module for hardware interaction and the device module for event reporting."""
+"""        Copyright (C) 2023, 2024, 2025, 2026 Paul Redhead
 
+        This program is free software: you can redistribute it and/or modify it
+        under the terms of the GNU General Public License as published by the Free Software Foundation, 
+        either version 3 of the License, or (at your option) any later version.
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+        See the GNU General Public License for more details.
+        You should have received a copy of the GNU General Public License along with this program.
+        If not, see <http://www.gnu.org/licenses/>.
+"""
 
 
 import _thread, time, sys
@@ -22,7 +32,6 @@ from dcc_rc_ch2 import RComCmdRsp
 from dcc_rc_pio import RailComRead
 from trk_mon import TrkMon
 from screen import Screen
-from led_pio import NeoString
 if __name__ == '__main__':
 
     alloc_emergency_exception_buf(100)
@@ -52,40 +61,23 @@ if __name__ == '__main__':
         RComCmdRsp.DYN_TRACK_VOLT:' V'
 
     }
-    # DRV8874 pin allocations - common to Pico & Arduino Nano Connect
-    enable_pin = Pin(18, Pin.OUT, value = 1)
-    sleep_pin = Pin(19, Pin.OUT, value = 0)   # set sleep mode initially
-    dcc_pin = Pin(20, Pin.OUT)
-    fault_pin = Pin(21, Pin.IN, Pin.PULL_UP)  # low for true - open drain OP on DRV8874
-    sense_pin = ADC(Pin(26)) # current sense input
 
     build = sys.implementation._build # get build details
 
-    if build.find("PICO") > -1:
-        # Detector pin allocations - Raspberry Pi Pico format
-        # orientation pins are initiated but not specifically allocated
-        c2_rx_pin = Pin(16, Pin.IN)
-        _ = Pin(17, Pin.IN)
-    elif build.find("NANO") > -1:
-        # Detector pin allocations - Arduino Nano  format
-        # orientation pins are initiated but not specifically allocated
-
-        c2_rx_pin = Pin(15, Pin.IN)
-        _ = Pin(16, Pin.IN)
-    else:
+    if build.find("PICO") == -1:
         print (build, "invalid")
 
 
     time_stamp = time.ticks_ms()
     
-    rc_ch2 = RComCmdRsp(6, c2_rx_pin, enable_pin)
+    rc_ch2 = RComCmdRsp.get_instance()
     
-    dcc = DCCCommand(dcc_pin, sleep_pin, 0, enable_pin)
+    dcc = DCCCommand.get_instance()
 
     def main1():
         s = Screen()
         s.show_screen(((3, "DCC Test", 0),))
-        trk_mon = TrkMon(sleep_pin, enable_pin, fault_pin, sense_pin)
+        trk_mon = TrkMon.get_instance()
 
         while True:
             report = Device.get_event_report(False)

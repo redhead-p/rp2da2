@@ -21,11 +21,10 @@ import asyncio
 
 from micropython import const
 
-import _thread
-
 from machine import I2C
 
 from device import Device
+from hw_conf import HwConf
 
 _TIMER_PERIOD = const(50)   # time in ms between checks for current load on block
 
@@ -99,11 +98,11 @@ class DCCBlkDet(Device):
         DEVICE_TYPE: 'd' for (current) detector
     """
 
-    DEVICE_TYPE = const('d')
+
 
     _i2c_lock = asyncio.Lock() # to ensure only one read at a time
 
-    def __init__(self, blk_name, adc, led):
+    def __init__(self, blk_name, i):
         """Construct the block current detector
         
         This constructs the block current detector.
@@ -113,12 +112,12 @@ class DCCBlkDet(Device):
 
         args:
             blk_name: the name of the block
-            adc: logical number of the adc
-            led: index number of led in neopixel string
+            i: logical block number
         """
+
+        
         self._id_val = {} # channel 1 payload values for ids 1 & 2
-        self._adc = adc #
-        self._led = led
+        self._index = i #
         self._av = 0.0 # initialise average IIR filtered reading with start value
         self._offset = 0.0 
 
@@ -128,7 +127,7 @@ class DCCBlkDet(Device):
         self._ready_flag = asyncio.ThreadSafeFlag() # used to signal new state available to comms agent
 
         super().__init__(blk_name,
-                        DCCBlkDet.DEVICE_TYPE)
+                        Device.BD_DEV_TYPE)
         
         asyncio.create_task(self._monitor())
 
@@ -140,6 +139,10 @@ class DCCBlkDet(Device):
         await self._ready_flag.wait()
         return
     
+    @property
+    def index(self):
+        return self._index # this is the logic index number too
+
     def report_event(self, event, data):
         """ Report Event
         
@@ -150,7 +153,6 @@ class DCCBlkDet(Device):
             event:  updated Block status code.
             data:   a tuple containing address type, address & orientation  
         """
-        self._led.update(event, data)
         self._ready_flag.set()
         super().report_event(event, data)
 
@@ -178,11 +180,11 @@ class DCCBlkDet(Device):
             """ this is a 12 bit signed (2's comp) value in two bytes but left aligned.  L.S 4 bits always 0
             It's converted to a signed integer"""
             v = (adc_res[0] << 4) + (adc_res[1] >> 4)
-            if (adc_res[0] & 0x80) != 0:
+            if (adc_res[0] & 0x80):
                 v = ((~v & 0x0fff) + 1) * -1
             return(v)
         
-        i2c_addr, sngl_conf, cont_conf = _adc_addr[self._adc]
+        i2c_addr, sngl_conf, cont_conf = _adc_addr[self._index]
 
         async with DCCBlkDet._i2c_lock:
             try:
@@ -191,7 +193,7 @@ class DCCBlkDet(Device):
                 while True:
                     # let other stuff run
                     asyncio.sleep_ms(0)
-                    if (_i2c.readfrom_mem(i2c_addr,_ADC_CONF_ADD, 2)[0] & 0x80) != 0:
+                    if (_i2c.readfrom_mem(i2c_addr,_ADC_CONF_ADD, 2)[0] & 0x80):
                         break   # we have a result
                 _i2c.writeto_mem(i2c_addr,_ADC_CONF_ADD,cont_conf) # switch to continuous reads
                 # read reg 0 (result register) 10 times (results may not be unique!)

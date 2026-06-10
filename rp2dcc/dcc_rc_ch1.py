@@ -22,6 +22,7 @@ from machine import Pin
 
 from dcc_rc_pio import RailComRead
 from device import Device
+from hw_conf import HwConf
 
 
 _CONSIST_ADDR_MASK = const(0x7F)      # DCC consist address mask
@@ -57,7 +58,7 @@ class RComBlkDet(RailComRead):
     
 
    
-    def __init__(self, blk_name, rc_sm_num, rx_pin, led, dcc_pin):
+    def __init__(self, blk_name, i):
         """Construct the RailCom block detector
         
         This constructs the RailCom block detector. This reads channel 1. It instatiates a RailCom reader using
@@ -72,18 +73,18 @@ class RComBlkDet(RailComRead):
 
         args:
             blk_name: the name of the block
-            rc_sm_num:  the first state machine number.
-            rx_pin: the first receiver pin.
-            led: the led number on the neopixel string
-            dcc_pin: the dcc power on sense pin
+            i: block index number (0 - 3)
         """
+        hw_conf = HwConf.get_instance()
+        rx_pin, rc_sm_num = hw_conf.get_lcl_det(i)
 
         self._id_val = {} # channel 1 payload values for ids 1 & 2
         self._rx_pin = Pin(rx_pin, Pin.IN)
         _ = Pin(rx_pin + 1, Pin.IN) # initialise orientation pin too
-        self._led = led
-        self._dcc_pin = Pin(dcc_pin) # hard code
+        self._dcc_pin = hw_conf.dcc_sense
         self.reset_stats()
+
+        self._index = i
 
         """block state may have channel 1 data if ch1 responses received or None"""
         self._blk_state = None
@@ -97,6 +98,10 @@ class RComBlkDet(RailComRead):
                         dcc_pin = self._dcc_pin)
         
         asyncio.create_task(self._check_resp())
+
+    @property
+    def index(self):
+        return self._index # this is the logic index number too
 
     async def wait_for_flag(self):
         """ Wait for the new state available flag
@@ -117,7 +122,6 @@ class RComBlkDet(RailComRead):
             event:  updated Block status code.
             data:   a tuple containing address type, address & orientation  
         """
-        self._led.update(event, data)
         self._ready_flag.set()
         super().report_event(event, data)
 
@@ -244,7 +248,7 @@ class RComBlkDet(RailComRead):
                  
         # try and build decoder address
         try:
-            if self._id_val[1] == 0:
+            if not self._id_val[1]:
                 # short address
                 address = self._id_val[2]
                 if not (0 < address < 128):

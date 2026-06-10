@@ -178,7 +178,7 @@ class RailComRead(Device):
             return(RailComRead._H4LU[rawd & 0xff])
         except KeyError:
             # no it's not! overrun or Hamming W != 4
-            if (rawd & 0x200) != 0:
+            if rawd & 0x200:
                 return(RailComRead.ERR_OE)
         
             # work out if Hamming weight is high or low
@@ -463,7 +463,7 @@ class RailComRead(Device):
         self._sm.active(0)      # stop the cutout monitor (it's frozen)
         self._sm.restart()      # and reset it to unfreeze
         rc = self._smrx.rx_fifo()      # get the count
-        if rc != 0 and not self._ql: # not blank read and not locked
+        if rc and not self._ql: # not blank read and not locked
             self._ql = True  # set lock to stop race condition
             schedule(self._read_ref,(rc)) # use preset indirection to avoid new heap usage
             return

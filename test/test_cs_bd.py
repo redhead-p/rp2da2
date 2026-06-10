@@ -229,7 +229,7 @@ if __name__ == '__main__':
         print()
         ip = input('>')
         print(ip)
-        if len(ip) > 0:
+        if ip:
             nxt_tst = int(ip)
         do_test(nxt_tst)
         nxt_tst += 1

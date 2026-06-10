@@ -55,7 +55,7 @@ class Block(MQTTAgent):
         
         Create object variables and initialise the base Agent class topic and QoS"""
         self._rc_block = rc_block # RailCom block
-        self._name = rc_block.get_name()
+        self._name = rc_block.name
         self._last_blk_state = RComBlkDet.UNKNOWN
         super().__init__(f'{Block.REPORTER_TOPIC_PREFIX}/{self._name}/set', MQTTClient.QOS1)
 
@@ -126,7 +126,7 @@ class Sensor(MQTTAgent):
         
         Create object variables and initialise the base Agent class topic and QoS"""
         self._sensor = sensor 
-        self._name = sensor.get_name()
+        self._name = sensor.name
         super().__init__(f'{Sensor.SENSOR_TOPIC_PREFIX}/{self._name}/set', MQTTClient.QOS1)
 
     def _create_pub_check(self):

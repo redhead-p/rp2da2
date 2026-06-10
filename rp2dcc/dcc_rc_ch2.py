@@ -20,6 +20,7 @@ import time
 from collections import deque
 from micropython import const
 
+from hw_conf import HwConfGbl
 from dcc_rc_pio import RailComRead
 from dcc_cmd_util import CommandPacket, CV_Access
 from device import Device
@@ -96,13 +97,16 @@ class RComCmdRsp(RailComRead):
         """ Get the RailCom ch2 detector instance.
 
         This returns the singleton instance.
+        It is instantiated on the first call.
 
         Returns:
-            The RailCom ch2 detecto instance
+            The RailCom ch2 detector instance
         """
+        if cls._rc_ch2 is None:
+            cls._rc_ch2 = RComCmdRsp()
         return cls._rc_ch2
 
-    def __init__(self, rc_sm_num, rx_pn, enable_pn):
+    def __init__(self):
         """DCC Command object constructor
         
 
@@ -114,18 +118,12 @@ class RComCmdRsp(RailComRead):
 
         Note:
             The RailCom reader will use two sequentially numbered state machines -
-            the first is supplied.
+            the first is read from the hardware configuration.
 
             The RailCom reader will use two sequentially numbered GPIO pins for receiving -
-              the first is supplied.
-
-        Args:
-            rc_sm_num: first state machine number to be used RailCom receiver functions.
-            rx_pn:  First pin number for RailCom rx
-            enable_pn: Pin number that enables the DRV8874 - it's only read here
+            the first is read from the hardware configuration.
         """
-        if not RComCmdRsp._rc_ch2 is None:
-            raise RuntimeError ('Attempt to create 2nd RC ch2 responder')
+        assert RComCmdRsp._rc_ch2 is None, 'Attempt to create 2nd RC ch2 detector'
         RComCmdRsp._rc_ch2 = self
         self._dyn_info = {} # other dynamic info
         self._dyn_chng = deque([],32) # addresses with dynamic info changes
@@ -134,6 +132,9 @@ class RComCmdRsp(RailComRead):
         self._errors = {} # error counts
         self._dgs = set() # Datagrams seen
 
+        hwconf = HwConfGbl.get_instance()
+        rc_sm_num = hwconf.RC2_STATE_MC
+        rx_pn, enable_pn = hwconf.rc2_pins
         super().__init__('cmd', rc_sm_num, rx_pn, cu_pin = enable_pn)
 
     def get_error_counts(self):

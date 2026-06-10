@@ -270,7 +270,7 @@ class Cab(MQTTAgent):
         while True:
             await asyncio.sleep_ms(1000) # at the moment check once per sec
             addr, changes = self._rc2.get_dyn_chng()
-            if addr == 0:   # no changes to report
+            if not addr:   # no changes to report
                 continue
             pl_dict = {}
             for si, v in changes:

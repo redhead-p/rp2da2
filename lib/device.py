@@ -44,7 +44,7 @@ occur.
 from collections import deque
 
 # micropython imports
-from machine import WDT
+from machine import Pin
 import time, _thread
 from micropython import const
 
@@ -77,18 +77,21 @@ class Device():
         POM_CV:  event code for reporting a CV value from read or write.
         POM_TO:  event code for reporting POM access timeout.
         POM_NAK: event code for reporting NAK received.
-        MC_SET_LED : Instruction to set Comms led - data is colour, value (0 or 1)
         MC_READY  : Initial subscriptions registered and broker available
         MC_CONNECT_ERR  : Connect error - broker not available
-        WF_SET_LED : Set WiFi LED instruction, data is colour, value
+        WF_DEV_TYPE    : Wi-Fi device type (w)
+        WF_DISCON       : Wi-Fi disconnected
+        WF_CONNECTING  : Connection in progress
+        WF_CONNECTED   : Connected OK         
         TO_CMD : Set Turnout (point) instruction, data is 'N' or 'R'
         CH2_Q_FULL : Channel 2 report queue full
         MC_U_ID7 : no encoding info for ID7 subindex
         MC_OS_ERR : OS Error on write or read
+
     """
     # class variables
 
-    # device states 0 & 1 are allocated for hardware devices with binary states e.g. points & relays etc
+    # device event codes 0 & 1 are allocated for hardware devices with binary states e.g. points & relays etc
     UNSET = const(0)
     """State unset / off / false"""
     SET = const(1)
@@ -100,7 +103,10 @@ class Device():
 
     # device specific states
 
-    # RailCom channel 1, local detector
+    # RailCom channel 1, local detector & occupancy detector
+
+    LCL_DEV_TYPE    = const('l') # Local RC Dev Type
+    BD_DEV_TYPE     = const('d') # Block Detect Dev Type
 
     BLK_EMPTY = const(20)   # Block unoccupied
     BLK_CH1   = const(21)   # Block occupied - RailCom channel 1 info
@@ -109,23 +115,33 @@ class Device():
 
     # RailCom channel 2, global detector
 
+    GBL_DEV_TYPE    = const('g') # Global Device Type
+
     POM_CV    = const(30)   # CV value from read or write
     POM_TO    = const(31)   # POM access timeout
     POM_NAK   = const(32)   # POM access NAK
     CH2_Q_FULL = const(33)  # Channel 2 report queue full
     
-
     # MQTT Client
 
-    # 40 not used
+    MC_DEV_TYPE     = const('m')
+    MC_CONNECTED    = const(40) # connected
     MC_OS_ERR       = const(41) # OS Error on write or read
-    MC_READY        = const(43) # initial subscriptions registered
-    MC_U_ID7        = const(44) # no encoding info for ID7 subindex
-    MC_CONNECT_ERR  = const(48) # MQTT connect error 
+    MC_SEND         = const(42) # sending (connection req, sub, or pub)
+    MC_READY        = const(43) # initial subscriptions registered / no pubs in progress
+    MC_CLOSED       = const(44) # closed
+    MC_PINGERR      = const(45) # Ping cannot be sent (wrong state)
+    MC_PUB_RX       = const(46) # Publication received
+    MC_PROT_ERR     = const(48) # MQTT protocol error 
+    MC_U_ID7        = const(49) # no encoding info for ID7 subindex
 
     # WiFi
 
-    WF_SET_LED      = const(50) 
+    WF_DEV_TYPE    = const('w')
+    WF_DISCON      = const(50) # Wi Fi disconnected
+    WF_CONNECTING  = const(51) # connection in progress
+    WF_CONNECTED   = const(52) # connected OK
+    WF_START       = const(53) # wi-fi starting
 
     # Point 
 
@@ -140,6 +156,8 @@ class Device():
     ## empty device table
     # will be added to by devices when instantiated.
     _device_table = {}
+
+    _led = Pin('LED')
 
     @classmethod 
     def by_type_name(cls, type, name):
@@ -239,7 +257,8 @@ class Device():
         self._type = type
         Device._device_table[(type, name)] = (self)
 
-    def get_name(self):
+    @property
+    def name(self):
         """Get the device name
 
         returns:
@@ -247,7 +266,8 @@ class Device():
         """
         return self._name
     
-    def get_type(self):
+    @property
+    def type(self):
         """Get the device type
 
         returns:
@@ -289,7 +309,7 @@ class Device():
         :raise ThreadQError:  The queue is full
 
         args:
-            event:  event or instruction code - a Device class constant
+            event:  event code - a Device class constant
             data:   event data to qualify code - device dependent  
         """
         with Device._q_lock:

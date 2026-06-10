@@ -31,7 +31,7 @@ RCN-210 &  RCN-211 partly apply as appropriate.
 
 See also NMRA Standards S 9.2 and S 9.2.1. S 9.2.1.1 is not supported.
 """
-"""        Copyright (C) 2023, 2024, 2025 Paul Redhead
+"""        Copyright (C) 2023, 2024, 2025, 2026 Paul Redhead
 
         This program is free software: you can redistribute it and/or modify it
         under the terms of the GNU General Public License as published by the Free Software Foundation, 
@@ -52,6 +52,7 @@ from micropython import const
 
 import rp2
 
+from hw_conf import HwConf
 
 # module constants - not for importing elsewhere
 _PIO_FREQ = const(500_000)          # 500 kHz - 2 micro sec. tick period
@@ -111,7 +112,8 @@ class DCCCmdTx:
         Returns:
             The DCC generator instance
         """
-
+        if cls._this_dcc is None:
+            DCCCmdTx()
         return cls._this_dcc
     
     @classmethod
@@ -130,7 +132,7 @@ class DCCCmdTx:
         return cls._this_dcc._sm
     
     
-    def __init__(self, sm_num, DCC_pn, sleep_pn, cu_pn):
+    def __init__(self):
         """ DCC serialisation  constructor
         
         This initialises the DCC serialisation singleton.  An attempt to create a 2nd
@@ -140,23 +142,21 @@ class DCCCmdTx:
 
         If RailCom cutouts are required the cutout generator must use a PIO state machine in the same PIO
         block.
-        
-        Args:
-            sm_num: PIO state machine number to be used.
-            DCC_pn: Pin allocated for DCC output.
-            sleep_pn: Pin allocated to the booster for powering the track
-            cu_pn:  Pin for cutout (DRV8874 enable) - set low by PIO
         """
 
-        if not DCCCmdTx._this_dcc is None:
-            raise RuntimeError ('Attempt to create 2nd DCC gen')
+        assert DCCCmdTx._this_dcc is None, 'Attempt to create 2nd DCC gen'
         DCCCmdTx._this_dcc = self
+
+        hw_conf = HwConf.get_instance()
+
+        sm_num = hw_conf.DCC_STATE_MC
+
+        cu_pn, self._sleep_pin, dcc_pn = hw_conf.dcc_pins
         
         # set up the PIO state machine for DCC serialisation
         self._sm = rp2.StateMachine(sm_num, self._dcc_tx, freq = _PIO_FREQ,
                                     out_base = cu_pn,
-                                    set_base = DCC_pn)                    
-        self._sleep_pin = sleep_pn
+                                    set_base = dcc_pn)                    
         
     @rp2.asm_pio(out_init = rp2.PIO.OUT_HIGH,
                 set_init = rp2.PIO.OUT_HIGH,  

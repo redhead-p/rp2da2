@@ -23,7 +23,7 @@ Authentication is not implemented.
 Subscriptions are static.  The subscription list is loaded by the client at instantiation and is
 immutable.
 """
-"""       Copyright 2023, 2024, 2025  Paul Redhead
+"""       Copyright 2023, 2024, 2025, 2026  Paul Redhead
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -49,7 +49,6 @@ import network
 
 # lib imports
 from device import Device
-from led_pio import NeoLed
 from wifi import WiFi
 
 
@@ -80,6 +79,8 @@ _PING_TIME   = const(50000)  # we will send ping after 50 secs of inactivity
 _ACK_TIME    = const(10000) # the broker should respond within a 'reasonable' time
 
 _MAX_MUX = const(128 * 128 * 128)
+
+_MAX_PID    = const(10)    # the maximum publish id
 
 
 class MQTTPacketOut():
@@ -170,13 +171,14 @@ class MQTTPacketOut():
             if quot > 0:
                 remainder = remainder | 128
             self._header.append(remainder)
-            if quot == 0:
+            if not quot:
                 break
         try:
             writer.write(self._header)
             writer.write(self._buffer)
             await writer.drain()
         except OSError as err:
+            MQTTClient.get_instance().report_event(Device.MC_OS_ERR, ('w',err))
             return False
         return True
 
@@ -267,36 +269,27 @@ class MQTTClient(Device):
         
         Getting a reference to the Wi-Fi singleton will instantiate it if not already done.
         """
-        if (MQTTClient._mqtt_client) != None and (MQTTClient._mqtt_client is not self):
-            raise RuntimeError('only one instance allowed')
+        assert MQTTClient._mqtt_client is None, 'only one MQTT Client allowed'
 
         with open('/conf/mqtt.json', 'r') as fd:
             conf = json.load(fd)
-        try:
-            port = conf['port']
-        except KeyError:
-            port = MQTT_BROKER_PORT # default MQTT port
+        
+        port = conf.get('port', MQTT_BROKER_PORT)
 
         self._con_params = conf['broker'], port
-        try:
-            self._client_id = conf['clientId']
-        except KeyError:
-            self._client_id = network.hostname() # default client_id to host name if not specified.
-
-        self._led = NeoLed(NeoLed.COMMS_LED)
-
+        self._client_id = conf.get('clientId', network.hostname())
 
         self._wifi = WiFi.get_instance()
 
         self._state = MQTTClient.M_CLOSED # don't bother to log the initial state
-        self.errors = {}
+        self._clientPidTx = set()
         self._ping_deferred = asyncio.Event() # normal traffic defers pings
 
-        super().__init__(self._client_id, MQTTClient.DEVICE_TYPE)
+        super().__init__(self._client_id, Device.MC_DEV_TYPE)
 
-
-    def get_broker(self):
-        """ Get the MQTT Broker ID
+    @property
+    def broker(self):
+        """ The MQTT Broker ID.
         
         This returns the MQTT Broker ID as a string.
         """
@@ -317,9 +310,12 @@ class MQTTClient(Device):
             # attempt to (re)open connection
                 await self._re_open()
             while self._state != MQTTClient.M_CLOSED:
+                if self._state == MQTTClient.M_CONNECTED and len(self._clientPidTx) == _MAX_PID:
+                    self.report_event(self.MC_READY,None)
                 try:
                     hdr = await self._reader.read(2)
                 except OSError as err:
+                    self.report_event(Device.MC_OS_ERR, ('r',err))
                     await self._close()
                     continue
                 if len(hdr) == 2:
@@ -336,8 +332,8 @@ class MQTTClient(Device):
                         mux *= 128
                         l += mux * (nv & 0x7f)
                     if nv > 127:
-                        self._log_error((MQTTClient.ERR_LEN, packet_type))
-                    if l == 0:
+                        self.report_event(Device.MC_PROT_ERR, (MQTTClient.ERR_LEN, packet_type))
+                    if not l:
                         packet = bytes(0)
                     else:
                         # read the remainder in one go
@@ -345,10 +341,11 @@ class MQTTClient(Device):
                     try:
                         await MQTTClient._RESP_HANDLER[packet_type](self, packet_flags, packet)
                     except KeyError:
-                        self._log_error((MQTTClient.ERR_P_TYPE, packet_type))
+                        self.report_event(Device.MC_PROT_ERR, (MQTTClient.ERR_P_TYPE, packet_type))
                 else:
                     # remote close seems to trigger 0 len message
-                    # and 1 is too short
+                    # and 1 is too short - include our client id (name)
+                    self.report_event(Device.MC_CLOSED, self.name)
                     await self._close()
 
     async def publish(self, topic, payload,  retain = True, qos = QOS1):
@@ -371,10 +368,8 @@ class MQTTClient(Device):
         if ((self._state != MQTTClient.M_CONNECTED)
                 and (self._state != MQTTClient.M_PING_SENT)):
             return False;      # unlike subscriptions we don't hold publications pending connection
-    
-        self._led.set(NeoLed.LED_B)
+        self.report_event(Device.MC_SEND, _PUBLISH)
         flags = (qos << 1) | (MQTTClient.RETAIN if retain else 0)
-    
         packet = MQTTPacketOut(_PUBLISH, flags)
         packet.add_str(topic)
 
@@ -385,15 +380,12 @@ class MQTTClient(Device):
         packet.add_payload(payload)
         if await packet.write_buff(self._writer):
             self._ping_deferred.set()
-            if qos == 0:
-                # we won't get an acknowledgement so return to idle immediately
-                self._led.clear(NeoLed.LED_B)
             return True
         await self._close()
         return False
     
     async def _subscribe(self):
-        self._led.set(NeoLed.LED_B)
+        self.report_event(Device.MC_SEND, _SUBSCRIBE)
         packet = MQTTPacketOut(_SUBSCRIBE, MQTTClient.QOS1 << 1)
 
         # add a currently unused pid
@@ -416,7 +408,6 @@ class MQTTClient(Device):
         packet.add_uint16(pid)
         if await packet.write_buff(self._writer):
             self._ping_deferred.set()
-            self._led.clear(NeoLed.LED_G)
             return True
         await self._close()        
         return False
@@ -425,27 +416,26 @@ class MQTTClient(Device):
         # flags must be 0
         # conack flags must be 0 for clean session
         # conack result must be 0
-        if packet != b'\x00\x00' or pf != 0:
-            self._log_error(MQTTClient.ERR_CONACK)
+        if packet != b'\x00\x00' or pf:
+            self.report_event(Device.MC_PROR_ERR, (MQTTClient.ERR_CONACK,pf,packet))
             await self._close()
             return
-        self._led.clear(NeoLed.LED_B)
-        # allocate 10 pid values for tx usage
-        self._clientPidTx = set(range(1, 11))
+        self.report_event(Device.MC_CONNECTED,self._con_params)
+        # allocate pid values for tx usage
+        self._clientPidTx = set(range(1, _MAX_PID + 1))
         self._set_state(MQTTClient.M_SUBSCRIBING)
         await self._subscribe()
 
     async def _handle_suback(self, pf, packet):
         # flags must be 0
-        if pf != 0:
-            self._log_error(MQTTClient.ERR_SUBACK)
+        if pf:
+            self.report_event(Device.MC_PROR_ERR, MQTTClient.ERR_SUBACK)
             await self._close()
             return
-        self._led.clear(NeoLed.LED_B)
         pid = packet[0] * 256 + packet[1]
         if pid in self._clientPidTx:
             # shouldn't be there if in use!
-            self._log_error(MQTTClient.ERR_SUBACK)
+            self.report_event(Device.MC_PROR_ERR, MQTTClient.ERR_SUBACK)
             await self._close()
             return
         self._clientPidTx.add(pid) # put back in list as being available.
@@ -455,7 +445,7 @@ class MQTTClient(Device):
 
     async def _handle_publish(self, pf, packet):
         """PUBLISH received"""
-        self._led.set(NeoLed.LED_G)
+        self.report_event(self.MC_PUB_RX, None)
         dup_flag = pf & MQTTClient.DUP
         qos = (pf & MQTTClient.QOS_MASK) >> 1
         ret_flag = pf & MQTTClient.RETAIN
@@ -463,14 +453,11 @@ class MQTTClient(Device):
         # acknowledge publication - with pid extracted from packet
         if qos != MQTTClient.QOS0:
             await self._puback(packet[topic_len + 2] * 256 + packet[topic_len + 3])
-        else:
-            # clear led here
-            self._led.clear(NeoLed.LED_G)
         try:
             topic = packet[2:2 + topic_len].decode("utf8")
             payload = packet[topic_len+4:].decode("utf8")
         except UnicodeError:
-            self._log_error(MQTTClient.ERR_UTF8)
+            self.report_event(Device.MC_PROT_ERR, MQTTClient.ERR_UTF8)
             return # ignore ill formed strings
 
         for subscription in self._subscription_list:
@@ -482,7 +469,7 @@ class MQTTClient(Device):
         
         Acknowledgement of PUBLISH QoS1
         """
-        if len(packet) != 2 or pf != 0:
+        if len(packet) != 2 or pf:
             # 2 byte PId but no flags allowed
             self._log_error(MQTTClient.ERR_PUBACK)
             await self._close()
@@ -494,26 +481,14 @@ class MQTTClient(Device):
             await self._close()
             return
         self._clientPidTx.add(pid) # put back in list as being available.
-        self._led.clear(NeoLed.LED_B)
 
     async def _handle_pingresp(self, pf, packet):
-        if packet != b'' or pf != 0:
+        if packet or pf:
             # no message or flags allowed
-            self._log_error(MQTTClient.ERR_PINGRESP)
+            self.report_event(Device.MC_PROT_ERR, MQTTClient.ERR_PINGRESP)
             await self._close()
             return
-        self._led.clear(NeoLed.LED_B)
         self._set_state(MQTTClient.M_CONNECTED)
-
-    def _log_error(self, error):
-        """Log error
-        
-        Increment a count by error type.
-        """
-        try:
-            self.errors[(error)] +=1
-        except KeyError:
-            self.errors[(error)] = 1
 
     async def _close(self):
         """ We only close the stream as part of error recovery"""
@@ -524,18 +499,17 @@ class MQTTClient(Device):
             # occurs if writer not created
             pass
         self._set_state(MQTTClient.M_CLOSED)
-        self._led.set(NeoLed.LED_B)
 
     async def _re_open(self):
         """Open or Re-open the MQTT connection"""
         if self._wifi.isconnected():
-            self._led.set(NeoLed.LED_B)
             try:
                 self._reader, self._writer = await asyncio.open_connection(*self._con_params)
             except OSError as err:
-
+                self.report_event(Device.MC_OS_ERR, ('o', err))
                 # nothing to close - not opened!
                 return
+            self.report_event(Device.MC_SEND, _CONNECT)
             packet = MQTTPacketOut(_CONNECT)
             packet.add_str('MQTT')
             packet.add_byte(MQTTClient.PROTOCOL_LVL)
@@ -564,12 +538,13 @@ class MQTTClient(Device):
                 if self._state != MQTTClient.M_CONNECTED:
                     # somethings gone wrong if initial handshakes / last ping
                     # still in progress
+                    self.report_event(Device.MC_PINGERR, self._state)
                     await self._close()
                     break
 
                 if await MQTTPacketOut(_PINGREQ).write_buff(self._writer):
                     self._set_state(MQTTClient.M_PING_SENT)
-                    self._led.set(NeoLed.LED_B)     # Ping response pending
+                    self.report_event(Device.MC_SEND, _PINGREQ)
                     continue
                 await self._close()
                 break # terminate task
