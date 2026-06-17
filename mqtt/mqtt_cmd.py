@@ -281,7 +281,7 @@ class Cab(MQTTAgent):
                     # publist the unencodable subtype
                     pl_dict['NO_ENCODE'] = si
                     self._client.report_event(Device.MC_U_ID7,(si, v))
-            await self._client.publish(f"rcom/gbl/{addr}/id7", json.dumps(pl_dict), True, MQTTClient.QOS1)
+            await self._client.publish(f"rcom/gbl/{addr}/id7", json.dumps(pl_dict), False, MQTTClient.QOS1)
 
 
     _CAB_CMD = {'throttle':_handle_spd_pub,

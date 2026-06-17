@@ -30,9 +30,9 @@ import sys
 
 
 class HwConf():
-    """ Hardware configuration
+    """ Common Hardware Configuration.
     
-    This holds hardware pin allocations etc
+    This holds hardware pin allocations etc.
     They are collected here to make clear in a single place
     which hardware elements are in use.
 
@@ -52,7 +52,7 @@ class HwConf():
     def get_instance(cls):
         """ Get the Hardware configuration instance.
 
-        This returns the singleton Hardware Config instance.
+        This returns the singleton Common Hardware Config instance.
         Note - this returns the base class for access to common
         asignations.  It won't automatically instantiate.
 
@@ -95,6 +95,11 @@ class HwConf():
     def name(self):
         """ Configuration name for display."""
         return self._name
+    
+    @property
+    def max_led(self):
+        """ Number of Leds"""
+        return self._max_led
 
 class HwConfLcl(HwConf):
     """ Hardware configuration for the Quad local PCB.
@@ -104,12 +109,13 @@ class HwConfLcl(HwConf):
     
     Attributes:
         BLK_I2C: block occupancy is on I2C 1(default GPIO pins 6 & 7)
+        MAX_LED: Number of NeoPixels.
     """
     @classmethod
     def get_instance(cls):
         """ Get the Hardware configuration instance.
 
-        This returns the singleton Hardware Config instance.
+        This returns the singleton Local Hardware Config instance.
 
         Returns:
             The DCC Command instance
@@ -128,6 +134,8 @@ class HwConfLcl(HwConf):
         assert HwConf._hw_conf is None, 'only one configurator allowed'
         HwConf._hw_conf = self
         # local detector only
+
+        self._max_led = 5      # Number of NeoPixels.
 
         # Local detector specific assignments
         # DCC power sense pin
@@ -163,17 +171,18 @@ class HwConfGbl(HwConf):
         DCC_STATE_MC: DCC generation - First state machine on PIO 0
         RC2_STATE_MC: RailCom Global detector state machine - 3rd on PIO 1
     """
-    DCC_STATE_MC = const(0) #DCC generation - First state machine on PIO 0
+    DCC_STATE_MC = const(0) # DCC generation - First state machine on PIO 0
     RC2_STATE_MC = const(6) # RailCom Global detector state machine - 3rd on PIO 1
+
 
     @classmethod
     def get_instance(cls):
         """ Get the Hardware configuration instance.
 
-        This returns the singleton Hardware Config instance.
+        This returns the singleton Command Station/Global Hardware Config instance.
 
         Returns:
-            The command station configurator instance
+            The configuration instance.
         """
         if HwConf._hw_conf is None:
             HwConfGbl()
@@ -188,7 +197,7 @@ class HwConfGbl(HwConf):
         assert HwConf._hw_conf is None, 'only one configurator allowed'
         HwConf._hw_conf = self
 
-
+        self._max_led = 2      # Number of NeoPixels.
 
         self._c2_rx_pin = Pin(16, Pin.IN)
         

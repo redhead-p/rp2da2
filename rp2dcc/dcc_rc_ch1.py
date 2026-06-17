@@ -56,8 +56,6 @@ class RComBlkDet(RailComRead):
         - RailCom Channel 1 info available
     """
     
-
-   
     def __init__(self, blk_name, i):
         """Construct the RailCom block detector
         
@@ -101,7 +99,11 @@ class RComBlkDet(RailComRead):
 
     @property
     def index(self):
-        return self._index # this is the logic index number too
+        """Block Index Number
+        
+        The block index number is derived from the blocks position in the configuration list. It's used
+        to identify the Indicator led."""
+        return self._index
 
     async def wait_for_flag(self):
         """ Wait for the new state available flag
@@ -150,9 +152,9 @@ class RComBlkDet(RailComRead):
         """
         self._errors = {}
         self._cb_count = 0  # number of times called back
-
-    def get_block_state(self):
-        """ Get the current block state
+    @property
+    def block_state(self):
+        """ Current block state
         
         This returns the current block state. The block state is a tuple containing
         the RailCom information available. If no RailCom information is available block
@@ -167,7 +169,7 @@ class RComBlkDet(RailComRead):
         except KeyError:
             self._errors[error_code] = 1
         
-    def _rail_com_msg(self,  buffer):
+    def _rail_com_msg(self,  _):
         """ This is called on termination of the RailCom Channel 1 message receipt window,
         when a channel 1 reponse has been detected (i.e. length > 0)
         Any decoder on the associated block returns a channel 1 message.
@@ -194,26 +196,18 @@ class RComBlkDet(RailComRead):
         must have the same payload as the preceding datagram of that type.
 
         args:
-            self:
-            buffer:   raw data - 1 or 2 bytes
+            _:   this paramater is only used for channel 2
         """
         self._cb_count += 1 
-        rx1 = RailComRead.hw4_2_6b(buffer[0])
+        rx1 = RailComRead.hw4_2_6b(self._rx_buff[0])
         if rx1 == RailComRead.ERR_OE:
             # first character has overrun - most likely switching noise after end of window
             # or false trigger - not logged or parsed
             return
         # other errors indicate datagram corruption - possibly due to
         # >1 decoder in block or crossing block boundary
-        orientation = ((buffer[0] & 0x100) >> 7) - 1
-        try:
-            rx2 = RailComRead.hw4_2_6b(buffer[1])
-        except IndexError:
-            # too short (too long shouldn't be possible)
-            self._log_error(RailComRead.ERR_FE) # log as datagram format error
-            self._id_val = {} # clear any previous datagrams
-            return
-
+        orientation = ((self._rx_buff[0] & 0x100) >> 7) - 1
+        rx2 = RailComRead.hw4_2_6b(self._rx_buff[1])
         for b in rx1, rx2:
             if b > 0x3f:
                 # it's some kind of error

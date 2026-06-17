@@ -22,7 +22,8 @@ from micropython import const
 
 from hw_conf import HwConfGbl
 from dcc_rc_pio import RailComRead
-from dcc_cmd_util import CommandPacket, CV_Access
+
+from dcc_cmd_util import CV_Access
 from device import Device
 
 
@@ -88,7 +89,7 @@ class RComCmdRsp(RailComRead):
     DYN_TRACK_VOLT  = const(46)# track voltage
     
     # error codes as detected by low level code
-    ERR_CODE = (RailComRead.ERR_WH, RailComRead.ERR_WL, RailComRead.ERR_OE, RailComRead.ERR_CB)
+    ERR_CODE = (RailComRead.ERR_WH, RailComRead.ERR_WL, RailComRead.ERR_OE)
 
     _rc_ch2 = None
 
@@ -179,42 +180,52 @@ class RComCmdRsp(RailComRead):
         self._errors = {}
         self._dgs = set()
 
+    def set_last_command(self, command):
+        """ Set the last command
+        
+        Used to set the command that will be used for interpreting
+        the next channel 2 response message.
+        
+        Args:
+            command:  The last serialised command object."""
+        self._last_command = command
+
     def _log_error(self,error_code):
         try:
             self._errors[error_code] += 1
         except KeyError:
             self._errors[error_code] = 1
 
-    def _rail_com_msg(self, buffer):
+    def _rail_com_msg(self, last_command):
         """Process RailCom Channel 2 response
         
         This is called on termination of the RailCom Channel 2 message receipt window,
         when a response is detected. The addressed decoder returns a channel 2
         message. Other mobile decoders remain silent.
 
-        It overrides the method in the base class.
+        It overrides the method in the base class.  It runs in soft ISR context, being scheduled 
+        by the hard ISR.
 
         Blank reads should have been intercepted in the hard ISR. They are not checked for 
         here but should not be problematic.
 
         args:
-            buffer:   raw data
+            last_command: the command that initiated this response.
         """
-        cmd = CommandPacket.get_last_command()
-        if cmd is None:
+        if last_command is None:
             # no point in continuing if we don't know what command was issued
             self._log_error(RailComRead.ERR_RESP)   # no command - possible software sync error
             return
-        address = cmd.get_address()
+        address = last_command.address
         if address == 255:
             # broadcast address - reserved for RailCom Plus response 
             # not used for RailCom
             return
-        if cmd.get_type() == CV_Access.TYPE:
+        if last_command.type == CV_Access.TYPE:
             # maybe already there (second write) - quietly update or add
             # get the request cv number and command timeout and save
             # the decoder has half a second to respond RCN217 5.1
-            self._pom_acc[(address)] = (cmd.get_cv(), time.ticks_add(time.ticks_ms(), 500))
+            self._pom_acc[(address)] = (last_command.get_cv(), time.ticks_add(time.ticks_ms(), 500))
         else:
             # other command
             # check for outstanding POM command timeout
@@ -227,9 +238,9 @@ class RComCmdRsp(RailComRead):
             except KeyError:
                 # no outstanding POM command
                 pass
-        self._act_on_datagram(self._parse_cg2_msg(buffer), address)
+        self._act_on_datagram(self._parse_cg2_msg(), address)
 
-    def _parse_cg2_msg(self, buff):
+    def _parse_cg2_msg(self):
         """ Parse Channel 2 Message
         
         Inspect the message and extract datagrams which are saved in list and returned.
@@ -239,16 +250,21 @@ class RComCmdRsp(RailComRead):
         content of each byte is concatenated to form the datagram. The datagram id is
         the first 4 bits of the datagram. The datagram id is used to determine the length of the datagram.
         """ 
-        buff_iter = iter(buff)
-        dg_id = None
         pb_set = set() # set of protocol bytes
         datagram = list()
-
-        try:
-            # StopIteration will end the loop
-            while True:
-                b = RailComRead.hw4_2_6b(next(buff_iter))
-                if b > 0x3f:
+        ps = 0  # parse state 0 - get datagram id or control byte
+        for r in self._rx_buff:
+            b = RailComRead.hw4_2_6b(r)
+            if b > 0x3f:
+                if b in RComCmdRsp.ERR_CODE:
+                    # Recognised Error code
+                    # no point in going any further - as structure of
+                    # remaining message indeterminate
+                    # overrun not logged on first byte of datagram
+                    if b != RailComRead.ERR_OE or ps:
+                        self._log_error(b)
+                    return datagram
+                if not ps:  # first byte of datagram
                     if b in RailComRead.PROT_BYTE:
                         # encoded protocol bytes
                         # these only get reported once so save in a set
@@ -258,55 +274,30 @@ class RComCmdRsp(RailComRead):
                             datagram.append((RailComRead.DG_RESP, b))
                             self._dgs.add(RailComRead.DG_RESP)
                             pb_set.add(b)
-                    elif b in RComCmdRsp.ERR_CODE:
-                        # Recognised Error code
-                        # no point in going any further - as structure of
-                        # remaining message indeterminate
-                        if b != RailComRead.ERR_OE:
-                            self._log_error(b)
-                        return datagram
-                else:
-                    # separate the datagram id and first 2 bits of payload
-                    dg_id = (b & 0xFC)  >> 2
-                    dg_payload = b & 0x03
-                    try:
-                        error = False
-                        for _ in range(_DG2_LEN[dg_id]):
-                            b = RailComRead.hw4_2_6b(next(buff_iter))
-                            if b > 0x3f:
-                                if b in RComCmdRsp.ERR_CODE:
-                                    # Recognised Error code
-                                    # no point in going any further - as structure of
-                                    # remaining message indeterminate
-                                    self._log_error(b)
-                                    error = True            
-                                else:
-                                    # datagram can't include protocol control byte
-                                    self._log_error(RailComRead.ERR_CB)
-                                    error = True # so this and any more are ignored
-                            elif error:
-                                # error already seen - skip 
-                                pass
-                            else:
-                                dg_payload = (dg_payload << 6) + b # append sextet to payload
-                        # payload complete
-                        if not error:
-                            self._dgs.add(dg_id)
-                            datagram.append((dg_id,dg_payload))
-
-                    except KeyError: # not valid datagram (not in list)
-                        # no point in going any further - as structure of
-                        # remaining message indeterminate
-                        self._log_error(RailComRead.ERR_ID)
-                        return datagram
-
-                    dg_id = None  # set back to None to mark datagram complete
-
-        except StopIteration:
-            if dg_id is not None:
-                # datagram not complete - ignore it - duff format
-                # other earlier datagrams in same message will be processed
-                self._log_error(RailComRead.ERR_FE)
+                        continue # protocol byte done
+                # control byte or other - treat as error
+                self._log_error(self.ERR_CB)
+                return datagram
+            if not ps:  # first byte of datagram (not control byte)
+                # separate the datagram id and first 2 bits of payload
+                dg_id = (b & 0xFC)  >> 2
+                dg_payload = b & 0x03
+                try:
+                    dgl = _DG2_LEN[dg_id]
+                except KeyError:
+                    # not valid datagram (not in list)
+                    # no point in going any further - as structure of
+                    # remaining message indeterminate
+                    self._log_error(RailComRead.ERR_ID)
+                    return datagram
+                ps = 1  # next is body of datagram
+            else: # in datagram body
+                dg_payload = (dg_payload << 6) + b # append sextet to payload
+                dgl -= 1
+                if not dgl: # last one done
+                    self._dgs.add(dg_id)
+                    datagram.append((dg_id,dg_payload))
+                    ps = 0 # back to start of next datagram
         return datagram
 
     def _act_on_datagram(self, datagram, addr):
@@ -320,11 +311,9 @@ class RComCmdRsp(RailComRead):
                     # store speed under sub-index 0
                     value = value + (dyn_si << 8)
                     dyn_si = 0
-                try:
-                    old_val = self._dyn_info[(addr, dyn_si)]
-                except KeyError:
-                    old_val = None
-                if old_val is None or old_val != value:
+                
+                old_val = self._dyn_info.get((addr, dyn_si), None)
+                if old_val != value:
                     #update value
                     self._dyn_info[(addr, dyn_si)] = value
                     # and add address to list of changes

@@ -109,6 +109,7 @@ class DCCCommand():
         # transmission. Speed & function commands are never deleted but POM commands have
         # limitied life span 
         self._packet_list = {}              # create empty dictionary
+        self._counts = {}        # counts of issued commands by type
         self._pom_packet = None             # and no outstanding pom command
         # instantiate dcc generator
         self._dcc_gen_pio = DCCCmdTx.get_instance()
@@ -122,6 +123,26 @@ class DCCCommand():
         HwConf.get_instance().dcc_pins[0].irq(self._nxt_packet, Pin.IRQ_RISING)
 
         self._ready_flag = asyncio.ThreadSafeFlag()
+
+    @property
+    def counts(self):
+        """Get the command counts
+
+        This returns the counts of commands sent by type. The counts are reset by the
+        reset_counts method.
+
+        Returns:
+            A dictionary of command counts by type.
+        """
+        return self._counts
+
+    def reset_counts(self):
+        """Reset the command counts 
+
+        This resets the command counts to zero. It is used to reset the command counts
+        after a report has been printed.
+        """
+        self._counts = {}
 
     async def wait_for_flag(self):
         """ Wait for the new state available flag
@@ -161,7 +182,7 @@ class DCCCommand():
         if p == DCCCmdTx.ON:
             # the normal sequence of command packets will be triggered
             # at the completion of the idle packet
-            self._idle_packet.send()
+            self._dcc_gen_pio.pio_send(self._idle_packet)
             # set an iterator
             self._packet_iter = iter(self._packet_list)
 
@@ -293,8 +314,8 @@ class DCCCommand():
     
     def _add_cmd(self, command):
         """Add Command to Packet List"""
-        type = command.get_type()
-        addr = command.get_address()
+        type = command.type
+        addr = command.address
         self._packet_list[(type, addr)] = command
         self._active_address.add(addr)
 
@@ -314,8 +335,7 @@ class DCCCommand():
             True if command accepted
             False if command rejected
         """
-        addr = command.get_address()
-        if addr not in self._active_address:
+        if command.address not in self._active_address:
             return False
         if self._pom_packet is not None:
             # POM commands are temporary and only 1 is allowed
@@ -324,11 +344,14 @@ class DCCCommand():
         return True
 
     def _nxt_packet(self, _):
-        """ Generate next packet - soft interrupt or timer callback.
+        """ Generate next packet.
         
-        This is called when the nenext packet in the
-        list is to be serialised out on the DCC interface. If the list is empty the DCC
-        Idle packet is serialised or if the next packet is unavailable (e.g. being updated).
+        This runs in soft interrupt or timer callback context.
+        
+        This is called when the next packet in the
+        list is to be serialised out on the DCC interface.
+        If the list is empty or if the next packet is unavailable (e.g. being updated)
+        the DCC Idle packet is serialised.
 
         The function is triggered via a soft ISR.  If RailCom is enabled, this is connected to the enable
         pin rising indicating the end of the cutout period assocated with the preceding command.
@@ -342,29 +365,35 @@ class DCCCommand():
             # power now off - don't transmit.
             self._dcc_gen_pio.pio_off() # deactivate pio sm now cycle complete
             return
-        if not self._packet_list:
-            # list empty send the DCC idle packet
-            self._idle_packet.send()
-            return
-        
-        if self._pom_packet is None:
-            # POM packet if there takes precidence
-            try:
-                # get the next packet in the list
-                packet_key = next(self._packet_iter)
-            except StopIteration:
-                # at end of list - renew iterator
-                self._packet_iter = iter(self._packet_list)
-                packet_key = next(self._packet_iter)
-            # send the command
-            result = self._packet_list[packet_key].send()
-        else:
-            result = self._pom_packet.send()
+        if self._packet_list: 
+            if self._pom_packet is None:
+                # POM packet if there takes precidence
+                try:
+                    # get the next packet in the list
+                    next_pkt = self._packet_list[next(self._packet_iter)]
+                except StopIteration:
+                    # at end of list - renew iterator
+                    self._packet_iter = iter(self._packet_list)
+                    next_pkt = self._packet_list[next(self._packet_iter)]
+            else:
+                next_pkt = self._pom_packet
 
-        if result == CommandPacket.NOT_SENT:
-            self._idle_packet.send() # send idle packet instead
-        elif result == CommandPacket.SENT_POM:
-            # POM commands get deleted once sent
-            self._pom_packet = None
-        # else nothing to do if normal command sent OK
+            if next_pkt.is_locked(): # packet being updated
+                next_pkt = self._idle_packet # send idle packet instead
+        else:
+            # packet list empty
+            next_pkt = self._idle_packet # send idle packet
+        
+        self._dcc_gen_pio.pio_send(next_pkt)
+
+        if self._pom_packet is not None:
+            # just sent a pom packet
+            if self._pom_packet.all_sent():
+                # check all sent
+                # POM commands get deleted once sent
+                self._pom_packet = None
+        try:
+            self._counts[next_pkt.type] += 1
+        except KeyError:
+            self._counts[next_pkt.type] = 1
         return

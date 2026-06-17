@@ -8,7 +8,9 @@ connection and soldering integrity rather than functionality.
 from machine import Pin, I2C, Timer, unique_id
 from neopixel import NeoPixel
 import time, sys
+from micropython import const
 import micropython
+from collections import deque
 
 
 # ADC1015 parameters to start read.
@@ -33,6 +35,7 @@ GREEN = (0, 50, 0)
 BLUE = (0, 0, 50)
 WHITE = (40, 40, 40)
 ORANGE = (40, 10, 0)
+CYAN = (0, 25, 25)
 
 
 # pins used as rx inputs from detector
@@ -243,11 +246,20 @@ def test_DCC_sense():
     print("Cutout frequency:", count  / 10, "per sec.")
 
 
-
+def _adc2int(adc_res):
+    # this is a 12 bit signed (2's comp) value but left aligned.  L.S 4 bits always 0
+    value = (adc_res[0] << 4) + (adc_res[1] >> 4)
+    if (adc_res[0] & 0x80) != 0:
+        value = ((~value & 0x0fff) + 1) * -1
+    return(value)
 
 
 def test_adc():
     """Test ADC conversion
+
+    Single shot test.
+
+    This also sets the zero reference for later tests.
     
     This tests the raw DCC side ADC sampling as used for block occupancy.
     Nominally this is a differential reading of the voltage across the load sense
@@ -267,14 +279,8 @@ def test_adc():
     5 and 7 are differential readings of DCC-L against itself. Should always be 0.
     6 and 8 are single ended readings of DCC-L wrt GND1. Should be c.1250 corresponding to 5/2 V.
     """
-
-    def _adc2int(adc_res):
-        # this is a 12 bit signed (2's comp) value but left aligned.  L.S 4 bits always 0
-        value = (adc_res[0] << 4) + (adc_res[1] >> 4)
-        if (adc_res[0] & 0x80) != 0:
-            value = ((~value & 0x0fff) + 1) * -1
-        return(value)
-   
+    global z_ref
+    z_ref = {}
     for adc in sorted(_adc_addr.keys()):
         i2c_addr, conf = _adc_addr[adc]
         try:
@@ -284,12 +290,77 @@ def test_adc():
                 if (res[0] & 0x80) != 0:
                     break   # we have a result
             value = _adc2int(I2C(1).readfrom_mem(i2c_addr, 0, 2))
+
             print(adc + 1, value)
+            if adc in range(4):
+                z_ref[adc] = value
                 
         except OSError:
             # i2c error - no track power most likely
             print("Is DCC power on?")
             return
+        
+def test_adc_cont():
+    """Continous ADC test"""
+    IIR_FACTOR = const(10)
+    global freq, iir
+    freq = {}
+    filters = [deque([0],100) for _ in range(4)]
+    iir = [0.0 ,0.0, 0.0, 0.0]
+    np.fill(UNLIT)
+    np.write()
+    try:
+        while True:
+            for adc, z in z_ref.items():
+                i2c_addr, conf = _adc_addr[adc]
+                I2C(1).writeto_mem(i2c_addr,_ADC_CONF_ADD,conf) # start read
+                while True:
+                    res = I2C(1).readfrom_mem(i2c_addr,_ADC_CONF_ADD, 2)
+                    if (res[0] & 0x80) != 0:
+                        break   # we have a result
+                raw = abs(_adc2int(I2C(1).readfrom_mem(i2c_addr, 0, 2)) - z)
+                if raw > max(filters[adc]): # append reading if higher than current
+                    filters[adc].append(raw) # dropping the oldest if full
+                else:
+                    filters[adc].popleft() # drop the oldest if nothing added
+                    if not len(filters[adc]): # if all dropped then 
+                        filters[adc].append(0) # append a zero
+
+                value = float(max(filters[adc]))
+                i = iir[adc]
+                if value >= i:
+                    i = value
+                else:
+                    i = (IIR_FACTOR - 1) * i / IIR_FACTOR + (value / IIR_FACTOR)
+                iir[adc] = i
+                #if not adc:
+                #    print(value, i)
+                if i < 25:
+                    colour = ORANGE
+                elif i < 250:
+                    colour = GREEN
+                elif i < 500:
+                    colour = CYAN
+                else:
+                    colour = BLUE
+                np[adc] = colour
+                np.write()
+                try:
+                    freq[value//10] += 1
+                except KeyError:
+                    freq[value//10] = 1
+
+    except OSError:
+        # i2c error - no track power most likely
+        print("Is DCC power on?")
+        return
+    except KeyboardInterrupt:
+        print('Done')
+        return
+    except NameError:
+        print('Run Test 9 first')
+        return
+
 
 tests = {
             0:("Flash Onboard LED", led_test,()),
@@ -300,8 +371,11 @@ tests = {
             5:("Check I2C 1", scan_i2c,(1,)),
             6:("Check rx pins", scan_pins, (rx_pins,)),
             7:("Check or pins", scan_pins, (or_pins,)),
-            8:("DCC Sense", test_DCC_sense,())
+            8:("DCC Sense", test_DCC_sense,()),
+            9:("ADC - Single Shot", test_adc, ()),
+            10:("ADC - Continuous", test_adc_cont, ())
         }
+
 
 
 

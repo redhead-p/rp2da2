@@ -5,18 +5,15 @@ This module contains the functions and classes for low level RailCom datagram re
 It's applicable for block occupancy detection on Channel 1 and central dcc command decoder
 responses on Channel 2. 
 
-The module makes use of the RP2xx0 PIO. A command station can support two detectors - one on channel 1
-(e.g. for a block close to the command station) and one 
-on channel 2 . These must be on the same PIO block and will use all four state machines. On the command station
+The module makes use of the RP2xx0 PIO.  It uses two PIO state machines. The first times the channel window
+within the cut-out. The second deserialises RailCom data received during the relevant channel window.
+On the command station
 different PIO block is used for DCC signal encoding.
 
-For block detection only, a single PIO block can run two detectors.
-
-Memory mapped addresses and offsets are as defined in the RP2040 datasheet.
-
+For block detection a single PIO block can run two detectors.
 """
 """
-        Copyright (C) 2023, 2024, 2025 Paul Redhead
+        Copyright (C) 2023, 2024, 2025, 2026 Paul Redhead
 
         This program is free software: you can redistribute it and/or modify it
         under the terms of the GNU General Public License as published by the Free Software Foundation, 
@@ -32,7 +29,7 @@ Memory mapped addresses and offsets are as defined in the RP2040 datasheet.
 # stop pylance reporting undefined variables for PIO code
 # pyright: reportUndefinedVariable=false
 
-from machine import mem32, disable_irq, enable_irq
+from machine import disable_irq, enable_irq
 
 from micropython import const, schedule
 import array
@@ -57,8 +54,8 @@ class RailComRead(Device):
 
     A RailCom reader object works on either on Channel 1 (block) or Channel 2 (central/global) but not both. 
 
-    Channel 1 is used for block occupancy detection and the detector may run on the commamd station or a remote
-    detector. Channel 2 is used for command responses and other decoder specific information.  It only runs
+    Channel 1 is used for block occupancy detection and usually the detector runs on a detector local to the block.
+    Channel 2 is used for command responses and other decoder specific information.  It only runs
     on the command station.
 
     On the command station, as far as this class is concerned, the cutout (DRV8874 enable pin) is used as an input.
@@ -69,8 +66,7 @@ class RailComRead(Device):
     a RailCom encoder (e.g. DCC decoder) is actively transmitting.
 
     Each RailCom reader uses two PIO state machines.  One times the cutout and the second is the serial
-    RailCom message receiver. Both state machines need to be on the same PIO block for RP2040 and
-    are assigned to consecutive state machine numbers.
+    RailCom message receiver. 
     
     A PIO block has 4 state machines and can run two readers. The 
     The cutout timers will be on the state machine numbers 0 & 2 of the PIO block and the associated receivers on state machine
@@ -80,8 +76,8 @@ class RailComRead(Device):
     The cutout state machine starts the RailCom receiver using an IRQ. Relative IRQ numbering 
     is used. The first is no 5 which will be used by sm 0. The sm 2 will use IRQ 7.
 
-    At the end of the channel window the PIO raises an application interrupt to initate reading the state machine
-    FIFO buffer.
+    At the end of the channel window the PIO state machine raises an application interrupt to initate
+    reading the state machine FIFO buffer.
 
 
     Attributes:
@@ -100,6 +96,7 @@ class RailComRead(Device):
         DG_RESP: internally generated datagram containing protocol control byte
         LCL_DEVICE_TYPE: Local block detector device type
         GBL_DEVICE_TYPE: Global detector device type
+        PROT_BYTE: List of protocol control bytes
     """
     # class constant
 
@@ -121,7 +118,7 @@ class RailComRead(Device):
     ERR_FE = const(0x8B)
     ERR_PL = const(0x8C)
 
-    PROT_BYTE = (ACK, NAK, RES)
+    PROT_BYTE = (ACK, NAK)
 
     LCL_DEVICE_TYPE = const('l')
     GBL_DEVICE_TYPE = const('g')
@@ -214,6 +211,7 @@ class RailComRead(Device):
         if dcc_pin is not None:
             # channel 1 - local block detection
             self._max_buf = 2
+            self._min_buf = 2 # must get 2 bytes
             self._sm = rp2.StateMachine(cu_sm_num, self._cut_out1_bd,
                                             freq = _PIO_CU_D_FREQ,
                                             in_base = dcc_pin,
@@ -222,12 +220,14 @@ class RailComRead(Device):
         else:
             # Channel 2 on command station
             self._max_buf = 6
+            self._min_buf = 1 # could be single ACK
             self._sm = rp2.StateMachine(cu_sm_num, self._cut_out2,
                                         freq = _PIO_CU_FREQ,
                                         in_base = cu_pin)
             self._rx = self._rx_gbl
-        
+        self._rc = 0
         self._sm.irq(self._read_isr, hard = True) # read from the state machine at the end of the cutout
+        self._last_command = None   # only used for channel 2
 
         # set up RailCom read PIO state machine
         self._smrx = rp2.StateMachine(cu_sm_num + 1, self._rx,
@@ -236,8 +236,6 @@ class RailComRead(Device):
                                       jmp_pin = rc_rx_pin)
         
         self._read_ref = self._read_soft # set up reference for use by hard isr
-
-        self._rx_buff = bytearray(6) # translated buffer - max is 6 bytes for channel 2
         self._rx_raw = array.array('H', range(8)) # raw buffer for PIO - 8 words to match FIFO
         self._gash = array.array('H', (0,))
         self._ql = False            # queue lock - to protect against race
@@ -462,19 +460,21 @@ class RailComRead(Device):
         self._smrx.active(0)    # stop the sm reading any stray bytes
         self._sm.active(0)      # stop the cutout monitor (it's frozen)
         self._sm.restart()      # and reset it to unfreeze
-        rc = self._smrx.rx_fifo()      # get the count
-        if rc and not self._ql: # not blank read and not locked
+        self._rc = self._smrx.rx_fifo()      # get the count
+        if self._rc >= self._min_buf and not self._ql: # not blank read and not locked
             self._ql = True  # set lock to stop race condition
-            schedule(self._read_ref,(rc)) # use preset indirection to avoid new heap usage
+            # use preset indirection to avoid new heap usage
+            # and take last command now (while in hard ISR)
+            schedule(self._read_ref, self._last_command) 
             return
-        # blank read or locked (previous read still being processed)
-        while self._smrx.rx_fifo() > 0:
+        # incomplete read or locked (previous read still being processed)
+        while self._smrx.rx_fifo():
             self._smrx.get(self._gash) # flush buffer
         self._smrx.restart()    # reset sm including instruction pointer
         self._smrx.active(1)    # restart - it will wait for interrupt
         self._sm.active(1)      # and restart the monitor
         
-    def _read_soft(self, rxc):
+    def _read_soft(self, last_command):
         """Soft PIO read ISR
         
         Read PIO FIFO into buffer.  Needs to be soft for memoryviews to  work
@@ -487,21 +487,20 @@ class RailComRead(Device):
         There must be at least 1 entry in the buffer.
         
         args:
-            rxc: received buffer count 
+            last_command: the DCC command that caused the response. 
         """
         # set raw_buff limit to amount in fifo otherwise read will hang
-        raw_buff = memoryview(self._rx_raw)[:rxc]
-        self._smrx.get(raw_buff)  # read data into raw buffer
+        self._rx_buff = memoryview(self._rx_raw)[:self._rc]
+        self._smrx.get(self._rx_buff)  # read data into buffer
         self._smrx.restart() # reset internals (inc. IP)
         self._smrx.active(1)    # restart sm (it's now been reset)
         self._sm.active(1)      # and restart monitor
 
-        if rxc > self._max_buf:
+        if self._rc > self._max_buf:
             # quietly truncate the buffer if over channel len
-            raw_buff = raw_buff[:self._max_buf]
+            self._rx_buff = self._rx_buff[:self._max_buf]
         # call channel specific code
-        self._rail_com_msg(raw_buff)
+        self._rail_com_msg(last_command)
         m = disable_irq()
         self._ql = False # allow next read to be decoded
         enable_irq(m)
-        return

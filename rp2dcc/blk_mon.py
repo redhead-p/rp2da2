@@ -24,7 +24,6 @@ from micropython import const
 from machine import I2C
 
 from device import Device
-from hw_conf import HwConf
 
 _TIMER_PERIOD = const(50)   # time in ms between checks for current load on block
 
@@ -156,8 +155,9 @@ class DCCBlkDet(Device):
         self._ready_flag.set()
         super().report_event(event, data)
 
-    def get_sensor_state(self):
-        """ Get the current block state
+    @property
+    def sensor_state(self):
+        """ Current block state
         
         This returns the current sensor state. 
         The block status may be:

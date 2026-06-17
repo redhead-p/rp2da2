@@ -212,7 +212,9 @@ may be used to update them as required once they have been copied to the target 
 
 ### Wi-Fi
 
-The config file specifies:
+#### '/conf/wifi.json'
+
+The configuration file specifies:
 
 - Network country code
 - SSID - your Wi-Fi network name
@@ -226,7 +228,7 @@ from the MicroPython default to avoid duplicates.
 
 ### MQTT
 
-***Pico Configuration***
+#### '/conf/mqtt.json'
 
 The config file specifies:
 
@@ -253,7 +255,7 @@ For Raspberry Pi OS it's
 /etc/mosquitto/mosquitto.conf
 ```
 
-A couple of lines may need to be added.
+A couple of lines will need to be added if not already there.
 
 ```text
 allow_anonymous true
@@ -265,7 +267,10 @@ Note that connections to Mosquitto will not be authenticated. Do not do this unl
 
 ***JMRI MQTT Configuration***
 
-  Check 'Additional Connection Settings' under
+Set the IP Address/Host Name to that of your broker. I.e. the same as set for "broker" in
+the mqtt.json configuration file above.
+
+Check 'Additional Connection Settings' under
 Preferences->Connections for the MQTT connection to access the JMRI MQTT configuration.
 
 |Setting|Value|

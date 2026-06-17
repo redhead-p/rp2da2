@@ -1,4 +1,4 @@
-"""DCC  Package
+"""DCC and RailCom Package
 
 This contains DCC and RailCom modules.
 
@@ -29,4 +29,3 @@ The following diagram is a Sequence Diagram for reading the RailCom channel 2 re
 
 
 """
-from device import Device

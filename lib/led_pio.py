@@ -117,8 +117,7 @@ class NeoLed():
             self._rgb[colour] = val
             self._string.set_rgb(self._i, tuple(self._rgb))
             if flush:
-                # write up to and including this LED
-                self._string.write(self._i + 1)  
+                self._string.write()  
         except KeyError:
             # quietly ignore invalid colour
             pass
@@ -135,7 +134,7 @@ class NeoLed():
             self._rgb[colour] = 0
             self._string.set_rgb(self._i, tuple(self._rgb))
             if flush:
-                self._string.write(self._i + 1)  
+                self._string.write()  
         except KeyError:
             # quietly ignore invalid colour
             pass
@@ -150,8 +149,7 @@ class NeoLed():
         self._rgb = [0, 0, 0]   # reset RGB values.
         self._string.set_rgb(self._i, tuple(self._rgb))
         if flush:
-            # write up to and including this LED
-            self._string.write(self._i + 1) 
+            self._string.write() 
 
 
 class ComsLed(NeoLed):
@@ -213,7 +211,13 @@ class BlkLed(NeoLed):
     as determined by both current sensing and RailCom channed 1 returns.
     """
     def __init__(self, block_num):
-        # first led (0) is comms - block leds start from index 1
+        """ Initialise the Block LED
+         
+        The first LED (0) is comms - block leds start from index 1
+
+        args:
+            block_num: logical number of the associated block
+        """
         super().__init__(block_num + 1) 
         self._rc_state = Device.UNKNOWN
         self._oc_state = Device.UNKNOWN
@@ -310,14 +314,9 @@ class NeoString():
     """String of NeoPixels
     
     A singleton class based on the built-in NeoPixel class.
-    Although it's a singleton it is explicitly instantiated and get_instance method 
-    will not instantiate it automatically.
-    This is to allow the string to be created with a specific pin and length.
     The string is a list of NeoLed objects which can be accessed by index.
     The NeoLed objects are used to control the individual LEDs in the string.
     The string is used to control the LEDs on the board.
-
-    If the Arduino tricolour led is available, it's handled independently.
     """
 
     _this_string = None
@@ -327,7 +326,7 @@ class NeoString():
         """Return the singleton instance
 
         If the singleton already exists then it is returned.
-        Otherwise it is created
+        Otherwise it is created.
         """
         if cls._this_string is None:
             cls._this_string = NeoString()    
@@ -342,11 +341,12 @@ class NeoString():
         If the singleton already exists then an exception is raised.
 
         """
-        if NeoString._this_string is not None:
-            raise RuntimeError("Only one LED string allowed")
-        
-        self._num_leds = _MAX_LEN
-        self._pin = HwConf.get_instance().np_pin
+        assert NeoString._this_string is None,("Only one LED string allowed")
+
+
+        hw_conf = HwConf.get_instance()
+        self._num_leds = hw_conf.max_led
+        self._pin = hw_conf.np_pin
         try:
             # is RP2350 state machine available?
             self._sm = rp2.StateMachine(HwConf.NP_SM_P2)
@@ -356,7 +356,7 @@ class NeoString():
         
         self._sm.init(ws2812_tx, freq = 8_000_000, sideset_base = self._pin)
         self._sm.active(1)
-        self._buff = array.array("I", [0] * _MAX_LEN) # 1 word per led
+        self._buff = array.array("I", [0] * self._num_leds) # 1 word per led
 
         self.write()
 
@@ -371,8 +371,17 @@ class NeoString():
         r, g, b = rgb
         self._buff[i] = (g << 16) + (r << 8) + b
 
-    def write(self, count = _MAX_LEN):
-        #print(bytes(memoryview(self._buff)[:count]))
+    def write(self, count = None):
+        """Write to NeoPixel String
+        
+        Update the NeoPixel string from the buffer. If count is not provided
+        the entire string is updated.
+        
+        args:
+            count: the number leds to be updated."""
+        
+        if count is None:
+            count = self._num_leds
         # least sig. 3 bytes contain led values so shift left eight
         self._sm.put(memoryview(self._buff)[:count], 8)
 

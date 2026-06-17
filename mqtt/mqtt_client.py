@@ -105,9 +105,8 @@ class MQTTPacketOut():
         Initialise second byte (length) to 0
 
         Args:
-            self:
             pkt_type:   MQTT Control Packet type
-            flags:      
+            flags: Packet control flags      
         """
         self._buffer = bytearray()
         self._header= bytearray(((pkt_type << 4 | flags & 0xf),))

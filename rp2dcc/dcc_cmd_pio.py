@@ -1,12 +1,13 @@
 """DCC Command Serialisation PIO module
     :author: Paul Redhead
 
-This module contains the class and functions for low level DCC Command Serialisation for use with RailCom detection.
+This module contains the class and functions for low level DCC Command Serialisation
+for use with RailCom detection.
 
 An RP2040 Peripheral Input Output (PIO) block is used to generate the DCC signal. A 'booster'
 is required to enable to track to be powered.  One of the many DC motor H-bridge chips (e.g. DRV8874)
 should be suitable. The sleep pin puts the H-bridge into sleep mode when track power is not required.
-The enable pin is used for the RailCom cutout, putting both sides of the bridge into low impedence mode
+The enable pin is used for the RailCom cutout, putting both sides of the bridge into low impedance mode
 to ground and thereby creating the circuit required for the RailCom back channel.
 
 A command comprises a preamble, one or more instruction/data bytes and an error detection (checksum) byte.
@@ -46,13 +47,12 @@ See also NMRA Standards S 9.2 and S 9.2.1. S 9.2.1.1 is not supported.
 # stop pylance reporting undefined variables for PIO code
 # pyright: reportUndefinedVariable=false
 
-from machine import Pin
-
 from micropython import const
 
 import rp2
 
 from hw_conf import HwConf
+from dcc_rc_ch2 import RComCmdRsp
 
 # module constants - not for importing elsewhere
 _PIO_FREQ = const(500_000)          # 500 kHz - 2 micro sec. tick period
@@ -115,23 +115,7 @@ class DCCCmdTx:
         if cls._this_dcc is None:
             DCCCmdTx()
         return cls._this_dcc
-    
-    @classmethod
-    def get_state_machine(cls):
-        """ Get the DCC generator state machine instance.
-
-        This returns the single instance of the DCC generator PIO state machine.
         
-        Args:
-            cls:
-
-        Returns:
-            The DCC generator state machine
-        """
-
-        return cls._this_dcc._sm
-    
-    
     def __init__(self):
         """ DCC serialisation  constructor
         
@@ -148,16 +132,14 @@ class DCCCmdTx:
         DCCCmdTx._this_dcc = self
 
         hw_conf = HwConf.get_instance()
-
         sm_num = hw_conf.DCC_STATE_MC
-
         cu_pn, self._sleep_pin, dcc_pn = hw_conf.dcc_pins
-        
         # set up the PIO state machine for DCC serialisation
         self._sm = rp2.StateMachine(sm_num, self._dcc_tx, freq = _PIO_FREQ,
                                     out_base = cu_pn,
-                                    set_base = dcc_pn)                    
-        
+                                    set_base = dcc_pn)
+        self._rc_ch2 = RComCmdRsp.get_instance()
+
     @rp2.asm_pio(out_init = rp2.PIO.OUT_HIGH,
                 set_init = rp2.PIO.OUT_HIGH,  
                 out_shiftdir = rp2.PIO.SHIFT_LEFT, 
@@ -236,13 +218,10 @@ class DCCCmdTx:
         out(null, 21)               [0]     # leaving 9 bits
         jmp("get_nxt")              [4]
 
-
         label("dbytes")
         # 6 ticks so far
         # cannot be packet end or cutout but could 18 bit preamble
         out(null, 13)               [7]     # discard unused bits leaving 18
-    
-
     
         label("get_nxt")
         # 14 ticks all paths - 14 via nxt_bit is limiting 
@@ -277,8 +256,6 @@ class DCCCmdTx:
         jmp(not_osre, "not_done")   [0]
         wrap()                              # pull from FIFO & start next single bit/ byte group 
 
-
-
         label("not_done")
         # 2 ticks so far 
         # 10 ticks high for short (1) and long (0) 
@@ -288,6 +265,16 @@ class DCCCmdTx:
 
         # 31 PIO instructions - 1 spare
     
+    def pio_send(self, packet):
+        """Send Packet.
+        
+        Write the DCC Command packet to the state machine's FIFO buffer.
+
+        args:
+            packet: The DCC command object.
+        """
+        self._sm.put(packet.packet_buffer)
+        self._rc_ch2.set_last_command(packet)
 
     def pio_pwr(self, p = None):
         """DCC Power On/Off
@@ -298,7 +285,8 @@ class DCCCmdTx:
 
         On power off we assert the booster sleep pin (0 for True)
 
-        The state machine will be stopped when the current command cycle is complete.
+        The state machine will be stopped when the current
+        command cycle is complete.
 
         args:
             p: 1 for power on, 0 for power off, None for get power status

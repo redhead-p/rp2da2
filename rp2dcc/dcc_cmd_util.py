@@ -20,11 +20,6 @@ This module contains classes for DCC command objects.
 from micropython import const
 import machine
 
-from machine import Pin
-
-from dcc_cmd_pio import DCCCmdTx
-from device import Device
-
 import array
 
 
@@ -65,20 +60,13 @@ class CommandPacket:
         SENT:       Return value for command serialised
         SENT_POM:   Return valued for Program on Main second send
     """
-    # class variables
-    _state_machine = None # the DCC serialisation state machine
-    _last_command = None # most recently sent command
-    _counts = {}        # counts of issued commands by type
+
 
 
     # class constants
     MAX_LONG_ADDR = const(0x27FF)      # DCC long address upper limit (inclusive)
     MIN_LONG_ADDR = const(128)         # DCC long address lower limit (inclusive)
     BASE_LONG_ADDR = const(0xc000)     # DCC long mobile address range base
-
-    NOT_SENT = const(0)     # command not sent yet
-    SENT     = const(1)     # normal/1st POM write command sent
-    SENT_POM = const(2)     # POM send complete (rd 1, write 2) - OK to delete.
 
     @classmethod
     def get_last_command(cls):
@@ -93,30 +81,7 @@ class CommandPacket:
         """
         
         return cls._last_command
-    
-    @classmethod
-    def get_counts(cls):
-        """Get the command counts
 
-        This returns the counts of commands sent by type. The counts are reset by the
-        reset_counts method.
-        args:
-            cls:
-        Returns:
-            A dictionary of command counts by type.
-        """
-
-        return cls._counts
-    
-    @classmethod
-    def reset_counts(cls):
-        """Reset the command counts 
-
-        This resets the command counts to zero. It is used to reset the command counts
-        after a report has been printed.
-
-        """
-        cls._counts = {}
 
     def __init__(self, byte_list = None):
         """ Contruct the DCC Command
@@ -136,10 +101,6 @@ class CommandPacket:
         args:
             byte_list: a list of the component bytes.
         """
-        if CommandPacket._state_machine is None:
-            # first instantiation - get the DCC generation state machine
-            # the DCC generator must be instantiated first!
-            CommandPacket._state_machine = DCCCmdTx.get_state_machine()
 
         # max buffer is 8 words - 2 (pre-amb + pe) - 1 byte (chksum) => command 11 bytes
 
@@ -172,7 +133,7 @@ class CommandPacket:
             byte_list: a list of the component bytes.
         """
         magic_no = machine.disable_irq()
-        self._packet_buff[0] = 0 # flag buffer being updated to stop timer ISR sending it
+        self._packet_buff[0] = 0 # flag buffer being updated to stop soft ISR sending it
         machine.enable_irq(magic_no)
         err_detect = 0  # initialise error detection checksum
         count = 2
@@ -194,40 +155,27 @@ class CommandPacket:
         self._packet_buff[0] = _DCC_PREAMBLE    # release buffer for timer ISR
         machine.enable_irq(magic_no)
 
-    def send(self):
-        """Send the Command
-        
-        This sends the command by transferring it to the PIO state machine FIFO.
-
-        returns:
-            sent or not sent 
-        """
-        # 'soft' service routine here so 'inline' code preempted
-        if self._packet_buff[0] == _DCC_PREAMBLE:
-            # OK to send
-            self._state_machine.put(self._packet_buff)
-            CommandPacket._last_command = self
-            try:
-                CommandPacket._counts[self._type] += 1
-            except KeyError:
-                CommandPacket._counts[self._type] = 1
-            return CommandPacket.SENT
-        # edit in progress - defer sending till next time
-        return CommandPacket.NOT_SENT
+    def is_locked(self):
+        return(not self._packet_buff[0])
     
-    def get_type(self):
+    @property
+    def packet_buffer(self):
+        return self._packet_buff
+    
+    @property
+    def type(self):
         """Get the command type
         
         This returns the command type.  The type is set by the class object inheriting from 
         CommandPacket
-            
+
         returns:
             command type
         """
-        
         return self._type
     
-    def get_address(self):
+    @property
+    def address(self):
         """ Get Address
         
         This returns the decoder address targeted by the command
@@ -235,7 +183,6 @@ class CommandPacket:
         returns:
             The decoder address as an integer
         """
-        
         return self._address
 
 
@@ -411,6 +358,10 @@ class CV_Access(CommandPacket):
 
     _CMD = {'r': BYTE_CHK,
             'w': BYTE_WRT}
+    
+    NOT_SENT = const(0)     # command not sent yet
+    SENT_W1     = const(1)     # 1st POM write command sent
+    SENT_POM = const(2)     # POM send complete (rd 1, write 2) - OK to delete.
 
     def __init__(self, address, cv, *, operation = 'r', value = 0):
         """Construct a  Program on Main Command
@@ -431,7 +382,7 @@ class CV_Access(CommandPacket):
         self._address = address
         self._type = CV_Access.TYPE
         self._operation = operation
-        self._state = CommandPacket.NOT_SENT
+        self._state = CV_Access.NOT_SENT
         self._cv = cv
 
         inst1 = CV_Access._CMD[operation] | ((cv >> 8) & 0x3)
@@ -448,29 +399,22 @@ class CV_Access(CommandPacket):
 
         super().__init__(self._byte_list)
 
-    def send(self):
-        """ Send CV access (POM) command
+
+    def all_sent(self):
+        """ Update State after Send
         
-        This overrides CommandPacket.send().
-        Determine if send necessary.
+        Process state according to operation (r or w)
 
-        According to RCN214 POM read commands only need to be sent once,
-        but Train-O-Matic decoders seem to need the read command to be sent twice
-        as for a write.
-
-        returns:
-            Result of attempted send.  SENT, NOT_SENT or SENT_POM 
-        """
-
+        Should only need to send read once but TOM appears to need it twice!
         
-        # POM command - gets sent twice
-        if super().send() == CommandPacket.SENT:
-            if self._state == CommandPacket.SENT: # both sends done
-                self._state = CommandPacket.SENT_POM # send complete
-            else:
-                self._state = CommandPacket.SENT
-            return self._state
-        return CommandPacket.NOT_SENT # nothing sent this time!
+        returns True if all POM sends done"""
+        if self._state == CV_Access.NOT_SENT:
+            self._state = CV_Access.SENT_W1
+            return False
+        if self._state == CV_Access.SENT_W1:
+            self._state = CV_Access.SENT_POM
+        return True
+
 
 
     def get_state(self):

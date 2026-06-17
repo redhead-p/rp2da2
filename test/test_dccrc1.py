@@ -20,7 +20,6 @@ It uses the machine module for hardware interaction and the device module for ev
         If not, see <http://www.gnu.org/licenses/>.
 """
 
-
 import _thread, time, sys, asyncio
 
 from micropython import alloc_emergency_exception_buf
@@ -31,117 +30,95 @@ from machine import Pin
 from device import Device
 from dcc_rc_ch1 import RComBlkDet
 from dcc_rc_pio import RailComRead
-from led_pio import BlkLed
 from screen import Screen
-
+from hw_conf import HwConfLcl
+from led_pio import LedMan
+import diagnostics
 
 alloc_emergency_exception_buf(100)
 
-if __name__ == '__main__':
 
-    ERR_CODE_DECODE = {
-        RailComRead.ERR_WH:'W_HIGH',
-        RailComRead.ERR_WL:'W_LOW',
-        RailComRead.ERR_OE:'OVERRUN',
-        RailComRead.ERR_CB:'CB_IN_DG',
-        RailComRead.ERR_FE:'DG_INCOMP',
-        RailComRead.ERR_ID:'UNRECOG_DG',
-        RailComRead.ERR_PL:'PAYLD_ERR',
-        RailComRead.ERR_RESP:'SYNC_ERR'}
+time_stamp = time.ticks_ms()
 
-
-    build = sys.implementation._build # get build details
+ERR_CODE_DECODE = {
+    RailComRead.ERR_WH:'W_HIGH',
+    RailComRead.ERR_WL:'W_LOW',
+    RailComRead.ERR_OE:'OVERRUN',
+    RailComRead.ERR_CB:'CB_IN_DG',
+    RailComRead.ERR_FE:'DG_INCOMP',
+    RailComRead.ERR_ID:'UNRECOG_DG',
+    RailComRead.ERR_PL:'PAYLD_ERR',
+    RailComRead.ERR_RESP:'SYNC_ERR'}
     
-    if build.find("PICO2") > -1:
-        # Detector pin allocations - Raspberry Pi Pico format
-        c1a_rx_pin = 14
-        c1b_rx_pin = 16
-        c1c_rx_pin = 18
-        c1d_rx_pin = 20
-    elif build.find("PICO") > -1:
-        # Detector pin allocations - Raspberry Pi Pico format
-        c1a_rx_pin = 14
-        c1b_rx_pin = 16
-    elif build.find("NANO") > -1:
-        # Detector pin allocations - Arduino Nano  format
-        c1a_rx_pin = 0
-        c1b_rx_pin = 15
-
-        # second Dual reader - these pins are used for DRV8874
-        # on command station
-
-        c1c_rx_pin = 18
-        c1d_rx_pin = 20
-    else:
-        print (build, "invalid")
-
-
+def print_stats(reset = True):
+    global time_stamp
+    elapsed_time = time.ticks_diff(time.ticks_ms(), time_stamp)
+    for block in (block_list):
+        counts = block.get_error_counts()
+        cb_count = block.get_cb_count()
+        print(f'** Channel 1 {block.name} **')
+        print(f"Msg. rate: {(cb_count) * 1000 / elapsed_time:.2f} per sec")
+        for key, value in counts.items():
+            print(f'{ERR_CODE_DECODE[key]}\t{value}')
+        
+        if cb_count > 0:
+            print(f"err. rate: {(sum(counts.values())/cb_count):.0%}")
+        if reset:
+            block.reset_stats()
     time_stamp = time.ticks_ms()
 
-    block_list = (RComBlkDet('Blk1', 0, c1a_rx_pin, BlkLed(1), 27),
-                RComBlkDet('Blk2', 2, c1b_rx_pin, BlkLed(2), 27),
-                RComBlkDet('Blk3', 4, c1c_rx_pin, BlkLed(3), 27),
-                RComBlkDet('Blk4', 6, c1d_rx_pin, BlkLed(4), 27))
+user_sw = Pin(26, Pin.IN, Pin.PULL_UP) # user press button
+async def lp():
+    while True:
+        try:
+            await asyncio.sleep_ms(1)
+            if not user_sw.value():
+                # button press
+                print_stats()
+                print()
+                while not user_sw():
+                    await asyncio.sleep_ms(0)
+
+        except KeyboardInterrupt:
+            break
+
+
+async def main():
+    """Main function for the RP2 first core (core 0) application.
+
+    This function sets up the RailCom local detectors.
+    """
+    global block_list
+    diagnostics.HeartBeat.get_instance() # this will start the heart beat
+
+    block_list = (RComBlkDet('Blk1', 0),
+                RComBlkDet('Blk2', 1),
+                RComBlkDet('Blk3', 2),
+                RComBlkDet('Blk4', 3))
     
-    def main1():
-        s = Screen()
+    while True:
+        try:
+            await asyncio.sleep(1)
+        except KeyboardInterrupt:
+            break
 
-        while True:
-            report = Device.get_event_report(False)
-            
-            if report is not None:
-                s.show_event(report)
+def main1():
+    """ Main function for the RP2 second core (core 1) application.
+    
+    It also enters a loop to read event reports and update leds.
+    """
 
-
-            
-
-    def print_stats(reset = True):
-        global time_stamp
-        elapsed_time = time.ticks_diff(time.ticks_ms(), time_stamp)  
-        for block in (block_list):
-            counts = block.get_error_counts()
-            cb_count = block.get_cb_count()
-            print(f'** Channel 1 {block.get_name()} **')
-            print(f"Msg. rate: {(cb_count) * 1000 / elapsed_time:.2f} per sec")
-            for key, value in counts.items():
-                print(f'{ERR_CODE_DECODE[key]}\t{value}')
-            
-            if cb_count > 0:
-                print(f"err. rate: {(sum(counts.values())/cb_count):.0%}")
-            if reset:
-                block.reset_stats()
-        time_stamp = time.ticks_ms()
-
-    async def lp():
-        while True:
-            try:
-                await asyncio.sleep_ms(1)
-            except KeyboardInterrupt:
-                break
-
-
-
-    _thread.start_new_thread(main1,())
-
-
-
-
+    l_man = LedMan.get_instance()
+    s = Screen.get_instance()
+    while True:
+        report = Device.get_event_report() # wait
+        l_man.update(report)
+        s.show_event(report)
+        diagnostics.log_event(report)
 
 if __name__ == '__main__':
-    user_sw = Pin(26, Pin.IN, Pin.PULL_UP) # user press button
-    async def lp():
-        while True:
-            try:
-                await asyncio.sleep_ms(1)
-                if not user_sw.value():
-                    # button press
-                    print_stats()
-                    print()
-                    while not user_sw():
-                        await asyncio.sleep_ms(0)
-
-            except KeyboardInterrupt:
-                break
-
-
-    task = asyncio.run(lp())
+    HwConfLcl.get_instance()
+    sys.argv.append('l') # enable logging
+    _thread.start_new_thread(main1,())
+    asyncio.create_task(lp())
+    task = asyncio.run(main())

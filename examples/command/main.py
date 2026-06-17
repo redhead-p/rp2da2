@@ -31,7 +31,7 @@ It also uses the dcc_command, dcc_rc_ch2, led_pio, screen, mqtt_cmd, mqtt, mqtt_
 
 """
 # python imports
-import _thread, sys, asyncio
+import _thread, asyncio
 
 # lib imports
 from device import Device
@@ -67,8 +67,10 @@ async def main():
 def main1():
     """ Main function for the RP2 second core application.
     
-    This function sets up the screen and NeoString objects, and starts the DCC monitor.
-    It also enters a loop to read event reports and update the screen and NeoString accordingly.
+    This function sets up the screen and NeoString manager objects,
+    and starts the DCC track monitor.
+    It also enters a loop to read event reports and update the screen and NeoString
+    accordingly.
     """
 
     s = Screen.get_instance()

@@ -23,9 +23,10 @@ import _thread, time, sys
 
 from micropython import alloc_emergency_exception_buf
 
-from machine import Pin, ADC
+
 
 from device import Device
+from hw_conf import HwConfGbl
 from dcc_command import DCCCommand
 from dcc_cmd_util import CommandPacket
 from dcc_rc_ch2 import RComCmdRsp
@@ -62,11 +63,7 @@ if __name__ == '__main__':
 
     }
 
-    build = sys.implementation._build # get build details
-
-    if build.find("PICO") == -1:
-        print (build, "invalid")
-
+    hwc = HwConfGbl.get_instance()
 
     time_stamp = time.ticks_ms()
     
@@ -92,7 +89,7 @@ if __name__ == '__main__':
         global time_stamp
         elapsed_time = time.ticks_diff(time.ticks_ms(), time_stamp)  
         print("** Commands **")
-        counts = CommandPacket.get_counts()
+        counts = dcc.counts
         total = sum(counts.values())
         print(f"Rate: {(total) * 1000 / elapsed_time:.2f} per sec")
         print('Command packets:',counts)
@@ -107,7 +104,7 @@ if __name__ == '__main__':
         #    print(f"ch2 time {rc_ch2.get_proc_time()//total}")
         if reset:
             rc_ch2.reset_stats()
-            CommandPacket.reset_counts()
+            dcc.reset_counts()
             time_stamp = time.ticks_ms()
 
     def print_dyn_info():

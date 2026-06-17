@@ -86,22 +86,25 @@ class Block(MQTTAgent):
             await self._rc_block.wait_for_flag()
 
             # Get the new block state from the channel 1 detector
-            data = self._rc_block.get_block_state()
-
-            if data is not None:
+            try:
+                _, address, orientation = self._rc_block.block_state
+            except TypeError:
+                # block state None or otherwise invalid!
+                await self._client.publish(
+                    f'{Block.REPORTER_TOPIC_PREFIX}/{self._name}',
+                    '',
+                    False,
+                    MQTTClient.QOS1)
+            else:
                 # channel 1 info available - always published 
                 # likelyhood of a change without intervening INACTIVE low
-                _, address, orientation = data
                 await self._client.publish(
-                        f'{Block.REPORTER_TOPIC_PREFIX}/{self._name}',
-                        f'{address} {orientation}',
-                        False, MQTTClient.QOS1)
-            else:    
-                await self._client.publish(
-                        f'{Block.REPORTER_TOPIC_PREFIX}/{self._name}',
-                        '',
-                        False,
-                        MQTTClient.QOS1)
+                    f'{Block.REPORTER_TOPIC_PREFIX}/{self._name}',
+                    f'{address} {orientation}',
+                    False,
+                    MQTTClient.QOS1)
+  
+
                 
 
 class Sensor(MQTTAgent):
@@ -158,6 +161,6 @@ class Sensor(MQTTAgent):
             # Get the new sensor state and publish it
             await self._client.publish(
                 f'{Sensor.SENSOR_TOPIC_PREFIX}/{self._name}/event',
-                Sensor.SENSOR_PAYLOAD[self._sensor.get_sensor_state()],
+                Sensor.SENSOR_PAYLOAD[self._sensor.sensor_state],
                 False,
                 MQTTClient.QOS1)
