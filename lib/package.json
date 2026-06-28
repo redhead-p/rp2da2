@@ -1,12 +1,11 @@
 {
   "urls": [
-    ["lib/device.py", "./device.py"],
-    ["lib/diagnostics.py", "./diagnostics.py"],
-    ["lib/hw_conf.py", "./hw_conf.py"],
-    ["lib/led_pio.py", "./led_pio.py"],
-    ["lib/oled0_91.py", "./oled0_91.py"],
-    ["lib/screen.py", "./screen.py"]
+    ["device.py", "github:redhead-p/rp2da/lib/device.py"],
+    ["diagnostics.py", "github:redhead-p/rp2da/lib/diagnostics.py"],
+    ["hw_conf.py", "github:redhead-p/rp2da/lib/hw_conf.py"],
+    ["led_pio.py", "github:redhead-p/rp2da/lib/led_pio.py"],
+    ["oled0_91.py", "github:redhead-p/rp2da/lib/oled0_91.py"],
+    ["screen.py", "github:redhead-p/rp2da/lib/screen.py"]
   ],
-  "deps": [],
   "version": "0.0.0-alpha"
 }
