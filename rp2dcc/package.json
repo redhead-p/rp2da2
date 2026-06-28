@@ -1,0 +1,16 @@
+{
+  "urls": [
+    ["blk_mon.py", "blk_mon.py"],
+    ["dcc_cmd_pio.py", "dcc_cmd_pio.py"],
+    ["dcc_cmd_util.py", "dcc_cmd_util.py"],
+    ["dcc_command.py", "dcc_command.py"],
+    ["dcc_rc_ch1.py", "dcc_rc_ch1.py"],
+    ["dcc_rc_ch2.py", "dcc_rc_ch2.py"],
+    ["dcc_rc_pio.py", "dcc_rc_pio.py"],
+    ["trk_mon.py", "trk_mon.py"]
+  ],
+  "deps": [
+    ["github:redhead-p/rp2da2/lib"]
+  ],
+  "version": "0.1.0-alpha"
+}
