@@ -10,7 +10,7 @@
     ["trk_mon.py", "trk_mon.py"]
   ],
   "deps": [
-    ["github:redhead-p/rp2da2/lib","main"]
+    ["github:redhead-p/rp2da2/lib", "main"]
   ],
   "version": "0.1.0-alpha"
 }

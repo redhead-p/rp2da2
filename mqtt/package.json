@@ -1,0 +1,13 @@
+{
+  "urls": [
+    ["mqtt_client.py", "mqtt_client.py"],
+    ["mqtt_cmd.py", "mqtt_cmd.py"],
+    ["mqtt_lcl.py", "mqtt_lcl.py"],
+    ["mqtt.py", "mqtt.py"],
+    ["wifi.py", "wifi.py"]
+  ],
+  "deps": [
+    ["github:redhead-p/rp2da2/rp2dcc", "main"]
+  ],
+  "version": "0.1.0-alpha"
+}
