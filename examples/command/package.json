@@ -1,9 +1,0 @@
-{
-  "urls": [
-    ["/main.py", "main.py"]
-  ],
-  "deps": [
-    ["github:redhead-p/rp2da2/mqtt", "main"]
-  ],
-  "version": "0.1.0-alpha"
-}
