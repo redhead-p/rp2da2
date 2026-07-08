@@ -41,6 +41,10 @@ This split keeps time-critical hardware activity separate from UI and monitoring
 
 ## Core Software Components
 
+The key softare components are illustrated in the UML component diagram.
+
+![UML Component Diagram](softwaredesign.svg)
+
 ### Device Drivers
 
 The base device layer provides a shared mechanism for registering devices, raising events, and passing those events through a queue. This makes it possible for hardware interrupts and background tasks to report changes without tightly coupling them to the main application loop.
@@ -53,9 +57,9 @@ The DCC subsystem is responsible for generating command packets for locomotives 
 
 RailCom-related classes interpret global and local detector events and track occupancy information. They convert raw detector activity into structured block state reports that can be forwarded to the rest of the system.
 
-### MQTT layer
+### Communications layer
 
-The MQTT subsystem provides a small publish/subscribe framework for distributed control. MQTT agents subscribe to specific topics, handle incoming commands, and publish status or event information. This allows the command station to interoperate with tools such as JMRI and other automation nodes without requiring a custom protocol. The agents provide command translation and message routing between the external modules and the local hardware device driver modules.
+Inititally the communications layer uses MQTT in conjunction with Wi-Fi. The MQTT subsystem provides a small publish/subscribe framework for distributed control. MQTT agents subscribe to specific topics, handle incoming commands, and publish status or event information. This allows the command station to interoperate with tools such as JMRI and other automation nodes without requiring a custom protocol. The agents provide command translation and message routing between the external modules and the local hardware device driver modules.
 
 ### Diagnostics and user feedback
 
