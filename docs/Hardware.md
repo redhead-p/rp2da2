@@ -23,7 +23,8 @@ RailCom detectors have been specifically designed for this project with circuit
 schematics and PCB designs for both command station and local detectors. The PCB designs
 and applications have been designed around a standard set of GPIO pin
 allocations. The local RailCom detector also provides a block occupancy indication using
-conventional current flow detection. This triggers at a nominal 1 mA enabling detection of 10 kΩ wheel set resistors.
+conventional current flow detection. This triggers at a nominal 1 mA enabling detection
+of 10 kΩ wheel set resistors.
 SPI1 and other GPIO pins not currently used by the application suite
 may be exposed PCB on headers.
 
@@ -31,7 +32,6 @@ may be exposed PCB on headers.
 
 On the command station one global detector is
 available for the receipt of Channel 2 datagrams. Pin allocations for a Pico based command station are as follows.
-Pin allocations on other platforms may differ.
 
 |GPIO Pin (Pico & Nano)|Function|
 |---|---|
@@ -102,7 +102,7 @@ State Machine and a State Machine may also be used to drive a NeoPixel chain.
 Note that the tables show the default radio state
 machines as grabbed if available by the MicroPython
 Wi-Fi module/RP SDK library.
-The MicroPython application code leaves these
+The DCC & RailCom MicroPython application code leaves these
 free for the radio rather than specifically
 allocating them.
 

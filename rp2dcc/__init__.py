@@ -1,31 +1,11 @@
-"""DCC and RailCom Package
+"""**DCC and RailCom Package**
 
 This contains DCC and RailCom modules.
 
 The following diagram shows the DCC and RailCom classes.
 
-.. figure:: images/rp2dcc.png
-    :width: 800px
+.. figure:: images/dcc.svg
     :align: center
 
-    **DCC and RailCom Class Diagram**
-
-The following diagram is a Sequence Diagram for reading the RailCom channel 1 response.    
-
-.. figure:: images/DCC-Ch1.png
-    :width: 800px
-    :align: center
-
-    **DCC Channel 1 Sequence Diagram**
-
-The following diagram is a Sequence Diagram for reading the RailCom channel 2 response.    
-
-.. figure:: images/DCC-Ch2.png
-    :width: 800px
-    :align: center
-
-    **DCC Channel 2 Sequence Diagram**
-
-
-
+**DCC and RailCom Class Diagram**
 """

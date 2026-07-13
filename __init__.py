@@ -15,10 +15,6 @@ Features include:
     - Wireless Communications using MQTT
 """
 
-#.. image:: BLE.png
-
-
-
 # This module is for documentary purposes only.  pydoctor winges if not present.
 # It need not be copied to the runtime device.
 # The docstring above is used to generate the package's primary documentation page.

@@ -2,7 +2,8 @@
     "python.analysis.extraPaths": [
         "~/Projects/micropython/py",
         "./lib",
-        "./rp2dcc"
+        "./rp2dcc",
+        "./mqtt"
     ],
     "python.testing.unittestArgs": [
         "-v",

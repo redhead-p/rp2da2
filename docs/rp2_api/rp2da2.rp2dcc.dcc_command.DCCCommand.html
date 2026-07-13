@@ -1,0 +1,1425 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+          "DTD/xhtml1-strict.dtd">
+<html>
+  
+
+  <head>
+    
+    <title>rp2da2.rp2dcc.dcc_command.DCCCommand</title>
+    <meta name="generator" content="pydoctor 25.10.1"> 
+        
+    </meta>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1" />
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="apidocs.css" />
+    <link rel="stylesheet" type="text/css" href="extra.css" />
+    
+</head>
+
+  <body>
+
+    
+
+    <nav class="navbar navbar-default mainnavbar">
+      
+  
+  <div class="container-fluid">
+
+
+    <div class="navbar-header">
+      
+      <div class="navlinks">
+        <span class="navbar-brand">
+          RP2 Distributed Automation <a href="index.html">API Documentation</a>
+        </span>
+
+        <a href="moduleIndex.html">
+          Modules
+        </a>
+
+        <a href="classIndex.html">
+          Classes
+        </a>
+
+        <a href="nameIndex.html">
+          Names
+        </a>
+
+        <div id="search-box-container">
+          <div class="input-group">
+            <input id="search-box" type="search" name="search-query" placeholder="Search..." aria-label="Search" minlength="2" class="form-control" autocomplete="off" />
+            
+            <span class="input-group-btn">
+              <a style="display: none;" class="btn btn-default" id="search-clear-button" title="Clear" onclick="clearSearch()"><img src="fonts/x-circle.svg" alt="Clear" /></a>
+              <a class="btn btn-default" id="apidocs-help-button" title="Help" href="apidocs-help.html"><img src="fonts/info.svg" alt="Help" /></a>
+            </span>
+          </div>
+        </div>
+
+      </div>
+
+      <div id="search-results-container" style="display: none;">
+        
+        <div id="search-buttons">
+          <span class="label label-default" id="search-docstrings-button">
+          <label class="checkbox-inline">
+            <input type="checkbox" id="toggle-search-in-docstrings-checkbox" value="false" onclick="toggleSearchInDocstrings()">
+              search in docstrings
+            </input>
+          </label>
+          </span>
+          
+        </div>
+        
+        <noscript>
+            <h1>Cannot search: JavaScript is not supported/enabled in your browser.</h1>
+        </noscript>
+
+        <div id="search-status"> </div>
+
+        <div class="warning" id="search-warn-box" style="display: none;">
+          <p class="rst-last"><span id="search-warn"></span></p>
+        </div>
+
+        <table id="search-results">
+          <!-- Filled dynamically by JS -->
+        </table>
+        
+        <div style="margin-top: 10px;">
+          <p>For more information on the search, visit the <a href="apidocs-help.html#rst-search">help page</a>.</p>
+        </div>
+      </div>
+
+    </div>
+
+
+  </div>
+</nav>
+    
+    <div class="container-fluid">
+
+      <!-- Side navigation -->
+      <div class="sidebarcontainer" style="display: none;">
+        
+        <div class="sidebar"><nav class="sidebar">
+  
+
+  <div>
+
+      <div class="thingTitle">
+        <span>Class</span>
+        <code class="thisobject"><a href="rp2da2.rp2dcc.dcc_command.DCCCommand.html" class="internal-link" title="This class"><wbr></wbr>DCCCommand</a></code> 
+      </div>
+      
+      <div>
+        
+
+        
+         
+
+        
+        
+
+        <div class="childrenKindTitle">Methods</div>
+        <ul>
+    
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#get_instance" class="internal-link" title="rp2da2.rp2dcc.dcc_command.DCCCommand.get_instance">get<wbr></wbr>_instance</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#__init__" class="internal-link" title="rp2da2.rp2dcc.dcc_command.DCCCommand.__init__">__init__</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#power" class="internal-link" title="rp2da2.rp2dcc.dcc_command.DCCCommand.power">power</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#read_cv" class="internal-link" title="rp2da2.rp2dcc.dcc_command.DCCCommand.read_cv">read<wbr></wbr>_cv</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#reset_counts" class="internal-link" title="rp2da2.rp2dcc.dcc_command.DCCCommand.reset_counts">reset<wbr></wbr>_counts</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#set_fg1" class="internal-link" title="rp2da2.rp2dcc.dcc_command.DCCCommand.set_fg1">set<wbr></wbr>_fg1</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#set_speed" class="internal-link" title="rp2da2.rp2dcc.dcc_command.DCCCommand.set_speed">set<wbr></wbr>_speed</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#wait_for_flag" class="internal-link" title="rp2da2.rp2dcc.dcc_command.DCCCommand.wait_for_flag">wait<wbr></wbr>_for<wbr></wbr>_flag</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#write_cv" class="internal-link" title="rp2da2.rp2dcc.dcc_command.DCCCommand.write_cv">write<wbr></wbr>_cv</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_add_cmd" class="internal-link" title="rp2da2.rp2dcc.dcc_command.DCCCommand._add_cmd">_add<wbr></wbr>_cmd</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_get_cmd" class="internal-link" title="rp2da2.rp2dcc.dcc_command.DCCCommand._get_cmd">_get<wbr></wbr>_cmd</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_nxt_packet" class="internal-link" title="rp2da2.rp2dcc.dcc_command.DCCCommand._nxt_packet">_nxt<wbr></wbr>_packet</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_pom_cmd" class="internal-link" title="rp2da2.rp2dcc.dcc_command.DCCCommand._pom_cmd">_pom<wbr></wbr>_cmd</a></code>
+            </div>
+        
+
+    </li>
+</ul> 
+
+        
+         
+
+        <div class="childrenKindTitle">Attributes</div>
+        <ul>
+    
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#FWD" class="internal-link" title="rp2da2.rp2dcc.dcc_command.DCCCommand.FWD">FWD</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#OFF" class="internal-link" title="rp2da2.rp2dcc.dcc_command.DCCCommand.OFF">OFF</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#ON" class="internal-link" title="rp2da2.rp2dcc.dcc_command.DCCCommand.ON">ON</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#REV" class="internal-link" title="rp2da2.rp2dcc.dcc_command.DCCCommand.REV">REV</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#STOP" class="internal-link" title="rp2da2.rp2dcc.dcc_command.DCCCommand.STOP">STOP</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#counts" class="internal-link" title="rp2da2.rp2dcc.dcc_command.DCCCommand.counts">counts</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_dcc_cmd" class="internal-link" title="rp2da2.rp2dcc.dcc_command.DCCCommand._dcc_cmd">_dcc<wbr></wbr>_cmd</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_active_address" class="internal-link" title="rp2da2.rp2dcc.dcc_command.DCCCommand._active_address">_active<wbr></wbr>_address</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_counts" class="internal-link" title="rp2da2.rp2dcc.dcc_command.DCCCommand._counts">_counts</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_dcc_gen_pio" class="internal-link" title="rp2da2.rp2dcc.dcc_command.DCCCommand._dcc_gen_pio">_dcc<wbr></wbr>_gen<wbr></wbr>_pio</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_idle_packet" class="internal-link" title="rp2da2.rp2dcc.dcc_command.DCCCommand._idle_packet">_idle<wbr></wbr>_packet</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_packet_iter" class="internal-link" title="rp2da2.rp2dcc.dcc_command.DCCCommand._packet_iter">_packet<wbr></wbr>_iter</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_packet_list" class="internal-link" title="rp2da2.rp2dcc.dcc_command.DCCCommand._packet_list">_packet<wbr></wbr>_list</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_pom_packet" class="internal-link" title="rp2da2.rp2dcc.dcc_command.DCCCommand._pom_packet">_pom<wbr></wbr>_packet</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_ready_flag" class="internal-link" title="rp2da2.rp2dcc.dcc_command.DCCCommand._ready_flag">_ready<wbr></wbr>_flag</a></code>
+            </div>
+        
+
+    </li>
+</ul> 
+
+        
+         
+        
+      </div>
+  </div><div>
+
+      <div class="thingTitle">
+        <span>Module</span>
+        <code><a href="rp2da2.rp2dcc.dcc_command.html" class="internal-link" title="The parent of this class">dcc<wbr></wbr>_command</a></code> 
+      </div>
+      
+      <div>
+        
+
+        
+         
+
+        <div class="childrenKindTitle">Classes</div>
+        <ul>
+    
+    <li class=" thisobject">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.rp2dcc.dcc_command.DCCCommand.html" class="internal-link" title="rp2da2.rp2dcc.dcc_command.DCCCommand"><wbr></wbr>DCCCommand</a></code>
+            </div>
+        
+
+    </li>
+</ul>
+
+        
+         
+
+        
+         
+
+        
+         
+
+        
+         
+        
+      </div>
+  </div>
+
+</nav>
+        </div>
+        <div id="collapse-sidebar">
+          <a class="btn btn-link" onclick="toggleSideBarCollapse()" title="Toggle Sidebar Collapse">
+          </a>
+        </div> 
+        <script src="sidebartoggle.js" type="text/javascript"></script>
+       
+      </div>
+
+      <main class="">
+        
+
+        
+
+        <div class="page-header">
+          <h1 class="class"><code><code><a href="index.html" class="internal-link">rp2da2</a></code><wbr></wbr>.<code><a href="rp2da2.rp2dcc.html" class="internal-link" title="rp2da2.rp2dcc">rp2dcc</a></code><wbr></wbr>.<code><a href="rp2da2.rp2dcc.dcc_command.html" class="internal-link" title="rp2da2.rp2dcc.dcc_command">dcc_command</a></code><wbr></wbr>.<code><a href="rp2da2.rp2dcc.dcc_command.DCCCommand.html" class="internal-link" title="rp2da2.rp2dcc.dcc_command.DCCCommand">DCCCommand</a></code></code></h1>
+          <div id="show-private">
+            <button class="btn btn-link" onclick="togglePrivate()">Toggle Private API</button>
+          </div>
+        </div>
+
+        <div class="categoryHeader">
+          class documentation
+        </div>
+
+        <div class="extrasDocstring">
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">DCCCommand</span>:</code></p><p>Constructor: <code><a href="#__init__" class="internal-link" title="rp2da2.rp2dcc.dcc_command.DCCCommand.__init__">DCCCommand()</a></code></p><p><a href="classIndex.html#rp2da2.rp2dcc.dcc_command.DCCCommand">View In Hierarchy</a></p>
+        </div>
+
+        <div class="moduleDocstring">
+          <div><p>DCC Command</p>
+<p>This class manages the DCC command packets. It provides the APIs for the
+registration of DCC commands to be serialised. It performs the scheduling
+and tranmission of command packets.</p>
+</div>
+        </div>
+
+        <div id="split-tables">
+          <table class="children sortable" id="id58">
+  
+  
+  <tr class="classmethod">
+    
+    <td>Class Method</td>
+    <td><code><a href="#get_instance" class="internal-link" title="rp2da2.rp2dcc.dcc_command.DCCCommand.get_instance">get<wbr></wbr>_instance</a></code></td>
+    <td>Get the DCC Command instance.</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#__init__" class="internal-link" title="rp2da2.rp2dcc.dcc_command.DCCCommand.__init__">__init__</a></code></td>
+    <td>DCC Command object constructor</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#power" class="internal-link" title="rp2da2.rp2dcc.dcc_command.DCCCommand.power">power</a></code></td>
+    <td>DCC Power On/Off</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#read_cv" class="internal-link" title="rp2da2.rp2dcc.dcc_command.DCCCommand.read_cv">read<wbr></wbr>_cv</a></code></td>
+    <td>Read CV (POM)</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#reset_counts" class="internal-link" title="rp2da2.rp2dcc.dcc_command.DCCCommand.reset_counts">reset<wbr></wbr>_counts</a></code></td>
+    <td>Reset the command counts</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#set_fg1" class="internal-link" title="rp2da2.rp2dcc.dcc_command.DCCCommand.set_fg1">set<wbr></wbr>_fg1</a></code></td>
+    <td>Set Function Group 1</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#set_speed" class="internal-link" title="rp2da2.rp2dcc.dcc_command.DCCCommand.set_speed">set<wbr></wbr>_speed</a></code></td>
+    <td>Set Speed (including direction)</td>
+  </tr><tr class="method">
+    
+    <td>Async Method</td>
+    <td><code><a href="#wait_for_flag" class="internal-link" title="rp2da2.rp2dcc.dcc_command.DCCCommand.wait_for_flag">wait<wbr></wbr>_for<wbr></wbr>_flag</a></code></td>
+    <td>Wait for the new state available flag</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#write_cv" class="internal-link" title="rp2da2.rp2dcc.dcc_command.DCCCommand.write_cv">write<wbr></wbr>_cv</a></code></td>
+    <td>Write CV (POM)</td>
+  </tr><tr class="constant">
+    
+    <td>Constant</td>
+    <td><code><a href="#FWD" class="internal-link" title="rp2da2.rp2dcc.dcc_command.DCCCommand.FWD">FWD</a></code></td>
+    <td>Forward direction</td>
+  </tr><tr class="constant">
+    
+    <td>Constant</td>
+    <td><code><a href="#OFF" class="internal-link" title="rp2da2.rp2dcc.dcc_command.DCCCommand.OFF">OFF</a></code></td>
+    <td>Power Off</td>
+  </tr><tr class="constant">
+    
+    <td>Constant</td>
+    <td><code><a href="#ON" class="internal-link" title="rp2da2.rp2dcc.dcc_command.DCCCommand.ON">ON</a></code></td>
+    <td>Power On</td>
+  </tr><tr class="constant">
+    
+    <td>Constant</td>
+    <td><code><a href="#REV" class="internal-link" title="rp2da2.rp2dcc.dcc_command.DCCCommand.REV">REV</a></code></td>
+    <td>Reverse direction</td>
+  </tr><tr class="constant">
+    
+    <td>Constant</td>
+    <td><code><a href="#STOP" class="internal-link" title="rp2da2.rp2dcc.dcc_command.DCCCommand.STOP">STOP</a></code></td>
+    <td>Stopped N.B this is included for completeness</td>
+  </tr><tr class="property">
+    
+    <td>Property</td>
+    <td><code><a href="#counts" class="internal-link" title="rp2da2.rp2dcc.dcc_command.DCCCommand.counts">counts</a></code></td>
+    <td>Get the command counts</td>
+  </tr><tr class="method private">
+    
+    <td>Method</td>
+    <td><code><a href="#_add_cmd" class="internal-link" title="rp2da2.rp2dcc.dcc_command.DCCCommand._add_cmd">_add<wbr></wbr>_cmd</a></code></td>
+    <td>Add Command to Packet List</td>
+  </tr><tr class="method private">
+    
+    <td>Method</td>
+    <td><code><a href="#_get_cmd" class="internal-link" title="rp2da2.rp2dcc.dcc_command.DCCCommand._get_cmd">_get<wbr></wbr>_cmd</a></code></td>
+    <td>Get a command from the packet list</td>
+  </tr><tr class="method private">
+    
+    <td>Method</td>
+    <td><code><a href="#_nxt_packet" class="internal-link" title="rp2da2.rp2dcc.dcc_command.DCCCommand._nxt_packet">_nxt<wbr></wbr>_packet</a></code></td>
+    <td>Generate next packet.</td>
+  </tr><tr class="method private">
+    
+    <td>Method</td>
+    <td><code><a href="#_pom_cmd" class="internal-link" title="rp2da2.rp2dcc.dcc_command.DCCCommand._pom_cmd">_pom<wbr></wbr>_cmd</a></code></td>
+    <td>Process Program on Main command</td>
+  </tr><tr class="classvariable private">
+    
+    <td>Class Variable</td>
+    <td><code><a href="#_dcc_cmd" class="internal-link" title="rp2da2.rp2dcc.dcc_command.DCCCommand._dcc_cmd">_dcc<wbr></wbr>_cmd</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable private">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#_active_address" class="internal-link" title="rp2da2.rp2dcc.dcc_command.DCCCommand._active_address">_active<wbr></wbr>_address</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable private">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#_counts" class="internal-link" title="rp2da2.rp2dcc.dcc_command.DCCCommand._counts">_counts</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable private">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#_dcc_gen_pio" class="internal-link" title="rp2da2.rp2dcc.dcc_command.DCCCommand._dcc_gen_pio">_dcc<wbr></wbr>_gen<wbr></wbr>_pio</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable private">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#_idle_packet" class="internal-link" title="rp2da2.rp2dcc.dcc_command.DCCCommand._idle_packet">_idle<wbr></wbr>_packet</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable private">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#_packet_iter" class="internal-link" title="rp2da2.rp2dcc.dcc_command.DCCCommand._packet_iter">_packet<wbr></wbr>_iter</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable private">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#_packet_list" class="internal-link" title="rp2da2.rp2dcc.dcc_command.DCCCommand._packet_list">_packet<wbr></wbr>_list</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable private">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#_pom_packet" class="internal-link" title="rp2da2.rp2dcc.dcc_command.DCCCommand._pom_packet">_pom<wbr></wbr>_packet</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable private">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#_ready_flag" class="internal-link" title="rp2da2.rp2dcc.dcc_command.DCCCommand._ready_flag">_ready<wbr></wbr>_flag</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr>
+</table>
+          
+
+            
+        </div>
+
+        <div id="child-list">
+          <div class="baseclassmethod">
+  
+  
+  <a name="rp2da2.rp2dcc.dcc_command.DCCCommand.get_instance">
+    
+  </a>
+  <a name="get_instance">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <div><span class="decorator">@classmethod<br /></span></div>
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">get_instance</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">cls</span></span>):</span>
+    
+    <a class="headerLink" href="#get_instance" title="rp2da2.rp2dcc.dcc_command.DCCCommand.get_instance">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Get the DCC Command instance.</p>
+<p>This returns the singleton DCC Command instance.
+It instantiates DCC Command on the first call.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td colspan="2">The DCC Command instance</td></tr></table></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="rp2da2.rp2dcc.dcc_command.DCCCommand.__init__">
+    
+  </a>
+  <a name="__init__">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">__init__</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span></span>):</span>
+    
+    <a class="headerLink" href="#__init__" title="rp2da2.rp2dcc.dcc_command.DCCCommand.__init__">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>DCC Command object constructor</p>
+<p>This initialises the DCC command manager singleton.  An attempt to create a 2nd
+instance will cause an assertion error.</p>
+<p>The dictionary for the packet list is created and the
+FIFO buffer allocated.</p>
+</div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="rp2da2.rp2dcc.dcc_command.DCCCommand.power">
+    
+  </a>
+  <a name="power">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">power</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">p=None</span>):</span>
+    
+    <a class="headerLink" href="#power" title="rp2da2.rp2dcc.dcc_command.DCCCommand.power">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>DCC Power On/Off</p>
+<p>Start and stop command packet transmission scheduling.
+PIO stop start and power to track delegated to the DCC tx class (pio_pwr).</p>
+<p>Changing the power state will cause the new power state available flag to be set.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">p</span></td><td class="fieldArgDesc">1 for power on, 0 for power off, None for get power status</td></tr></table><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td colspan="2">power status as held by the DCC generator</td></tr></table></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="rp2da2.rp2dcc.dcc_command.DCCCommand.read_cv">
+    
+  </a>
+  <a name="read_cv">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">read_cv</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">address, </span><span class="rst-sig-param">cv_num</span>):</span>
+    
+    <a class="headerLink" href="#read_cv" title="rp2da2.rp2dcc.dcc_command.DCCCommand.read_cv">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Read CV (POM)</p>
+<p>This initiates reading a CV using Programming on Main in conjunction with RailCom.</p>
+<p>The command is validated and the read request scheduled for action. The addressed
+decoder must be active and the command will be rejected by the command generator class
+this is not true.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">address</span></td><td class="fieldArgDesc">decoder address</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">cv<wbr></wbr>_num</span></td><td class="fieldArgDesc">cv number as entered - users count from 1, DCC counts from 0!</td></tr></table></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="rp2da2.rp2dcc.dcc_command.DCCCommand.reset_counts">
+    
+  </a>
+  <a name="reset_counts">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">reset_counts</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span></span>):</span>
+    
+    <a class="headerLink" href="#reset_counts" title="rp2da2.rp2dcc.dcc_command.DCCCommand.reset_counts">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Reset the command counts</p>
+<p>This resets the command counts to zero. It is used to reset the command counts
+after a report has been printed.</p>
+</div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="rp2da2.rp2dcc.dcc_command.DCCCommand.set_fg1">
+    
+  </a>
+  <a name="set_fg1">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">set_fg1</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">address, </span><span class="rst-sig-param">f_num, </span><span class="rst-sig-param">state</span>):</span>
+    
+    <a class="headerLink" href="#set_fg1" title="rp2da2.rp2dcc.dcc_command.DCCCommand.set_fg1">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Set Function Group 1</p>
+<p>This sets or clears a function in group 1.  The forward light
+is usually function number 0.</p>
+<p>If there is a function group 1 command in the packet list for the
+addressed decoder it is updated. Otherwise the command is added
+to the list.</p>
+<p>See NMRA S-9.2.1  Section 2.3.4</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">address</span></td><td class="fieldArgDesc">the address of the decoder - may be short or long</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">f<wbr></wbr>_num</span></td><td class="fieldArgDesc">function number to set or clear</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">state</span></td><td class="fieldArgDesc">1 for set, 0 for clear</td></tr></table><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td colspan="2">True if validation is passed and the command is added
+to the list or modified. False if validation fails.</td></tr></table></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="rp2da2.rp2dcc.dcc_command.DCCCommand.set_speed">
+    
+  </a>
+  <a name="set_speed">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">set_speed</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">address, </span><span class="rst-sig-param">dir, </span><span class="rst-sig-param">speed=0</span>):</span>
+    
+    <a class="headerLink" href="#set_speed" title="rp2da2.rp2dcc.dcc_command.DCCCommand.set_speed">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Set Speed (including direction)</p>
+<p>If there is a speed command object for the adressed decoder in the
+list already the object is updated otherwise a new speed command
+is created.  The input is validated.  The packet generated will be
+for a 128 step speed setting and
+decoders must be configured for 28/128 speed steps.</p>
+<p>See NMRA S-9.2.1  Section 2.3.2.1</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">address</span></td><td class="fieldArgDesc">the address of the decoder - may be short or long</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">dir</span></td><td class="fieldArgDesc">the direction - forward or reverse - stop is treated as invalid</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">speed</span></td><td class="fieldArgDesc">the speed to be set - range 0 to 127 - default 0</td></tr></table><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td colspan="2">True if validation is passed and the command is added to the list
+or modified. False if validation fails.</td></tr></table></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="rp2da2.rp2dcc.dcc_command.DCCCommand.wait_for_flag">
+    
+  </a>
+  <a name="wait_for_flag">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">async&#160;def</span>&#160;<span class="py-defname">wait_for_flag</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span></span>):</span>
+    
+    <a class="headerLink" href="#wait_for_flag" title="rp2da2.rp2dcc.dcc_command.DCCCommand.wait_for_flag">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Wait for the new state available flag</p>
+<p>This waits for the asynchio thread safe flag to be set. Setting the flag is
+triggered by a change to the power on/off status.</p>
+</div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="rp2da2.rp2dcc.dcc_command.DCCCommand.write_cv">
+    
+  </a>
+  <a name="write_cv">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">write_cv</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">address, </span><span class="rst-sig-param">cv_num, </span><span class="rst-sig-param">new_val</span>):</span>
+    
+    <a class="headerLink" href="#write_cv" title="rp2da2.rp2dcc.dcc_command.DCCCommand.write_cv">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Write CV (POM)</p>
+<p>This initiates writing a CV using Programming on Main in conjunction with RailCom.</p>
+<p>The command is validated and the write request scheduled for action. The addressed
+decoder must be active and the command will be rejected by the command generator class
+this is not true.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self</span></td><td class="fieldArgDesc"></td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">address</span></td><td class="fieldArgDesc"></td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">cv<wbr></wbr>_num</span></td><td class="fieldArgDesc">cv number as entered - users count from 1, DCC counts from 0!</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">new<wbr></wbr>_val</span></td><td class="fieldArgDesc">the new value for the CV</td></tr></table></div>
+  </div>
+</div><div class="baseconstant">
+  
+  
+  <a name="rp2da2.rp2dcc.dcc_command.DCCCommand.FWD">
+    
+  </a>
+  <a name="FWD">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">FWD</span> =
+    
+    <a class="headerLink" href="#FWD" title="rp2da2.rp2dcc.dcc_command.DCCCommand.FWD">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p>Forward direction</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>1)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant">
+  
+  
+  <a name="rp2da2.rp2dcc.dcc_command.DCCCommand.OFF">
+    
+  </a>
+  <a name="OFF">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">OFF</span> =
+    
+    <a class="headerLink" href="#OFF" title="rp2da2.rp2dcc.dcc_command.DCCCommand.OFF">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p>Power Off</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>0)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant">
+  
+  
+  <a name="rp2da2.rp2dcc.dcc_command.DCCCommand.ON">
+    
+  </a>
+  <a name="ON">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">ON</span> =
+    
+    <a class="headerLink" href="#ON" title="rp2da2.rp2dcc.dcc_command.DCCCommand.ON">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p>Power On</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>1)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant">
+  
+  
+  <a name="rp2da2.rp2dcc.dcc_command.DCCCommand.REV">
+    
+  </a>
+  <a name="REV">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">REV</span> =
+    
+    <a class="headerLink" href="#REV" title="rp2da2.rp2dcc.dcc_command.DCCCommand.REV">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p>Reverse direction</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>(-1))</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant">
+  
+  
+  <a name="rp2da2.rp2dcc.dcc_command.DCCCommand.STOP">
+    
+  </a>
+  <a name="STOP">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">STOP</span> =
+    
+    <a class="headerLink" href="#STOP" title="rp2da2.rp2dcc.dcc_command.DCCCommand.STOP">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p>Stopped N.B this is included for completeness</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>0)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseproperty">
+  
+  
+  <a name="rp2da2.rp2dcc.dcc_command.DCCCommand.counts">
+    
+  </a>
+  <a name="counts">
+    
+  </a>
+  <div class="functionHeader">
+    <div><span class="decorator">@property<br /></span></div>
+    <span class="py-defname">counts</span> =
+    
+    <a class="headerLink" href="#counts" title="rp2da2.rp2dcc.dcc_command.DCCCommand.counts">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p>Get the command counts</p>
+<p>This returns the counts of commands sent by type. The counts are reset by the
+reset_counts method.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td colspan="2">A dictionary of command counts by type.</td></tr></table></div>
+    
+  </div>
+</div><div class="basemethod private">
+  
+  
+  <a name="rp2da2.rp2dcc.dcc_command.DCCCommand._add_cmd">
+    
+  </a>
+  <a name="_add_cmd">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">_add_cmd</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">command</span>):</span>
+    
+    <a class="headerLink" href="#_add_cmd" title="rp2da2.rp2dcc.dcc_command.DCCCommand._add_cmd">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Add Command to Packet List</p></div>
+  </div>
+</div><div class="basemethod private">
+  
+  
+  <a name="rp2da2.rp2dcc.dcc_command.DCCCommand._get_cmd">
+    
+  </a>
+  <a name="_get_cmd">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">_get_cmd</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">key</span>):</span>
+    
+    <a class="headerLink" href="#_get_cmd" title="rp2da2.rp2dcc.dcc_command.DCCCommand._get_cmd">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Get a command from the packet list</p>
+<p>raises KeyError if not found</p>
+</div>
+  </div>
+</div><div class="basemethod private">
+  
+  
+  <a name="rp2da2.rp2dcc.dcc_command.DCCCommand._nxt_packet">
+    
+  </a>
+  <a name="_nxt_packet">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">_nxt_packet</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">_</span>):</span>
+    
+    <a class="headerLink" href="#_nxt_packet" title="rp2da2.rp2dcc.dcc_command.DCCCommand._nxt_packet">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Generate next packet.</p>
+<p>This runs in soft interrupt or timer callback context.</p>
+<p>This is called when the next packet in the
+list is to be serialised out on the DCC interface.
+If the list is empty or if the next packet is unavailable (e.g. being updated)
+the DCC Idle packet is serialised.</p>
+<p>The function is triggered via a soft ISR.  If RailCom is enabled, this is connected to the enable
+pin rising indicating the end of the cutout period assocated with the preceding command.</p>
+<p><strong>TODO</strong> If RailCom not enabled this will be triggered by the PIO program itself when serialising the packet
+end bit.</p>
+<p>This function instructs the next Command object in the list to send its command.</p>
+</div>
+  </div>
+</div><div class="basemethod private">
+  
+  
+  <a name="rp2da2.rp2dcc.dcc_command.DCCCommand._pom_cmd">
+    
+  </a>
+  <a name="_pom_cmd">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">_pom_cmd</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">command</span>):</span>
+    
+    <a class="headerLink" href="#_pom_cmd" title="rp2da2.rp2dcc.dcc_command.DCCCommand._pom_cmd">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Process Program on Main command</p>
+<p>The response to a POM command may be delayed. The decoder does not
+have to put the POM response in the immediately following window and
+may respond following a subsequent command to that decoder.</p>
+<p>To ensure that there is a subsequent command the address is checked
+to see if in the active list. The command will be rejected if the
+address is not in the active list or there is a POM command already
+being processed.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td colspan="2">True if command accepted
+False if command rejected</td></tr></table></div>
+  </div>
+</div><div class="baseclassvariable private">
+  
+  
+  <a name="rp2da2.rp2dcc.dcc_command.DCCCommand._dcc_cmd">
+    
+  </a>
+  <a name="_dcc_cmd">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_dcc_cmd</span> =
+    
+    <a class="headerLink" href="#_dcc_cmd" title="rp2da2.rp2dcc.dcc_command.DCCCommand._dcc_cmd">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable private">
+  
+  
+  <a name="rp2da2.rp2dcc.dcc_command.DCCCommand._active_address">
+    
+  </a>
+  <a name="_active_address">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_active_address</span>: <code>set</code> =
+    
+    <a class="headerLink" href="#_active_address" title="rp2da2.rp2dcc.dcc_command.DCCCommand._active_address">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable private">
+  
+  
+  <a name="rp2da2.rp2dcc.dcc_command.DCCCommand._counts">
+    
+  </a>
+  <a name="_counts">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_counts</span>: <code>dict</code> =
+    
+    <a class="headerLink" href="#_counts" title="rp2da2.rp2dcc.dcc_command.DCCCommand._counts">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable private">
+  
+  
+  <a name="rp2da2.rp2dcc.dcc_command.DCCCommand._dcc_gen_pio">
+    
+  </a>
+  <a name="_dcc_gen_pio">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_dcc_gen_pio</span> =
+    
+    <a class="headerLink" href="#_dcc_gen_pio" title="rp2da2.rp2dcc.dcc_command.DCCCommand._dcc_gen_pio">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable private">
+  
+  
+  <a name="rp2da2.rp2dcc.dcc_command.DCCCommand._idle_packet">
+    
+  </a>
+  <a name="_idle_packet">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_idle_packet</span> =
+    
+    <a class="headerLink" href="#_idle_packet" title="rp2da2.rp2dcc.dcc_command.DCCCommand._idle_packet">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable private">
+  
+  
+  <a name="rp2da2.rp2dcc.dcc_command.DCCCommand._packet_iter">
+    
+  </a>
+  <a name="_packet_iter">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_packet_iter</span> =
+    
+    <a class="headerLink" href="#_packet_iter" title="rp2da2.rp2dcc.dcc_command.DCCCommand._packet_iter">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable private">
+  
+  
+  <a name="rp2da2.rp2dcc.dcc_command.DCCCommand._packet_list">
+    
+  </a>
+  <a name="_packet_list">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_packet_list</span>: <code>dict</code> =
+    
+    <a class="headerLink" href="#_packet_list" title="rp2da2.rp2dcc.dcc_command.DCCCommand._packet_list">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable private">
+  
+  
+  <a name="rp2da2.rp2dcc.dcc_command.DCCCommand._pom_packet">
+    
+  </a>
+  <a name="_pom_packet">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_pom_packet</span> =
+    
+    <a class="headerLink" href="#_pom_packet" title="rp2da2.rp2dcc.dcc_command.DCCCommand._pom_packet">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable private">
+  
+  
+  <a name="rp2da2.rp2dcc.dcc_command.DCCCommand._ready_flag">
+    
+  </a>
+  <a name="_ready_flag">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_ready_flag</span> =
+    
+    <a class="headerLink" href="#_ready_flag" title="rp2da2.rp2dcc.dcc_command.DCCCommand._ready_flag">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div>
+        </div>
+      
+      </main>
+    </div>
+
+    <footer class="navbar navbar-default">
+
+  
+  <div class="container-fluid">
+    <a href="index.html">API Documentation</a> for RP2 Distributed Automation,
+  generated by <a href="https://github.com/twisted/pydoctor/">pydoctor</a>
+    25.10.1 at 2026-07-13 14:55:02.
+  </div>
+
+  <!-- Search related scripts needs to be loaded at the end of HTML 
+    parsing not to introduce overhead and display HTML data asap -->
+  <script src="ajax.js" type="text/javascript"></script>
+  <script src="searchlib.js" type="text/javascript"></script>
+  <script src="search.js" type="text/javascript"></script>
+
+</footer>
+  
+    <script src="pydoctor.js" type="text/javascript"></script>
+
+  </body>
+</html>

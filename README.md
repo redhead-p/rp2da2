@@ -37,7 +37,7 @@ More detail is provided in the [hardware section](docs/Hardware.md).
 
 High level softare design is covered in the [design document](docs/Design.md).
 
-API details for key components are in the [API section](docs/API.md).
+Full API details and additional design information are in the [API section](docs/rp2_api/index.html). This documentation is generated from Python 'docstrings' in the code modules. There are also API details for [key components](docs/API.md).
 
 Details of diagnostics and testing are in the [testing section](docs/Testing.md)
 

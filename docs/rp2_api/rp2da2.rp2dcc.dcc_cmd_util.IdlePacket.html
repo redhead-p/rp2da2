@@ -1,0 +1,719 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+          "DTD/xhtml1-strict.dtd">
+<html>
+  
+
+  <head>
+    
+    <title>rp2da2.rp2dcc.dcc_cmd_util.IdlePacket</title>
+    <meta name="generator" content="pydoctor 25.10.1"> 
+        
+    </meta>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1" />
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="apidocs.css" />
+    <link rel="stylesheet" type="text/css" href="extra.css" />
+    
+</head>
+
+  <body>
+
+    
+
+    <nav class="navbar navbar-default mainnavbar">
+      
+  
+  <div class="container-fluid">
+
+
+    <div class="navbar-header">
+      
+      <div class="navlinks">
+        <span class="navbar-brand">
+          RP2 Distributed Automation <a href="index.html">API Documentation</a>
+        </span>
+
+        <a href="moduleIndex.html">
+          Modules
+        </a>
+
+        <a href="classIndex.html">
+          Classes
+        </a>
+
+        <a href="nameIndex.html">
+          Names
+        </a>
+
+        <div id="search-box-container">
+          <div class="input-group">
+            <input id="search-box" type="search" name="search-query" placeholder="Search..." aria-label="Search" minlength="2" class="form-control" autocomplete="off" />
+            
+            <span class="input-group-btn">
+              <a style="display: none;" class="btn btn-default" id="search-clear-button" title="Clear" onclick="clearSearch()"><img src="fonts/x-circle.svg" alt="Clear" /></a>
+              <a class="btn btn-default" id="apidocs-help-button" title="Help" href="apidocs-help.html"><img src="fonts/info.svg" alt="Help" /></a>
+            </span>
+          </div>
+        </div>
+
+      </div>
+
+      <div id="search-results-container" style="display: none;">
+        
+        <div id="search-buttons">
+          <span class="label label-default" id="search-docstrings-button">
+          <label class="checkbox-inline">
+            <input type="checkbox" id="toggle-search-in-docstrings-checkbox" value="false" onclick="toggleSearchInDocstrings()">
+              search in docstrings
+            </input>
+          </label>
+          </span>
+          
+        </div>
+        
+        <noscript>
+            <h1>Cannot search: JavaScript is not supported/enabled in your browser.</h1>
+        </noscript>
+
+        <div id="search-status"> </div>
+
+        <div class="warning" id="search-warn-box" style="display: none;">
+          <p class="rst-last"><span id="search-warn"></span></p>
+        </div>
+
+        <table id="search-results">
+          <!-- Filled dynamically by JS -->
+        </table>
+        
+        <div style="margin-top: 10px;">
+          <p>For more information on the search, visit the <a href="apidocs-help.html#rst-search">help page</a>.</p>
+        </div>
+      </div>
+
+    </div>
+
+
+  </div>
+</nav>
+    
+    <div class="container-fluid">
+
+      <!-- Side navigation -->
+      <div class="sidebarcontainer" style="display: none;">
+        
+        <div class="sidebar"><nav class="sidebar">
+  
+
+  <div>
+
+      <div class="thingTitle">
+        <span>Class</span>
+        <code class="thisobject"><a href="rp2da2.rp2dcc.dcc_cmd_util.IdlePacket.html" class="internal-link" title="This class"><wbr></wbr>Idle<wbr></wbr>Packet</a></code> 
+      </div>
+      
+      <div>
+        
+
+        
+         
+
+        
+        
+
+        <div class="childrenKindTitle">Methods</div>
+        <ul>
+    
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#__init__" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_util.IdlePacket.__init__">__init__</a></code>
+            </div>
+        
+
+    </li>
+</ul> 
+
+        <div class="childrenKindTitle">Inherited Methods</div>
+        <ul>
+    
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.rp2dcc.dcc_cmd_util.CommandPacket.html#is_locked" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_util.CommandPacket.is_locked">is<wbr></wbr>_locked</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.rp2dcc.dcc_cmd_util.CommandPacket.html#set_buffer" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_util.CommandPacket.set_buffer">set<wbr></wbr>_buffer</a></code>
+            </div>
+        
+
+    </li>
+</ul> 
+
+        <div class="childrenKindTitle">Attributes</div>
+        <ul>
+    
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#TYPE" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_util.IdlePacket.TYPE">TYPE</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_address" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_util.IdlePacket._address">_address</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_type" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_util.IdlePacket._type">_type</a></code>
+            </div>
+        
+
+    </li>
+</ul> 
+
+        <div class="childrenKindTitle">Inherited Attributes</div>
+        <ul>
+    
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.rp2dcc.dcc_cmd_util.CommandPacket.html#BASE_LONG_ADDR" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_util.CommandPacket.BASE_LONG_ADDR">BASE<wbr></wbr>_LONG<wbr></wbr>_ADDR</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.rp2dcc.dcc_cmd_util.CommandPacket.html#MAX_LONG_ADDR" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_util.CommandPacket.MAX_LONG_ADDR">MAX<wbr></wbr>_LONG<wbr></wbr>_ADDR</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.rp2dcc.dcc_cmd_util.CommandPacket.html#MIN_LONG_ADDR" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_util.CommandPacket.MIN_LONG_ADDR">MIN<wbr></wbr>_LONG<wbr></wbr>_ADDR</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.rp2dcc.dcc_cmd_util.CommandPacket.html#NOT_SENT" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_util.CommandPacket.NOT_SENT">NOT<wbr></wbr>_SENT</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.rp2dcc.dcc_cmd_util.CommandPacket.html#SENT" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_util.CommandPacket.SENT">SENT</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.rp2dcc.dcc_cmd_util.CommandPacket.html#SENT_POM" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_util.CommandPacket.SENT_POM">SENT<wbr></wbr>_POM</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.rp2dcc.dcc_cmd_util.CommandPacket.html#address" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_util.CommandPacket.address">address</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.rp2dcc.dcc_cmd_util.CommandPacket.html#packet_buffer" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_util.CommandPacket.packet_buffer">packet<wbr></wbr>_buffer</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.rp2dcc.dcc_cmd_util.CommandPacket.html#type" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_util.CommandPacket.type">type</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.rp2dcc.dcc_cmd_util.CommandPacket.html#_packet_buff" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_util.CommandPacket._packet_buff">_packet<wbr></wbr>_buff</a></code>
+            </div>
+        
+
+    </li>
+</ul> 
+        
+      </div>
+  </div><div>
+
+      <div class="thingTitle">
+        <span>Module</span>
+        <code><a href="rp2da2.rp2dcc.dcc_cmd_util.html" class="internal-link" title="The parent of this class">dcc<wbr></wbr>_cmd<wbr></wbr>_util</a></code> 
+      </div>
+      
+      <div>
+        
+
+        
+         
+
+        <div class="childrenKindTitle">Classes</div>
+        <ul>
+    
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.rp2dcc.dcc_cmd_util.CommandPacket.html" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_util.CommandPacket"><wbr></wbr>Command<wbr></wbr>Packet</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.rp2dcc.dcc_cmd_util.CV_Access.html" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_util.CV_Access"><wbr></wbr>CV_<wbr></wbr>Access</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.rp2dcc.dcc_cmd_util.FGrp1Command.html" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_util.FGrp1Command"><wbr></wbr>FGrp1<wbr></wbr>Command</a></code>
+            </div>
+        
+
+    </li><li class=" thisobject">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.rp2dcc.dcc_cmd_util.IdlePacket.html" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_util.IdlePacket"><wbr></wbr>Idle<wbr></wbr>Packet</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.rp2dcc.dcc_cmd_util.SpeedCommand.html" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_util.SpeedCommand"><wbr></wbr>Speed<wbr></wbr>Command</a></code>
+            </div>
+        
+
+    </li>
+</ul>
+
+        
+         
+
+        
+         
+
+        <div class="childrenKindTitle">Variables</div>
+        <ul>
+    
+    <li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.rp2dcc.dcc_cmd_util.html#_DCC_PE1_CU" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_util._DCC_PE1_CU">_DCC<wbr></wbr>_PE1<wbr></wbr>_CU</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.rp2dcc.dcc_cmd_util.html#_DCC_PREAMBLE" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_util._DCC_PREAMBLE">_DCC<wbr></wbr>_PREAMBLE</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.rp2dcc.dcc_cmd_util.html#_F_GROUP_1" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_util._F_GROUP_1">_F<wbr></wbr>_GROUP<wbr></wbr>_1</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.rp2dcc.dcc_cmd_util.html#_F_NUM_ENCODE" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_util._F_NUM_ENCODE">_F<wbr></wbr>_NUM<wbr></wbr>_ENCODE</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.rp2dcc.dcc_cmd_util.html#_IDLE_PACKET" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_util._IDLE_PACKET">_IDLE<wbr></wbr>_PACKET</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.rp2dcc.dcc_cmd_util.html#_SPD_128" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_util._SPD_128">_SPD<wbr></wbr>_128</a></code>
+            </div>
+        
+
+    </li>
+</ul> 
+
+        
+         
+        
+      </div>
+  </div>
+
+</nav>
+        </div>
+        <div id="collapse-sidebar">
+          <a class="btn btn-link" onclick="toggleSideBarCollapse()" title="Toggle Sidebar Collapse">
+          </a>
+        </div> 
+        <script src="sidebartoggle.js" type="text/javascript"></script>
+       
+      </div>
+
+      <main class="">
+        
+
+        
+
+        <div class="page-header">
+          <h1 class="class"><code><code><a href="index.html" class="internal-link">rp2da2</a></code><wbr></wbr>.<code><a href="rp2da2.rp2dcc.html" class="internal-link" title="rp2da2.rp2dcc">rp2dcc</a></code><wbr></wbr>.<code><a href="rp2da2.rp2dcc.dcc_cmd_util.html" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_util">dcc_cmd_util</a></code><wbr></wbr>.<code><a href="rp2da2.rp2dcc.dcc_cmd_util.IdlePacket.html" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_util.IdlePacket">IdlePacket</a></code></code></h1>
+          <div id="show-private">
+            <button class="btn btn-link" onclick="togglePrivate()">Toggle Private API</button>
+          </div>
+        </div>
+
+        <div class="categoryHeader">
+          class documentation
+        </div>
+
+        <div class="extrasDocstring">
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">IdlePacket</span>(<a href="rp2da2.rp2dcc.dcc_cmd_util.CommandPacket.html" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_util.CommandPacket">CommandPacket</a>):</code></p><p>Constructor: <code><a href="#__init__" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_util.IdlePacket.__init__">IdlePacket()</a></code></p><p><a href="classIndex.html#rp2da2.rp2dcc.dcc_cmd_util.IdlePacket">View In Hierarchy</a></p>
+        </div>
+
+        <div class="moduleDocstring">
+          <div><p>DCC Idle Packet</p>
+<p>This requires no parameters to construct so only one is ever needed!</p>
+</div>
+        </div>
+
+        <div id="split-tables">
+          <table class="children sortable" id="id49">
+  
+  
+  <tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#__init__" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_util.IdlePacket.__init__">__init__</a></code></td>
+    <td>Construct the Idle Packet</td>
+  </tr><tr class="constant">
+    
+    <td>Constant</td>
+    <td><code><a href="#TYPE" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_util.IdlePacket.TYPE">TYPE</a></code></td>
+    <td>I - Idle Packet</td>
+  </tr><tr class="instancevariable private">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#_address" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_util.IdlePacket._address">_address</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable private">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#_type" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_util.IdlePacket._type">_type</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr>
+</table>
+          
+            <p class="inheritedFrom">
+              Inherited from <code><a href="rp2da2.rp2dcc.dcc_cmd_util.CommandPacket.html" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_util.CommandPacket">CommandPacket</a></code>:
+            </p>
+            <table class="children sortable" id="id50">
+  
+  
+  <tr class="basemethod">
+    
+    <td>Method</td>
+    <td><code><a href="rp2da2.rp2dcc.dcc_cmd_util.CommandPacket.html#is_locked" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_util.CommandPacket.is_locked">is<wbr></wbr>_locked</a></code></td>
+    <td>Is Locked</td>
+  </tr><tr class="basemethod">
+    
+    <td>Method</td>
+    <td><code><a href="rp2da2.rp2dcc.dcc_cmd_util.CommandPacket.html#set_buffer" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_util.CommandPacket.set_buffer">set<wbr></wbr>_buffer</a></code></td>
+    <td>Set buffer contents</td>
+  </tr><tr class="baseconstant">
+    
+    <td>Constant</td>
+    <td><code><a href="rp2da2.rp2dcc.dcc_cmd_util.CommandPacket.html#BASE_LONG_ADDR" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_util.CommandPacket.BASE_LONG_ADDR">BASE<wbr></wbr>_LONG<wbr></wbr>_ADDR</a></code></td>
+    <td>DCC long mobile address range base</td>
+  </tr><tr class="baseconstant">
+    
+    <td>Constant</td>
+    <td><code><a href="rp2da2.rp2dcc.dcc_cmd_util.CommandPacket.html#MAX_LONG_ADDR" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_util.CommandPacket.MAX_LONG_ADDR">MAX<wbr></wbr>_LONG<wbr></wbr>_ADDR</a></code></td>
+    <td>DCC long address upper limit (inclusive)</td>
+  </tr><tr class="baseconstant">
+    
+    <td>Constant</td>
+    <td><code><a href="rp2da2.rp2dcc.dcc_cmd_util.CommandPacket.html#MIN_LONG_ADDR" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_util.CommandPacket.MIN_LONG_ADDR">MIN<wbr></wbr>_LONG<wbr></wbr>_ADDR</a></code></td>
+    <td>DCC long address lower limit (inclusive)</td>
+  </tr><tr class="baseinstancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="rp2da2.rp2dcc.dcc_cmd_util.CommandPacket.html#NOT_SENT" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_util.CommandPacket.NOT_SENT">NOT<wbr></wbr>_SENT</a></code></td>
+    <td>Return value for command not sent (command being updated)</td>
+  </tr><tr class="baseinstancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="rp2da2.rp2dcc.dcc_cmd_util.CommandPacket.html#SENT" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_util.CommandPacket.SENT">SENT</a></code></td>
+    <td>Return value for command serialised</td>
+  </tr><tr class="baseinstancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="rp2da2.rp2dcc.dcc_cmd_util.CommandPacket.html#SENT_POM" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_util.CommandPacket.SENT_POM">SENT<wbr></wbr>_POM</a></code></td>
+    <td>Return valued for Program on Main second send</td>
+  </tr><tr class="baseproperty">
+    
+    <td>Property</td>
+    <td><code><a href="rp2da2.rp2dcc.dcc_cmd_util.CommandPacket.html#address" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_util.CommandPacket.address">address</a></code></td>
+    <td>Get Address</td>
+  </tr><tr class="baseproperty">
+    
+    <td>Property</td>
+    <td><code><a href="rp2da2.rp2dcc.dcc_cmd_util.CommandPacket.html#packet_buffer" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_util.CommandPacket.packet_buffer">packet<wbr></wbr>_buffer</a></code></td>
+    <td>Get the Packet Buffer</td>
+  </tr><tr class="baseproperty">
+    
+    <td>Property</td>
+    <td><code><a href="rp2da2.rp2dcc.dcc_cmd_util.CommandPacket.html#type" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_util.CommandPacket.type">type</a></code></td>
+    <td>Get the command type</td>
+  </tr><tr class="baseinstancevariable private">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="rp2da2.rp2dcc.dcc_cmd_util.CommandPacket.html#_packet_buff" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_util.CommandPacket._packet_buff">_packet<wbr></wbr>_buff</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr>
+</table>
+            
+
+            
+        </div>
+
+        <div id="child-list">
+          <div class="basemethod">
+  
+  
+  <a name="rp2da2.rp2dcc.dcc_cmd_util.IdlePacket.__init__">
+    
+  </a>
+  <a name="__init__">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">__init__</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span></span>):</span>
+    
+    <a class="headerLink" href="#__init__" title="rp2da2.rp2dcc.dcc_cmd_util.IdlePacket.__init__">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    <div class="interfaceinfo">overrides <code><a href="rp2da2.rp2dcc.dcc_cmd_util.CommandPacket.html#__init__" class="internal-link">rp2da2.rp2dcc.dcc_cmd_util.CommandPacket.__init__</a></code></div>
+    <div><p>Construct the Idle Packet</p>
+<p>This constructs the Idle Packet. It calls __init__ in the base class. It sets
+the type and address. The address is the DCC broadcast address.</p>
+</div>
+  </div>
+</div><div class="baseconstant">
+  
+  
+  <a name="rp2da2.rp2dcc.dcc_cmd_util.IdlePacket.TYPE">
+    
+  </a>
+  <a name="TYPE">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">TYPE</span>: <code>str</code> =
+    
+    <a class="headerLink" href="#TYPE" title="rp2da2.rp2dcc.dcc_cmd_util.IdlePacket.TYPE">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p>I - Idle Packet</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code><span class="rst-variable-quote">'</span><span class="rst-variable-string">I</span><span class="rst-variable-quote">'</span></code></pre></td></tr></table>
+  </div>
+</div><div class="baseinstancevariable private">
+  
+  
+  <a name="rp2da2.rp2dcc.dcc_cmd_util.IdlePacket._address">
+    
+  </a>
+  <a name="_address">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_address</span>: <code>int</code> =
+    
+    <a class="headerLink" href="#_address" title="rp2da2.rp2dcc.dcc_cmd_util.IdlePacket._address">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable private">
+  
+  
+  <a name="rp2da2.rp2dcc.dcc_cmd_util.IdlePacket._type">
+    
+  </a>
+  <a name="_type">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_type</span> =
+    
+    <a class="headerLink" href="#_type" title="rp2da2.rp2dcc.dcc_cmd_util.IdlePacket._type">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div>
+        </div>
+      
+      </main>
+    </div>
+
+    <footer class="navbar navbar-default">
+
+  
+  <div class="container-fluid">
+    <a href="index.html">API Documentation</a> for RP2 Distributed Automation,
+  generated by <a href="https://github.com/twisted/pydoctor/">pydoctor</a>
+    25.10.1 at 2026-07-13 14:55:02.
+  </div>
+
+  <!-- Search related scripts needs to be loaded at the end of HTML 
+    parsing not to introduce overhead and display HTML data asap -->
+  <script src="ajax.js" type="text/javascript"></script>
+  <script src="searchlib.js" type="text/javascript"></script>
+  <script src="search.js" type="text/javascript"></script>
+
+</footer>
+  
+    <script src="pydoctor.js" type="text/javascript"></script>
+
+  </body>
+</html>

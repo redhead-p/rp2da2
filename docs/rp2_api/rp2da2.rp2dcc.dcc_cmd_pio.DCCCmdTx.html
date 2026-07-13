@@ -1,0 +1,871 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+          "DTD/xhtml1-strict.dtd">
+<html>
+  
+
+  <head>
+    
+    <title>rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx</title>
+    <meta name="generator" content="pydoctor 25.10.1"> 
+        
+    </meta>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1" />
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="apidocs.css" />
+    <link rel="stylesheet" type="text/css" href="extra.css" />
+    
+</head>
+
+  <body>
+
+    
+
+    <nav class="navbar navbar-default mainnavbar">
+      
+  
+  <div class="container-fluid">
+
+
+    <div class="navbar-header">
+      
+      <div class="navlinks">
+        <span class="navbar-brand">
+          RP2 Distributed Automation <a href="index.html">API Documentation</a>
+        </span>
+
+        <a href="moduleIndex.html">
+          Modules
+        </a>
+
+        <a href="classIndex.html">
+          Classes
+        </a>
+
+        <a href="nameIndex.html">
+          Names
+        </a>
+
+        <div id="search-box-container">
+          <div class="input-group">
+            <input id="search-box" type="search" name="search-query" placeholder="Search..." aria-label="Search" minlength="2" class="form-control" autocomplete="off" />
+            
+            <span class="input-group-btn">
+              <a style="display: none;" class="btn btn-default" id="search-clear-button" title="Clear" onclick="clearSearch()"><img src="fonts/x-circle.svg" alt="Clear" /></a>
+              <a class="btn btn-default" id="apidocs-help-button" title="Help" href="apidocs-help.html"><img src="fonts/info.svg" alt="Help" /></a>
+            </span>
+          </div>
+        </div>
+
+      </div>
+
+      <div id="search-results-container" style="display: none;">
+        
+        <div id="search-buttons">
+          <span class="label label-default" id="search-docstrings-button">
+          <label class="checkbox-inline">
+            <input type="checkbox" id="toggle-search-in-docstrings-checkbox" value="false" onclick="toggleSearchInDocstrings()">
+              search in docstrings
+            </input>
+          </label>
+          </span>
+          
+        </div>
+        
+        <noscript>
+            <h1>Cannot search: JavaScript is not supported/enabled in your browser.</h1>
+        </noscript>
+
+        <div id="search-status"> </div>
+
+        <div class="warning" id="search-warn-box" style="display: none;">
+          <p class="rst-last"><span id="search-warn"></span></p>
+        </div>
+
+        <table id="search-results">
+          <!-- Filled dynamically by JS -->
+        </table>
+        
+        <div style="margin-top: 10px;">
+          <p>For more information on the search, visit the <a href="apidocs-help.html#rst-search">help page</a>.</p>
+        </div>
+      </div>
+
+    </div>
+
+
+  </div>
+</nav>
+    
+    <div class="container-fluid">
+
+      <!-- Side navigation -->
+      <div class="sidebarcontainer" style="display: none;">
+        
+        <div class="sidebar"><nav class="sidebar">
+  
+
+  <div>
+
+      <div class="thingTitle">
+        <span>Class</span>
+        <code class="thisobject"><a href="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx.html" class="internal-link" title="This class"><wbr></wbr>DCCCmd<wbr></wbr>Tx</a></code> 
+      </div>
+      
+      <div>
+        
+
+        
+         
+
+        
+        
+
+        <div class="childrenKindTitle">Methods</div>
+        <ul>
+    
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#get_instance" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx.get_instance">get<wbr></wbr>_instance</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#__init__" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx.__init__">__init__</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#pio_off" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx.pio_off">pio<wbr></wbr>_off</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#pio_pwr" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx.pio_pwr">pio<wbr></wbr>_pwr</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#pio_send" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx.pio_send">pio<wbr></wbr>_send</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_dcc_tx" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx._dcc_tx">_dcc<wbr></wbr>_tx</a></code>
+            </div>
+        
+
+    </li>
+</ul> 
+
+        
+         
+
+        <div class="childrenKindTitle">Attributes</div>
+        <ul>
+    
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#FWD" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx.FWD">FWD</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#OFF" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx.OFF">OFF</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#ON" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx.ON">ON</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#REV" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx.REV">REV</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_this_dcc" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx._this_dcc">_this<wbr></wbr>_dcc</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_rc_ch2" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx._rc_ch2">_rc<wbr></wbr>_ch2</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_sleep_pin" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx._sleep_pin">_sleep<wbr></wbr>_pin</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_sm" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx._sm">_sm</a></code>
+            </div>
+        
+
+    </li>
+</ul> 
+
+        
+         
+        
+      </div>
+  </div><div>
+
+      <div class="thingTitle">
+        <span>Module</span>
+        <code><a href="rp2da2.rp2dcc.dcc_cmd_pio.html" class="internal-link" title="The parent of this class">dcc<wbr></wbr>_cmd<wbr></wbr>_pio</a></code> 
+      </div>
+      
+      <div>
+        
+
+        
+         
+
+        <div class="childrenKindTitle">Classes</div>
+        <ul>
+    
+    <li class=" thisobject">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx.html" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx"><wbr></wbr>DCCCmd<wbr></wbr>Tx</a></code>
+            </div>
+        
+
+    </li>
+</ul>
+
+        
+         
+
+        
+         
+
+        <div class="childrenKindTitle">Variables</div>
+        <ul>
+    
+    <li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.rp2dcc.dcc_cmd_pio.html#_PIO_FREQ" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_pio._PIO_FREQ">_PIO<wbr></wbr>_FREQ</a></code>
+            </div>
+        
+
+    </li>
+</ul> 
+
+        
+         
+        
+      </div>
+  </div>
+
+</nav>
+        </div>
+        <div id="collapse-sidebar">
+          <a class="btn btn-link" onclick="toggleSideBarCollapse()" title="Toggle Sidebar Collapse">
+          </a>
+        </div> 
+        <script src="sidebartoggle.js" type="text/javascript"></script>
+       
+      </div>
+
+      <main class="">
+        
+
+        
+
+        <div class="page-header">
+          <h1 class="class"><code><code><a href="index.html" class="internal-link">rp2da2</a></code><wbr></wbr>.<code><a href="rp2da2.rp2dcc.html" class="internal-link" title="rp2da2.rp2dcc">rp2dcc</a></code><wbr></wbr>.<code><a href="rp2da2.rp2dcc.dcc_cmd_pio.html" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_pio">dcc_cmd_pio</a></code><wbr></wbr>.<code><a href="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx.html" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx">DCCCmdTx</a></code></code></h1>
+          <div id="show-private">
+            <button class="btn btn-link" onclick="togglePrivate()">Toggle Private API</button>
+          </div>
+        </div>
+
+        <div class="categoryHeader">
+          class documentation
+        </div>
+
+        <div class="extrasDocstring">
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">DCCCmdTx</span>:</code></p><p>Constructor: <code><a href="#__init__" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx.__init__">DCCCmdTx()</a></code></p><p><a href="classIndex.html#rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx">View In Hierarchy</a></p>
+        </div>
+
+        <div class="moduleDocstring">
+          <div><p>DCC Output Transmit</p>
+<p>This singleton class manages the serialisation of DCC command packets to the track.</p>
+<p>The PIO has to be fed with words.  If the top bit (bit 31) is clear the word contains
+pre-amble ('1's) or two framing bit/command byte combinations.  18 bits are output.
+If bit 31 is set and bit 30 is clear the word contains a single framing bit/command byte.
+9 bits are output.
+If both bits 31 and 30 are set, the word contains the packet end bit, which will also trigger
+the RailCom cutout.
+The Packet End Bit is encoded as a final word
+with bit 8 set.  Bit 7 must be set too if the cutout is to be generated.
+Normal command databytes are preceeded by a '0' start bit.</p>
+<p>Both short (7 bit) and long (14 bit) Multifuntion (mobile) decoder addresses are catered for
+but note that an address in the range 1 to 127 will be interpreted as a short address
+and an address in the range 128 - 10239 will be interpreted as a long address. I.e a mobile
+decoder with a long address in the range 0 - 127 is not addressable.</p>
+<p>A RailCom cutout is inserted following the transmission of a DCC command.</p>
+</div>
+        </div>
+
+        <div id="split-tables">
+          <table class="children sortable" id="id46">
+  
+  
+  <tr class="classmethod">
+    
+    <td>Class Method</td>
+    <td><code><a href="#get_instance" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx.get_instance">get<wbr></wbr>_instance</a></code></td>
+    <td>Get the DCC Command tx instance.</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#__init__" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx.__init__">__init__</a></code></td>
+    <td>DCC serialisation  constructor</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#pio_off" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx.pio_off">pio<wbr></wbr>_off</a></code></td>
+    <td>Stop PIO State Machine</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#pio_pwr" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx.pio_pwr">pio<wbr></wbr>_pwr</a></code></td>
+    <td>DCC Power On/Off</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#pio_send" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx.pio_send">pio<wbr></wbr>_send</a></code></td>
+    <td>Send Packet.</td>
+  </tr><tr class="constant">
+    
+    <td>Constant</td>
+    <td><code><a href="#FWD" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx.FWD">FWD</a></code></td>
+    <td>Forward direction</td>
+  </tr><tr class="constant">
+    
+    <td>Constant</td>
+    <td><code><a href="#OFF" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx.OFF">OFF</a></code></td>
+    <td>Power Off</td>
+  </tr><tr class="constant">
+    
+    <td>Constant</td>
+    <td><code><a href="#ON" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx.ON">ON</a></code></td>
+    <td>Power On</td>
+  </tr><tr class="constant">
+    
+    <td>Constant</td>
+    <td><code><a href="#REV" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx.REV">REV</a></code></td>
+    <td>Reverse direction</td>
+  </tr><tr class="method private">
+    
+    <td>Method</td>
+    <td><code><a href="#_dcc_tx" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx._dcc_tx">_dcc<wbr></wbr>_tx</a></code></td>
+    <td>PIO Serialise DCC Command</td>
+  </tr><tr class="classvariable private">
+    
+    <td>Class Variable</td>
+    <td><code><a href="#_this_dcc" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx._this_dcc">_this<wbr></wbr>_dcc</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable private">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#_rc_ch2" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx._rc_ch2">_rc<wbr></wbr>_ch2</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable private">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#_sleep_pin" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx._sleep_pin">_sleep<wbr></wbr>_pin</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable private">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#_sm" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx._sm">_sm</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr>
+</table>
+          
+
+            
+        </div>
+
+        <div id="child-list">
+          <div class="baseclassmethod">
+  
+  
+  <a name="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx.get_instance">
+    
+  </a>
+  <a name="get_instance">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <div><span class="decorator">@classmethod<br /></span></div>
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">get_instance</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">cls</span></span>):</span>
+    
+    <a class="headerLink" href="#get_instance" title="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx.get_instance">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Get the DCC Command tx instance.</p>
+<p>This returns the singleton instance of the DCC Generator.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">cls</span></td><td class="fieldArgDesc"></td></tr></table><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td colspan="2">The DCC generator instance</td></tr></table></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx.__init__">
+    
+  </a>
+  <a name="__init__">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">__init__</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span></span>):</span>
+    
+    <a class="headerLink" href="#__init__" title="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx.__init__">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>DCC serialisation  constructor</p>
+<p>This initialises the DCC serialisation singleton.  An attempt to create a 2nd
+instance will cause a runtime error.  The PIO state machine is allocated and initialised.</p>
+<p>Pins parameters are provided as Pin objects - not numbers!</p>
+<p>If RailCom cutouts are required the cutout generator must use a PIO state machine in the same PIO
+block.</p>
+</div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx.pio_off">
+    
+  </a>
+  <a name="pio_off">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">pio_off</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span></span>):</span>
+    
+    <a class="headerLink" href="#pio_off" title="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx.pio_off">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Stop PIO State Machine</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx.pio_pwr">
+    
+  </a>
+  <a name="pio_pwr">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">pio_pwr</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">p=None</span>):</span>
+    
+    <a class="headerLink" href="#pio_pwr" title="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx.pio_pwr">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>DCC Power On/Off</p>
+<dl class="rst-docutils">
+<dt>On power on we</dt>
+<dd><ul class="rst-simple rst-first rst-last">
+<li>de-assert the booster sleep pin (1 for False)</li>
+<li>start the DCC generator state machine</li>
+</ul>
+</dd>
+</dl>
+<p>On power off we assert the booster sleep pin (0 for True)</p>
+<p>The state machine will be stopped when the current
+command cycle is complete.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">p</span></td><td class="fieldArgDesc">1 for power on, 0 for power off, None for get power status</td></tr></table><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td colspan="2">power status as held by the power pin</td></tr></table></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx.pio_send">
+    
+  </a>
+  <a name="pio_send">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">pio_send</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">packet</span>):</span>
+    
+    <a class="headerLink" href="#pio_send" title="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx.pio_send">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Send Packet.</p>
+<p>Write the DCC Command packet to the state machine's FIFO buffer.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">packet</span></td><td class="fieldArgDesc">The DCC command object.</td></tr></table></div>
+  </div>
+</div><div class="baseconstant">
+  
+  
+  <a name="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx.FWD">
+    
+  </a>
+  <a name="FWD">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">FWD</span> =
+    
+    <a class="headerLink" href="#FWD" title="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx.FWD">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p>Forward direction</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>1)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant">
+  
+  
+  <a name="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx.OFF">
+    
+  </a>
+  <a name="OFF">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">OFF</span> =
+    
+    <a class="headerLink" href="#OFF" title="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx.OFF">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p>Power Off</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>0)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant">
+  
+  
+  <a name="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx.ON">
+    
+  </a>
+  <a name="ON">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">ON</span> =
+    
+    <a class="headerLink" href="#ON" title="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx.ON">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p>Power On</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>1)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant">
+  
+  
+  <a name="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx.REV">
+    
+  </a>
+  <a name="REV">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">REV</span> =
+    
+    <a class="headerLink" href="#REV" title="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx.REV">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p>Reverse direction</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>(-1))</code></pre></td></tr></table>
+  </div>
+</div><div class="basemethod private">
+  
+  
+  <a name="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx._dcc_tx">
+    
+  </a>
+  <a name="_dcc_tx">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <div><span class="decorator">@rp2.asm_pio(<wbr></wbr>out_init=rp2.PIO.OUT_HIGH, <wbr></wbr>set_init=rp2.PIO.OUT_HIGH, <wbr></wbr>out_shiftdir=rp2.PIO.SHIFT_LEFT, <wbr></wbr>fifo_join=rp2.PIO.JOIN_TX)<br /></span></div>
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">_dcc_tx</span><span class="function-signature">():</span>
+    
+    <a class="headerLink" href="#_dcc_tx" title="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx._dcc_tx">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>PIO Serialise DCC Command</p>
+<p>This is the PIO DCC command transmitter. A GPIO pin is used for the DCC output. This pin is
+set or cleared with the 'set(pins, ...)' command using the set_base pin as allocated for
+the state machine.</p>
+<p>A second GPIO pin, connected to the DRV8874 enable pin controls the RailCom cutout. The
+pin is normally high, and set low during for the cutout, setting both sides of the
+H-bridge to low impedance and thereby connecting the two track rails. This pin is
+allocated to the state machine as out_base and its state changed using the  'mov(pins, ...)
+command. Using separate bases allows the state of the two pins
+to be managed independently.</p>
+<p>OSR is set to shift left so the Most Significant bits are shifted out first.</p>
+<p>The RX FIFO is joined to the TX FIFO so doubling the TX FIFO length.</p>
+<p>As this is output only we can use the Input Shift Register (ISR/isr) as an additional store.</p>
+<p><strong>TODO</strong> There needs to be an option to allow for generation of DCC without the RailCom cutout.</p>
+</div>
+  </div>
+</div><div class="baseclassvariable private">
+  
+  
+  <a name="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx._this_dcc">
+    
+  </a>
+  <a name="_this_dcc">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_this_dcc</span> =
+    
+    <a class="headerLink" href="#_this_dcc" title="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx._this_dcc">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable private">
+  
+  
+  <a name="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx._rc_ch2">
+    
+  </a>
+  <a name="_rc_ch2">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_rc_ch2</span> =
+    
+    <a class="headerLink" href="#_rc_ch2" title="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx._rc_ch2">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable private">
+  
+  
+  <a name="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx._sleep_pin">
+    
+  </a>
+  <a name="_sleep_pin">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_sleep_pin</span> =
+    
+    <a class="headerLink" href="#_sleep_pin" title="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx._sleep_pin">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable private">
+  
+  
+  <a name="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx._sm">
+    
+  </a>
+  <a name="_sm">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_sm</span> =
+    
+    <a class="headerLink" href="#_sm" title="rp2da2.rp2dcc.dcc_cmd_pio.DCCCmdTx._sm">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div>
+        </div>
+      
+      </main>
+    </div>
+
+    <footer class="navbar navbar-default">
+
+  
+  <div class="container-fluid">
+    <a href="index.html">API Documentation</a> for RP2 Distributed Automation,
+  generated by <a href="https://github.com/twisted/pydoctor/">pydoctor</a>
+    25.10.1 at 2026-07-13 14:55:02.
+  </div>
+
+  <!-- Search related scripts needs to be loaded at the end of HTML 
+    parsing not to introduce overhead and display HTML data asap -->
+  <script src="ajax.js" type="text/javascript"></script>
+  <script src="searchlib.js" type="text/javascript"></script>
+  <script src="search.js" type="text/javascript"></script>
+
+</footer>
+  
+    <script src="pydoctor.js" type="text/javascript"></script>
+
+  </body>
+</html>

@@ -1,0 +1,846 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+          "DTD/xhtml1-strict.dtd">
+<html>
+  
+
+  <head>
+    
+    <title>rp2da2.lib.led_pio.NeoLed</title>
+    <meta name="generator" content="pydoctor 25.10.1"> 
+        
+    </meta>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1" />
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="apidocs.css" />
+    <link rel="stylesheet" type="text/css" href="extra.css" />
+    
+</head>
+
+  <body>
+
+    
+
+    <nav class="navbar navbar-default mainnavbar">
+      
+  
+  <div class="container-fluid">
+
+
+    <div class="navbar-header">
+      
+      <div class="navlinks">
+        <span class="navbar-brand">
+          RP2 Distributed Automation <a href="index.html">API Documentation</a>
+        </span>
+
+        <a href="moduleIndex.html">
+          Modules
+        </a>
+
+        <a href="classIndex.html">
+          Classes
+        </a>
+
+        <a href="nameIndex.html">
+          Names
+        </a>
+
+        <div id="search-box-container">
+          <div class="input-group">
+            <input id="search-box" type="search" name="search-query" placeholder="Search..." aria-label="Search" minlength="2" class="form-control" autocomplete="off" />
+            
+            <span class="input-group-btn">
+              <a style="display: none;" class="btn btn-default" id="search-clear-button" title="Clear" onclick="clearSearch()"><img src="fonts/x-circle.svg" alt="Clear" /></a>
+              <a class="btn btn-default" id="apidocs-help-button" title="Help" href="apidocs-help.html"><img src="fonts/info.svg" alt="Help" /></a>
+            </span>
+          </div>
+        </div>
+
+      </div>
+
+      <div id="search-results-container" style="display: none;">
+        
+        <div id="search-buttons">
+          <span class="label label-default" id="search-docstrings-button">
+          <label class="checkbox-inline">
+            <input type="checkbox" id="toggle-search-in-docstrings-checkbox" value="false" onclick="toggleSearchInDocstrings()">
+              search in docstrings
+            </input>
+          </label>
+          </span>
+          
+        </div>
+        
+        <noscript>
+            <h1>Cannot search: JavaScript is not supported/enabled in your browser.</h1>
+        </noscript>
+
+        <div id="search-status"> </div>
+
+        <div class="warning" id="search-warn-box" style="display: none;">
+          <p class="rst-last"><span id="search-warn"></span></p>
+        </div>
+
+        <table id="search-results">
+          <!-- Filled dynamically by JS -->
+        </table>
+        
+        <div style="margin-top: 10px;">
+          <p>For more information on the search, visit the <a href="apidocs-help.html#rst-search">help page</a>.</p>
+        </div>
+      </div>
+
+    </div>
+
+
+  </div>
+</nav>
+    
+    <div class="container-fluid">
+
+      <!-- Side navigation -->
+      <div class="sidebarcontainer" style="display: none;">
+        
+        <div class="sidebar"><nav class="sidebar">
+  
+
+  <div>
+
+      <div class="thingTitle">
+        <span>Class</span>
+        <code class="thisobject"><a href="rp2da2.lib.led_pio.NeoLed.html" class="internal-link" title="This class"><wbr></wbr>Neo<wbr></wbr>Led</a></code> 
+      </div>
+      
+      <div>
+        
+
+        
+         
+
+        
+        
+
+        <div class="childrenKindTitle">Methods</div>
+        <ul>
+    
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#__init__" class="internal-link" title="rp2da2.lib.led_pio.NeoLed.__init__">__init__</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#clear" class="internal-link" title="rp2da2.lib.led_pio.NeoLed.clear">clear</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#set" class="internal-link" title="rp2da2.lib.led_pio.NeoLed.set">set</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#set_off" class="internal-link" title="rp2da2.lib.led_pio.NeoLed.set_off">set<wbr></wbr>_off</a></code>
+            </div>
+        
+
+    </li>
+</ul> 
+
+        
+         
+
+        <div class="childrenKindTitle">Attributes</div>
+        <ul>
+    
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#COMMS_LED" class="internal-link" title="rp2da2.lib.led_pio.NeoLed.COMMS_LED">COMMS<wbr></wbr>_LED</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#DCC_LED" class="internal-link" title="rp2da2.lib.led_pio.NeoLed.DCC_LED">DCC<wbr></wbr>_LED</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#DEFAULT_B" class="internal-link" title="rp2da2.lib.led_pio.NeoLed.DEFAULT_B">DEFAULT<wbr></wbr>_B</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#LED_B" class="internal-link" title="rp2da2.lib.led_pio.NeoLed.LED_B">LED<wbr></wbr>_B</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#LED_G" class="internal-link" title="rp2da2.lib.led_pio.NeoLed.LED_G">LED<wbr></wbr>_G</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#LED_R" class="internal-link" title="rp2da2.lib.led_pio.NeoLed.LED_R">LED<wbr></wbr>_R</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_i" class="internal-link" title="rp2da2.lib.led_pio.NeoLed._i">_i</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_rgb" class="internal-link" title="rp2da2.lib.led_pio.NeoLed._rgb">_rgb</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_string" class="internal-link" title="rp2da2.lib.led_pio.NeoLed._string">_string</a></code>
+            </div>
+        
+
+    </li>
+</ul> 
+
+        
+         
+        
+      </div>
+  </div><div>
+
+      <div class="thingTitle">
+        <span>Module</span>
+        <code><a href="rp2da2.lib.led_pio.html" class="internal-link" title="The parent of this class">led<wbr></wbr>_pio</a></code> 
+      </div>
+      
+      <div>
+        
+
+        
+         
+
+        <div class="childrenKindTitle">Classes</div>
+        <ul>
+    
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.lib.led_pio.BlkLed.html" class="internal-link" title="rp2da2.lib.led_pio.BlkLed"><wbr></wbr>Blk<wbr></wbr>Led</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.lib.led_pio.ComsLed.html" class="internal-link" title="rp2da2.lib.led_pio.ComsLed"><wbr></wbr>Coms<wbr></wbr>Led</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.lib.led_pio.LedMan.html" class="internal-link" title="rp2da2.lib.led_pio.LedMan"><wbr></wbr>Led<wbr></wbr>Man</a></code>
+            </div>
+        
+
+    </li><li class=" thisobject">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.lib.led_pio.NeoLed.html" class="internal-link" title="rp2da2.lib.led_pio.NeoLed"><wbr></wbr>Neo<wbr></wbr>Led</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.lib.led_pio.NeoString.html" class="internal-link" title="rp2da2.lib.led_pio.NeoString"><wbr></wbr>Neo<wbr></wbr>String</a></code>
+            </div>
+        
+
+    </li>
+</ul>
+
+        <div class="childrenKindTitle">Functions</div>
+        <ul>
+    
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.lib.led_pio.html#ws2812_tx" class="internal-link" title="rp2da2.lib.led_pio.ws2812_tx">ws2812<wbr></wbr>_tx</a></code>
+            </div>
+        
+
+    </li>
+</ul> 
+
+        
+         
+
+        <div class="childrenKindTitle">Variables</div>
+        <ul>
+    
+    <li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.lib.led_pio.html#_MAX_LEN" class="internal-link" title="rp2da2.lib.led_pio._MAX_LEN">_MAX<wbr></wbr>_LEN</a></code>
+            </div>
+        
+
+    </li>
+</ul> 
+
+        
+         
+        
+      </div>
+  </div>
+
+</nav>
+        </div>
+        <div id="collapse-sidebar">
+          <a class="btn btn-link" onclick="toggleSideBarCollapse()" title="Toggle Sidebar Collapse">
+          </a>
+        </div> 
+        <script src="sidebartoggle.js" type="text/javascript"></script>
+       
+      </div>
+
+      <main class="">
+        
+
+        
+
+        <div class="page-header">
+          <h1 class="class"><code><code><a href="index.html" class="internal-link">rp2da2</a></code><wbr></wbr>.<code><a href="rp2da2.lib.html" class="internal-link" title="rp2da2.lib">lib</a></code><wbr></wbr>.<code><a href="rp2da2.lib.led_pio.html" class="internal-link" title="rp2da2.lib.led_pio">led_pio</a></code><wbr></wbr>.<code><a href="rp2da2.lib.led_pio.NeoLed.html" class="internal-link" title="rp2da2.lib.led_pio.NeoLed">NeoLed</a></code></code></h1>
+          <div id="show-private">
+            <button class="btn btn-link" onclick="togglePrivate()">Toggle Private API</button>
+          </div>
+        </div>
+
+        <div class="categoryHeader">
+          class documentation
+        </div>
+
+        <div class="extrasDocstring">
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">NeoLed</span>:</code></p><p>Known subclasses: <code><a href="rp2da2.lib.led_pio.BlkLed.html" class="internal-link">rp2da2.lib.led_pio.BlkLed</a></code>, <code><a href="rp2da2.lib.led_pio.ComsLed.html" class="internal-link">rp2da2.lib.led_pio.ComsLed</a></code></p><p>Constructor: <code><a href="#__init__" class="internal-link" title="rp2da2.lib.led_pio.NeoLed.__init__">NeoLed(string_index)</a></code></p><p><a href="classIndex.html#rp2da2.lib.led_pio.NeoLed">View In Hierarchy</a></p>
+        </div>
+
+        <div class="moduleDocstring">
+          <div><p>NeoPixel Led</p>
+<p>This class controls a single LED on the chain.</p>
+<p>RGB values may either be passed as a tuple or a single colour may be set or cleared.</p>
+<p>Setting a colour without a value will set the defaul.  Clearing a colour will set 0.</p>
+</div>
+        </div>
+
+        <div id="split-tables">
+          <table class="children sortable" id="id14">
+  
+  
+  <tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#__init__" class="internal-link" title="rp2da2.lib.led_pio.NeoLed.__init__">__init__</a></code></td>
+    <td>Initialise the NeoPixel class</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#clear" class="internal-link" title="rp2da2.lib.led_pio.NeoLed.clear">clear</a></code></td>
+    <td>Clear a colour from the LED.</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#set" class="internal-link" title="rp2da2.lib.led_pio.NeoLed.set">set</a></code></td>
+    <td>Set the colour of the LED</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#set_off" class="internal-link" title="rp2da2.lib.led_pio.NeoLed.set_off">set<wbr></wbr>_off</a></code></td>
+    <td>Set the LED unlit.</td>
+  </tr><tr class="constant">
+    
+    <td>Constant</td>
+    <td><code><a href="#COMMS_LED" class="internal-link" title="rp2da2.lib.led_pio.NeoLed.COMMS_LED">COMMS<wbr></wbr>_LED</a></code></td>
+    <td>Led for communications status</td>
+  </tr><tr class="constant">
+    
+    <td>Constant</td>
+    <td><code><a href="#DCC_LED" class="internal-link" title="rp2da2.lib.led_pio.NeoLed.DCC_LED">DCC<wbr></wbr>_LED</a></code></td>
+    <td>Led for DCC status</td>
+  </tr><tr class="constant">
+    
+    <td>Constant</td>
+    <td><code><a href="#DEFAULT_B" class="internal-link" title="rp2da2.lib.led_pio.NeoLed.DEFAULT_B">DEFAULT<wbr></wbr>_B</a></code></td>
+    <td>Default Brightness</td>
+  </tr><tr class="constant">
+    
+    <td>Constant</td>
+    <td><code><a href="#LED_B" class="internal-link" title="rp2da2.lib.led_pio.NeoLed.LED_B">LED<wbr></wbr>_B</a></code></td>
+    <td>Blue</td>
+  </tr><tr class="constant">
+    
+    <td>Constant</td>
+    <td><code><a href="#LED_G" class="internal-link" title="rp2da2.lib.led_pio.NeoLed.LED_G">LED<wbr></wbr>_G</a></code></td>
+    <td>Green</td>
+  </tr><tr class="constant">
+    
+    <td>Constant</td>
+    <td><code><a href="#LED_R" class="internal-link" title="rp2da2.lib.led_pio.NeoLed.LED_R">LED<wbr></wbr>_R</a></code></td>
+    <td>Red</td>
+  </tr><tr class="instancevariable private">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#_i" class="internal-link" title="rp2da2.lib.led_pio.NeoLed._i">_i</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable private">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#_rgb" class="internal-link" title="rp2da2.lib.led_pio.NeoLed._rgb">_rgb</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable private">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#_string" class="internal-link" title="rp2da2.lib.led_pio.NeoLed._string">_string</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr>
+</table>
+          
+
+            
+        </div>
+
+        <div id="child-list">
+          <div class="basemethod">
+  
+  
+  <a name="rp2da2.lib.led_pio.NeoLed.__init__">
+    
+  </a>
+  <a name="__init__">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">__init__</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">string_index</span>):</span>
+    
+    <a class="headerLink" href="#__init__" title="rp2da2.lib.led_pio.NeoLed.__init__">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    <div class="interfaceinfo">overridden in <code><a href="rp2da2.lib.led_pio.BlkLed.html" class="internal-link">rp2da2.lib.led_pio.BlkLed</a></code>, <code><a href="rp2da2.lib.led_pio.ComsLed.html" class="internal-link">rp2da2.lib.led_pio.ComsLed</a></code></div>
+    <div><p>Initialise the NeoPixel class</p>
+<p>This sets the initial RGB.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">string<wbr></wbr>_index</span></td><td class="fieldArgDesc">The index of the LED in the string.</td></tr></table></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="rp2da2.lib.led_pio.NeoLed.clear">
+    
+  </a>
+  <a name="clear">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">clear</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">colour, </span><span class="rst-sig-param">flush=True</span>):</span>
+    
+    <a class="headerLink" href="#clear" title="rp2da2.lib.led_pio.NeoLed.clear">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Clear a colour from the LED.</p>
+<p>This clears the colour of the LED</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">colour</span></td><td class="fieldArgDesc">The colour to clear.  This should be one of NeoLed.LED_R, NeoLed.LED_G or NeoLed.LED_B.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">flush</span></td><td class="fieldArgDesc">If true the led string is written following the update</td></tr></table></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="rp2da2.lib.led_pio.NeoLed.set">
+    
+  </a>
+  <a name="set">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">set</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">colour, </span><span class="rst-sig-param">flush=True, </span><span class="rst-sig-symbol">*, </span><span class="rst-sig-param">val=<a href="#DEFAULT_B" class="internal-link" title="rp2da2.lib.led_pio.NeoLed.DEFAULT_B">DEFAULT_B</a></span>):</span>
+    
+    <a class="headerLink" href="#set" title="rp2da2.lib.led_pio.NeoLed.set">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Set the colour of the LED</p>
+<p>This sets a colour (red, green or blue) and brightness value.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">colour</span></td><td class="fieldArgDesc">The colour to set.  This should be one of NeoLed.LED_R, NeoLed.LED_G or NeoLed.LED_B.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">flush</span></td><td class="fieldArgDesc">If true the led string is written following the update</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">val</span></td><td class="fieldArgDesc">The value to set the colour to.  This should be an integer between 0 and 255.
+If not specified, it defaults to NeoLed.DEFAULT_B.</td></tr></table></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="rp2da2.lib.led_pio.NeoLed.set_off">
+    
+  </a>
+  <a name="set_off">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">set_off</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">flush=True</span>):</span>
+    
+    <a class="headerLink" href="#set_off" title="rp2da2.lib.led_pio.NeoLed.set_off">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Set the LED unlit.</p>
+<p>This clears all colours from the LED leaving it unlit.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">flush</span></td><td class="fieldArgDesc">If true the led string is written following the update</td></tr></table></div>
+  </div>
+</div><div class="baseconstant">
+  
+  
+  <a name="rp2da2.lib.led_pio.NeoLed.COMMS_LED">
+    
+  </a>
+  <a name="COMMS_LED">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">COMMS_LED</span> =
+    
+    <a class="headerLink" href="#COMMS_LED" title="rp2da2.lib.led_pio.NeoLed.COMMS_LED">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p>Led for communications status</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>0)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant">
+  
+  
+  <a name="rp2da2.lib.led_pio.NeoLed.DCC_LED">
+    
+  </a>
+  <a name="DCC_LED">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">DCC_LED</span> =
+    
+    <a class="headerLink" href="#DCC_LED" title="rp2da2.lib.led_pio.NeoLed.DCC_LED">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p>Led for DCC status</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>1)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant">
+  
+  
+  <a name="rp2da2.lib.led_pio.NeoLed.DEFAULT_B">
+    
+  </a>
+  <a name="DEFAULT_B">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">DEFAULT_B</span> =
+    
+    <a class="headerLink" href="#DEFAULT_B" title="rp2da2.lib.led_pio.NeoLed.DEFAULT_B">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p>Default Brightness</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>50)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant">
+  
+  
+  <a name="rp2da2.lib.led_pio.NeoLed.LED_B">
+    
+  </a>
+  <a name="LED_B">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">LED_B</span> =
+    
+    <a class="headerLink" href="#LED_B" title="rp2da2.lib.led_pio.NeoLed.LED_B">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p>Blue</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>2)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant">
+  
+  
+  <a name="rp2da2.lib.led_pio.NeoLed.LED_G">
+    
+  </a>
+  <a name="LED_G">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">LED_G</span> =
+    
+    <a class="headerLink" href="#LED_G" title="rp2da2.lib.led_pio.NeoLed.LED_G">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p>Green</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>1)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant">
+  
+  
+  <a name="rp2da2.lib.led_pio.NeoLed.LED_R">
+    
+  </a>
+  <a name="LED_R">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">LED_R</span> =
+    
+    <a class="headerLink" href="#LED_R" title="rp2da2.lib.led_pio.NeoLed.LED_R">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p>Red</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>0)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseinstancevariable private">
+  
+  
+  <a name="rp2da2.lib.led_pio.NeoLed._i">
+    
+  </a>
+  <a name="_i">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_i</span> =
+    
+    <a class="headerLink" href="#_i" title="rp2da2.lib.led_pio.NeoLed._i">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable private">
+  
+  
+  <a name="rp2da2.lib.led_pio.NeoLed._rgb">
+    
+  </a>
+  <a name="_rgb">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_rgb</span>: <code>list[<wbr></wbr>int]</code> =
+    
+    <a class="headerLink" href="#_rgb" title="rp2da2.lib.led_pio.NeoLed._rgb">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable private">
+  
+  
+  <a name="rp2da2.lib.led_pio.NeoLed._string">
+    
+  </a>
+  <a name="_string">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_string</span> =
+    
+    <a class="headerLink" href="#_string" title="rp2da2.lib.led_pio.NeoLed._string">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div>
+        </div>
+      
+      </main>
+    </div>
+
+    <footer class="navbar navbar-default">
+
+  
+  <div class="container-fluid">
+    <a href="index.html">API Documentation</a> for RP2 Distributed Automation,
+  generated by <a href="https://github.com/twisted/pydoctor/">pydoctor</a>
+    25.10.1 at 2026-07-13 14:55:02.
+  </div>
+
+  <!-- Search related scripts needs to be loaded at the end of HTML 
+    parsing not to introduce overhead and display HTML data asap -->
+  <script src="ajax.js" type="text/javascript"></script>
+  <script src="searchlib.js" type="text/javascript"></script>
+  <script src="search.js" type="text/javascript"></script>
+
+</footer>
+  
+    <script src="pydoctor.js" type="text/javascript"></script>
+
+  </body>
+</html>

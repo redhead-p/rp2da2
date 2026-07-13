@@ -1,0 +1,595 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+          "DTD/xhtml1-strict.dtd">
+<html>
+  
+
+  <head>
+    
+    <title>rp2da2.mqtt.mqtt_lcl.Sensor</title>
+    <meta name="generator" content="pydoctor 25.10.1"> 
+        
+    </meta>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1" />
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="apidocs.css" />
+    <link rel="stylesheet" type="text/css" href="extra.css" />
+    
+</head>
+
+  <body>
+
+    
+
+    <nav class="navbar navbar-default mainnavbar">
+      
+  
+  <div class="container-fluid">
+
+
+    <div class="navbar-header">
+      
+      <div class="navlinks">
+        <span class="navbar-brand">
+          RP2 Distributed Automation <a href="index.html">API Documentation</a>
+        </span>
+
+        <a href="moduleIndex.html">
+          Modules
+        </a>
+
+        <a href="classIndex.html">
+          Classes
+        </a>
+
+        <a href="nameIndex.html">
+          Names
+        </a>
+
+        <div id="search-box-container">
+          <div class="input-group">
+            <input id="search-box" type="search" name="search-query" placeholder="Search..." aria-label="Search" minlength="2" class="form-control" autocomplete="off" />
+            
+            <span class="input-group-btn">
+              <a style="display: none;" class="btn btn-default" id="search-clear-button" title="Clear" onclick="clearSearch()"><img src="fonts/x-circle.svg" alt="Clear" /></a>
+              <a class="btn btn-default" id="apidocs-help-button" title="Help" href="apidocs-help.html"><img src="fonts/info.svg" alt="Help" /></a>
+            </span>
+          </div>
+        </div>
+
+      </div>
+
+      <div id="search-results-container" style="display: none;">
+        
+        <div id="search-buttons">
+          <span class="label label-default" id="search-docstrings-button">
+          <label class="checkbox-inline">
+            <input type="checkbox" id="toggle-search-in-docstrings-checkbox" value="false" onclick="toggleSearchInDocstrings()">
+              search in docstrings
+            </input>
+          </label>
+          </span>
+          
+        </div>
+        
+        <noscript>
+            <h1>Cannot search: JavaScript is not supported/enabled in your browser.</h1>
+        </noscript>
+
+        <div id="search-status"> </div>
+
+        <div class="warning" id="search-warn-box" style="display: none;">
+          <p class="rst-last"><span id="search-warn"></span></p>
+        </div>
+
+        <table id="search-results">
+          <!-- Filled dynamically by JS -->
+        </table>
+        
+        <div style="margin-top: 10px;">
+          <p>For more information on the search, visit the <a href="apidocs-help.html#rst-search">help page</a>.</p>
+        </div>
+      </div>
+
+    </div>
+
+
+  </div>
+</nav>
+    
+    <div class="container-fluid">
+
+      <!-- Side navigation -->
+      <div class="sidebarcontainer" style="display: none;">
+        
+        <div class="sidebar"><nav class="sidebar">
+  
+
+  <div>
+
+      <div class="thingTitle">
+        <span>Class</span>
+        <code class="thisobject"><a href="rp2da2.mqtt.mqtt_lcl.Sensor.html" class="internal-link" title="This class"><wbr></wbr>Sensor</a></code> 
+      </div>
+      
+      <div>
+        
+
+        
+         
+
+        
+        
+
+        <div class="childrenKindTitle">Methods</div>
+        <ul>
+    
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#__init__" class="internal-link" title="rp2da2.mqtt.mqtt_lcl.Sensor.__init__">__init__</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#handle_publication" class="internal-link" title="rp2da2.mqtt.mqtt_lcl.Sensor.handle_publication">handle<wbr></wbr>_publication</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_create_pub_check" class="internal-link" title="rp2da2.mqtt.mqtt_lcl.Sensor._create_pub_check">_create<wbr></wbr>_pub<wbr></wbr>_check</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_pub_check" class="internal-link" title="rp2da2.mqtt.mqtt_lcl.Sensor._pub_check">_pub<wbr></wbr>_check</a></code>
+            </div>
+        
+
+    </li>
+</ul> 
+
+        
+         
+
+        <div class="childrenKindTitle">Attributes</div>
+        <ul>
+    
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#SENSOR_PAYLOAD" class="internal-link" title="rp2da2.mqtt.mqtt_lcl.Sensor.SENSOR_PAYLOAD">SENSOR<wbr></wbr>_PAYLOAD</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#SENSOR_TOPIC_PREFIX" class="internal-link" title="rp2da2.mqtt.mqtt_lcl.Sensor.SENSOR_TOPIC_PREFIX">SENSOR<wbr></wbr>_TOPIC<wbr></wbr>_PREFIX</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_name" class="internal-link" title="rp2da2.mqtt.mqtt_lcl.Sensor._name">_name</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_sensor" class="internal-link" title="rp2da2.mqtt.mqtt_lcl.Sensor._sensor">_sensor</a></code>
+            </div>
+        
+
+    </li>
+</ul> 
+
+        
+         
+        
+      </div>
+  </div><div>
+
+      <div class="thingTitle">
+        <span>Module</span>
+        <code><a href="rp2da2.mqtt.mqtt_lcl.html" class="internal-link" title="The parent of this class">mqtt<wbr></wbr>_lcl</a></code> 
+      </div>
+      
+      <div>
+        
+
+        
+         
+
+        <div class="childrenKindTitle">Classes</div>
+        <ul>
+    
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.mqtt.mqtt_lcl.Block.html" class="internal-link" title="rp2da2.mqtt.mqtt_lcl.Block"><wbr></wbr>Block</a></code>
+            </div>
+        
+
+    </li><li class=" thisobject">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.mqtt.mqtt_lcl.Sensor.html" class="internal-link" title="rp2da2.mqtt.mqtt_lcl.Sensor"><wbr></wbr>Sensor</a></code>
+            </div>
+        
+
+    </li>
+</ul>
+
+        
+         
+
+        
+         
+
+        
+         
+
+        
+         
+        
+      </div>
+  </div>
+
+</nav>
+        </div>
+        <div id="collapse-sidebar">
+          <a class="btn btn-link" onclick="toggleSideBarCollapse()" title="Toggle Sidebar Collapse">
+          </a>
+        </div> 
+        <script src="sidebartoggle.js" type="text/javascript"></script>
+       
+      </div>
+
+      <main class="">
+        
+
+        
+
+        <div class="page-header">
+          <h1 class="class"><code><code><a href="index.html" class="internal-link">rp2da2</a></code><wbr></wbr>.<code><a href="rp2da2.mqtt.html" class="internal-link" title="rp2da2.mqtt">mqtt</a></code><wbr></wbr>.<code><a href="rp2da2.mqtt.mqtt_lcl.html" class="internal-link" title="rp2da2.mqtt.mqtt_lcl">mqtt_lcl</a></code><wbr></wbr>.<code><a href="rp2da2.mqtt.mqtt_lcl.Sensor.html" class="internal-link" title="rp2da2.mqtt.mqtt_lcl.Sensor">Sensor</a></code></code></h1>
+          <div id="show-private">
+            <button class="btn btn-link" onclick="togglePrivate()">Toggle Private API</button>
+          </div>
+        </div>
+
+        <div class="categoryHeader">
+          class documentation
+        </div>
+
+        <div class="extrasDocstring">
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">Sensor</span>(MQTTAgent):</code></p><p>Constructor: <code><a href="#__init__" class="internal-link" title="rp2da2.mqtt.mqtt_lcl.Sensor.__init__">Sensor(sensor)</a></code></p><p><a href="classIndex.html#rp2da2.mqtt.mqtt_lcl.Sensor">View In Hierarchy</a></p>
+        </div>
+
+        <div class="moduleDocstring">
+          <div><p>Sensor Agent</p>
+<p>This agent is used to handle publications to the sensor topic and
+any publications it makes.</p>
+</div>
+        </div>
+
+        <div id="split-tables">
+          <table class="children sortable" id="id39">
+  
+  
+  <tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#__init__" class="internal-link" title="rp2da2.mqtt.mqtt_lcl.Sensor.__init__">__init__</a></code></td>
+    <td>Construct the Sensor agent</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#handle_publication" class="internal-link" title="rp2da2.mqtt.mqtt_lcl.Sensor.handle_publication">handle<wbr></wbr>_publication</a></code></td>
+    <td>Handle a publication This method is called by the MQTT client when a publication is received.</td>
+  </tr><tr class="constant">
+    
+    <td>Constant</td>
+    <td><code><a href="#SENSOR_PAYLOAD" class="internal-link" title="rp2da2.mqtt.mqtt_lcl.Sensor.SENSOR_PAYLOAD">SENSOR<wbr></wbr>_PAYLOAD</a></code></td>
+    <td>Sensor payload look up</td>
+  </tr><tr class="constant">
+    
+    <td>Constant</td>
+    <td><code><a href="#SENSOR_TOPIC_PREFIX" class="internal-link" title="rp2da2.mqtt.mqtt_lcl.Sensor.SENSOR_TOPIC_PREFIX">SENSOR<wbr></wbr>_TOPIC<wbr></wbr>_PREFIX</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="method private">
+    
+    <td>Method</td>
+    <td><code><a href="#_create_pub_check" class="internal-link" title="rp2da2.mqtt.mqtt_lcl.Sensor._create_pub_check">_create<wbr></wbr>_pub<wbr></wbr>_check</a></code></td>
+    <td>Overrides version in base class</td>
+  </tr><tr class="method private">
+    
+    <td>Async Method</td>
+    <td><code><a href="#_pub_check" class="internal-link" title="rp2da2.mqtt.mqtt_lcl.Sensor._pub_check">_pub<wbr></wbr>_check</a></code></td>
+    <td>Publication check</td>
+  </tr><tr class="instancevariable private">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#_name" class="internal-link" title="rp2da2.mqtt.mqtt_lcl.Sensor._name">_name</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable private">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#_sensor" class="internal-link" title="rp2da2.mqtt.mqtt_lcl.Sensor._sensor">_sensor</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr>
+</table>
+          
+
+            
+        </div>
+
+        <div id="child-list">
+          <div class="basemethod">
+  
+  
+  <a name="rp2da2.mqtt.mqtt_lcl.Sensor.__init__">
+    
+  </a>
+  <a name="__init__">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">__init__</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">sensor</span>):</span>
+    
+    <a class="headerLink" href="#__init__" title="rp2da2.mqtt.mqtt_lcl.Sensor.__init__">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Construct the Sensor agent</p>
+<p>Create object variables and initialise the base Agent class topic and QoS</p>
+</div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="rp2da2.mqtt.mqtt_lcl.Sensor.handle_publication">
+    
+  </a>
+  <a name="handle_publication">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">handle_publication</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">topic, </span><span class="rst-sig-param">dup_flag, </span><span class="rst-sig-param">ret_flag, </span><span class="rst-sig-param">payload</span>):</span>
+    
+    <a class="headerLink" href="#handle_publication" title="rp2da2.mqtt.mqtt_lcl.Sensor.handle_publication">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Handle a publication
+This method is called by the MQTT client when a publication is received.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">topic</span></td><td class="fieldArgDesc">the topic of the publication</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">dup<wbr></wbr>_flag</span></td><td class="fieldArgDesc">True if this is a duplicate publication</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">ret<wbr></wbr>_flag</span></td><td class="fieldArgDesc">True if this is a retained publication</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">payload</span></td><td class="fieldArgDesc">the payload of the publication as a string</td></tr></table></div>
+  </div>
+</div><div class="baseconstant">
+  
+  
+  <a name="rp2da2.mqtt.mqtt_lcl.Sensor.SENSOR_PAYLOAD">
+    
+  </a>
+  <a name="SENSOR_PAYLOAD">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">SENSOR_PAYLOAD</span> =
+    
+    <a class="headerLink" href="#SENSOR_PAYLOAD" title="rp2da2.mqtt.mqtt_lcl.Sensor.SENSOR_PAYLOAD">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p>Sensor payload look up</p>
+<p>Dictionary to translate internal status to reported status</p>
+</div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>{<wbr></wbr>DCCBlkDet.BLK_EMPTY: <span class="rst-variable-quote">'</span><span class="rst-variable-string">INACTIVE</span><span class="rst-variable-quote">'</span>,
+ <wbr></wbr>DCCBlkDet.BLK_OCC: <span class="rst-variable-quote">'</span><span class="rst-variable-string">ACTIVE</span><span class="rst-variable-quote">'</span>,
+ <wbr></wbr>DCCBlkDet.BLK_NPOW: <span class="rst-variable-quote">'</span><span class="rst-variable-string">INACTIVE</span><span class="rst-variable-quote">'</span>}</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant">
+  
+  
+  <a name="rp2da2.mqtt.mqtt_lcl.Sensor.SENSOR_TOPIC_PREFIX">
+    
+  </a>
+  <a name="SENSOR_TOPIC_PREFIX">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">SENSOR_TOPIC_PREFIX</span>: <code>str</code> =
+    
+    <a class="headerLink" href="#SENSOR_TOPIC_PREFIX" title="rp2da2.mqtt.mqtt_lcl.Sensor.SENSOR_TOPIC_PREFIX">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code><span class="rst-variable-quote">'</span><span class="rst-variable-string">track/sensor</span><span class="rst-variable-quote">'</span></code></pre></td></tr></table>
+  </div>
+</div><div class="basemethod private">
+  
+  
+  <a name="rp2da2.mqtt.mqtt_lcl.Sensor._create_pub_check">
+    
+  </a>
+  <a name="_create_pub_check">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">_create_pub_check</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span></span>):</span>
+    
+    <a class="headerLink" href="#_create_pub_check" title="rp2da2.mqtt.mqtt_lcl.Sensor._create_pub_check">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Overrides version in base class</p></div>
+  </div>
+</div><div class="basemethod private">
+  
+  
+  <a name="rp2da2.mqtt.mqtt_lcl.Sensor._pub_check">
+    
+  </a>
+  <a name="_pub_check">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">async&#160;def</span>&#160;<span class="py-defname">_pub_check</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span></span>):</span>
+    
+    <a class="headerLink" href="#_pub_check" title="rp2da2.mqtt.mqtt_lcl.Sensor._pub_check">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Publication check</p>
+<p>Check to see if block state has changed and publish it.</p>
+<p>This coroutine runs forever.</p>
+</div>
+  </div>
+</div><div class="baseinstancevariable private">
+  
+  
+  <a name="rp2da2.mqtt.mqtt_lcl.Sensor._name">
+    
+  </a>
+  <a name="_name">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_name</span> =
+    
+    <a class="headerLink" href="#_name" title="rp2da2.mqtt.mqtt_lcl.Sensor._name">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable private">
+  
+  
+  <a name="rp2da2.mqtt.mqtt_lcl.Sensor._sensor">
+    
+  </a>
+  <a name="_sensor">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_sensor</span> =
+    
+    <a class="headerLink" href="#_sensor" title="rp2da2.mqtt.mqtt_lcl.Sensor._sensor">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div>
+        </div>
+      
+      </main>
+    </div>
+
+    <footer class="navbar navbar-default">
+
+  
+  <div class="container-fluid">
+    <a href="index.html">API Documentation</a> for RP2 Distributed Automation,
+  generated by <a href="https://github.com/twisted/pydoctor/">pydoctor</a>
+    25.10.1 at 2026-07-13 14:55:02.
+  </div>
+
+  <!-- Search related scripts needs to be loaded at the end of HTML 
+    parsing not to introduce overhead and display HTML data asap -->
+  <script src="ajax.js" type="text/javascript"></script>
+  <script src="searchlib.js" type="text/javascript"></script>
+  <script src="search.js" type="text/javascript"></script>
+
+</footer>
+  
+    <script src="pydoctor.js" type="text/javascript"></script>
+
+  </body>
+</html>

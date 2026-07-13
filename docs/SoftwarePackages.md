@@ -22,6 +22,10 @@ Wi-Fi.
 
 In addition to the packages there are example main.py and configuration files for the integrated Pico based command station and the quad RailCom local detector.
 
+The following sections provide an overview of the packages. Further details on the
+packages and their component modules are provided
+in the full [API section](rp2_api/index.html)
+
 ---
 
 ## lib package - Utility & UI

@@ -1,12 +1,4 @@
-"""Lib - Device Library Package
-
-
-.. figure:: images/lib.png
-    :width: 800px
-    :align: center
-
-    **Lib Class Diagram**
-
+"""**Lib - Device Library Package**
 
 This is the core utility library used across the project. This package
 collects small, well-tested modules that provide common functionality
@@ -21,5 +13,10 @@ The package is intentionally lightweight and dependency-minimal so it
 can be imported from command-line tools, tests, and other packages
 without side-effects. Import individual submodules or symbols to keep
 startup fast.
+
+**Lib Package Class Diagram**
+
+.. figure:: images/lib.svg
+    :align: center
 
 """

@@ -1,6 +1,7 @@
 # API
 
-This section provides API details for key DCC and RailCom modules.
+This section provides API details for key DCC and RailCom modules. Additional detail on
+internal interfaces and overall softare design is in the [Full API Documentation](rp2_api/index.html)
 
 ## Module dcc_command
 
@@ -190,8 +191,9 @@ method **get_error_counts** *()*
 
 Get Error Counts
 
-Counts of errors are kept. Broadly errors are communication errors or content errors. Content errors
-may be caused by faulty decoders, but typically are the result of undetected communicaton errors.
+Counts of errors are kept. Broadly errors are communication errors or content errors.
+Content errors may be caused by faulty decoders, but typically are the result of
+undetected communicaton errors.
 
 RailCom communication errors are:
 
@@ -216,5 +218,3 @@ method **reset_stats** *()*
 Reset Statistics
 
 Reset error counts etc.
-
----

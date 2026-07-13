@@ -1,0 +1,1202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+          "DTD/xhtml1-strict.dtd">
+<html>
+  
+
+  <head>
+    
+    <title>rp2da2.mqtt.mqtt_client</title>
+    <meta name="generator" content="pydoctor 25.10.1"> 
+        
+    </meta>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1" />
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="apidocs.css" />
+    <link rel="stylesheet" type="text/css" href="extra.css" />
+    
+</head>
+
+  <body>
+
+    
+
+    <nav class="navbar navbar-default mainnavbar">
+      
+  
+  <div class="container-fluid">
+
+
+    <div class="navbar-header">
+      
+      <div class="navlinks">
+        <span class="navbar-brand">
+          RP2 Distributed Automation <a href="index.html">API Documentation</a>
+        </span>
+
+        <a href="moduleIndex.html">
+          Modules
+        </a>
+
+        <a href="classIndex.html">
+          Classes
+        </a>
+
+        <a href="nameIndex.html">
+          Names
+        </a>
+
+        <div id="search-box-container">
+          <div class="input-group">
+            <input id="search-box" type="search" name="search-query" placeholder="Search..." aria-label="Search" minlength="2" class="form-control" autocomplete="off" />
+            
+            <span class="input-group-btn">
+              <a style="display: none;" class="btn btn-default" id="search-clear-button" title="Clear" onclick="clearSearch()"><img src="fonts/x-circle.svg" alt="Clear" /></a>
+              <a class="btn btn-default" id="apidocs-help-button" title="Help" href="apidocs-help.html"><img src="fonts/info.svg" alt="Help" /></a>
+            </span>
+          </div>
+        </div>
+
+      </div>
+
+      <div id="search-results-container" style="display: none;">
+        
+        <div id="search-buttons">
+          <span class="label label-default" id="search-docstrings-button">
+          <label class="checkbox-inline">
+            <input type="checkbox" id="toggle-search-in-docstrings-checkbox" value="false" onclick="toggleSearchInDocstrings()">
+              search in docstrings
+            </input>
+          </label>
+          </span>
+          
+        </div>
+        
+        <noscript>
+            <h1>Cannot search: JavaScript is not supported/enabled in your browser.</h1>
+        </noscript>
+
+        <div id="search-status"> </div>
+
+        <div class="warning" id="search-warn-box" style="display: none;">
+          <p class="rst-last"><span id="search-warn"></span></p>
+        </div>
+
+        <table id="search-results">
+          <!-- Filled dynamically by JS -->
+        </table>
+        
+        <div style="margin-top: 10px;">
+          <p>For more information on the search, visit the <a href="apidocs-help.html#rst-search">help page</a>.</p>
+        </div>
+      </div>
+
+    </div>
+
+
+  </div>
+</nav>
+    
+    <div class="container-fluid">
+
+      <!-- Side navigation -->
+      <div class="sidebarcontainer" style="display: none;">
+        
+        <div class="sidebar"><nav class="sidebar">
+  
+
+  <div>
+
+      <div class="thingTitle">
+        <span>Module</span>
+        <code class="thisobject"><a href="rp2da2.mqtt.mqtt_client.html" class="internal-link" title="This module">mqtt<wbr></wbr>_client</a></code> 
+      </div>
+      
+      <div>
+        
+
+        
+         
+
+        <div class="childrenKindTitle">Classes</div>
+        <ul>
+    
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.mqtt.mqtt_client.MQTTClient.html" class="internal-link" title="rp2da2.mqtt.mqtt_client.MQTTClient"><wbr></wbr>MQTTClient</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.mqtt.mqtt_client.MQTTPacketOut.html" class="internal-link" title="rp2da2.mqtt.mqtt_client.MQTTPacketOut"><wbr></wbr>MQTTPacket<wbr></wbr>Out</a></code>
+            </div>
+        
+
+    </li>
+</ul>
+
+        
+         
+
+        
+         
+
+        <div class="childrenKindTitle">Variables</div>
+        <ul>
+    
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#MQTT_BROKER_PORT" class="internal-link" title="rp2da2.mqtt.mqtt_client.MQTT_BROKER_PORT">MQTT<wbr></wbr>_BROKER<wbr></wbr>_PORT</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_ACK_TIME" class="internal-link" title="rp2da2.mqtt.mqtt_client._ACK_TIME">_ACK<wbr></wbr>_TIME</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_AUTH" class="internal-link" title="rp2da2.mqtt.mqtt_client._AUTH">_AUTH</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_CONNACK" class="internal-link" title="rp2da2.mqtt.mqtt_client._CONNACK">_CONNACK</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_CONNECT" class="internal-link" title="rp2da2.mqtt.mqtt_client._CONNECT">_CONNECT</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_DISCONNECT" class="internal-link" title="rp2da2.mqtt.mqtt_client._DISCONNECT">_DISCONNECT</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_KEEP_ALIVE" class="internal-link" title="rp2da2.mqtt.mqtt_client._KEEP_ALIVE">_KEEP<wbr></wbr>_ALIVE</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_MAX_MUX" class="internal-link" title="rp2da2.mqtt.mqtt_client._MAX_MUX">_MAX<wbr></wbr>_MUX</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_MAX_PID" class="internal-link" title="rp2da2.mqtt.mqtt_client._MAX_PID">_MAX<wbr></wbr>_PID</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_PING_TIME" class="internal-link" title="rp2da2.mqtt.mqtt_client._PING_TIME">_PING<wbr></wbr>_TIME</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_PINGREQ" class="internal-link" title="rp2da2.mqtt.mqtt_client._PINGREQ">_PINGREQ</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_PINGRESP" class="internal-link" title="rp2da2.mqtt.mqtt_client._PINGRESP">_PINGRESP</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_PUBACK" class="internal-link" title="rp2da2.mqtt.mqtt_client._PUBACK">_PUBACK</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_PUBCOMP" class="internal-link" title="rp2da2.mqtt.mqtt_client._PUBCOMP">_PUBCOMP</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_PUBLISH" class="internal-link" title="rp2da2.mqtt.mqtt_client._PUBLISH">_PUBLISH</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_PUBREC" class="internal-link" title="rp2da2.mqtt.mqtt_client._PUBREC">_PUBREC</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_PUBREL" class="internal-link" title="rp2da2.mqtt.mqtt_client._PUBREL">_PUBREL</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_REOPEN_TIME" class="internal-link" title="rp2da2.mqtt.mqtt_client._REOPEN_TIME">_REOPEN<wbr></wbr>_TIME</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_SUBACK" class="internal-link" title="rp2da2.mqtt.mqtt_client._SUBACK">_SUBACK</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_SUBSCRIBE" class="internal-link" title="rp2da2.mqtt.mqtt_client._SUBSCRIBE">_SUBSCRIBE</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_UNSUBACK" class="internal-link" title="rp2da2.mqtt.mqtt_client._UNSUBACK">_UNSUBACK</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_UNSUBSCRIBE" class="internal-link" title="rp2da2.mqtt.mqtt_client._UNSUBSCRIBE">_UNSUBSCRIBE</a></code>
+            </div>
+        
+
+    </li>
+</ul> 
+
+        
+         
+        
+      </div>
+  </div><div>
+
+      <div class="thingTitle">
+        <span>Package</span>
+        <code><a href="rp2da2.mqtt.html" class="internal-link" title="The parent of this module">mqtt</a></code> 
+      </div>
+      
+      <div>
+        
+
+        <div class="childrenKindTitle">Modules</div>
+        <ul>
+    
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.mqtt.mqtt.html" class="internal-link" title="rp2da2.mqtt.mqtt">mqtt</a></code>
+            </div>
+        
+
+    </li><li class=" thisobject">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.mqtt.mqtt_client.html" class="internal-link" title="rp2da2.mqtt.mqtt_client">mqtt<wbr></wbr>_client</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.mqtt.mqtt_cmd.html" class="internal-link" title="rp2da2.mqtt.mqtt_cmd">mqtt<wbr></wbr>_cmd</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.mqtt.mqtt_lcl.html" class="internal-link" title="rp2da2.mqtt.mqtt_lcl">mqtt<wbr></wbr>_lcl</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.mqtt.wifi.html" class="internal-link" title="rp2da2.mqtt.wifi">wifi</a></code>
+            </div>
+        
+
+    </li>
+</ul> 
+
+        
+        
+
+        
+         
+
+        
+         
+
+        
+         
+
+        
+         
+        
+      </div>
+  </div>
+
+</nav>
+        </div>
+        <div id="collapse-sidebar">
+          <a class="btn btn-link" onclick="toggleSideBarCollapse()" title="Toggle Sidebar Collapse">
+          </a>
+        </div> 
+        <script src="sidebartoggle.js" type="text/javascript"></script>
+       
+      </div>
+
+      <main class="">
+        
+
+        
+
+        <div class="page-header">
+          <h1 class="module"><code><code><a href="index.html" class="internal-link">rp2da2</a></code><wbr></wbr>.<code><a href="rp2da2.mqtt.html" class="internal-link" title="rp2da2.mqtt">mqtt</a></code><wbr></wbr>.<code><a href="rp2da2.mqtt.mqtt_client.html" class="internal-link" title="rp2da2.mqtt.mqtt_client">mqtt_client</a></code></code></h1>
+          <div id="show-private">
+            <button class="btn btn-link" onclick="togglePrivate()">Toggle Private API</button>
+          </div>
+        </div>
+
+        <div class="categoryHeader">
+          module documentation
+        </div>
+
+        <div class="extrasDocstring">
+          
+        </div>
+
+        <div class="moduleDocstring">
+          <div><p>MQTT Client</p>
+<p>This module contains the MQTT client code. It defines classes for the MQTT Client and manages the connection to
+the MQTT broker.</p>
+<p>The MQTT client is a singleton.</p>
+<p>MQTT version 3.1.1 as documented <a class="rst-external rst-reference" href="https://docs.oasis-open.org/mqtt/mqtt/v3.1.1/os/mqtt-v3.1.1-os.html" target="_top">https://docs.oasis-open.org/mqtt/mqtt/v3.1.1/os/mqtt-v3.1.1-os.html</a></p>
+<p>QoS2 not supported - only QoS0 or 1</p>
+<p>Sessions are clean - i.e. no context saved between sessions.</p>
+<p>Optional client disconnects are not implemented. Unless an error occurs or the broker terminates the
+session the session remains open until power is removed!</p>
+<p>The same logic applies to subscriptions - unsubscribe is not implemented.</p>
+<p>Authentication is not implemented.</p>
+<p>Subscriptions are static.  The subscription list is loaded by the client at instantiation and is
+immutable.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Author</td></tr><tr><td colspan="2">Paul Redhead</td></tr></table></div>
+        </div>
+
+        <div id="split-tables">
+          <table class="children sortable" id="id31">
+  
+  
+  <tr class="class">
+    
+    <td>Class</td>
+    <td><code><a href="rp2da2.mqtt.mqtt_client.MQTTClient.html" class="internal-link" title="rp2da2.mqtt.mqtt_client.MQTTClient"><wbr></wbr>MQTTClient</a></code></td>
+    <td>MQTT Client</td>
+  </tr><tr class="class">
+    
+    <td>Class</td>
+    <td><code><a href="rp2da2.mqtt.mqtt_client.MQTTPacketOut.html" class="internal-link" title="rp2da2.mqtt.mqtt_client.MQTTPacketOut"><wbr></wbr>MQTTPacket<wbr></wbr>Out</a></code></td>
+    <td>MQTT Control Packet Out</td>
+  </tr><tr class="constant">
+    
+    <td>Constant</td>
+    <td><code><a href="#MQTT_BROKER_PORT" class="internal-link" title="rp2da2.mqtt.mqtt_client.MQTT_BROKER_PORT">MQTT<wbr></wbr>_BROKER<wbr></wbr>_PORT</a></code></td>
+    <td>Default MQTT broker port number This is the default port number for the MQTT broker. It can be overridden in the configuration file.</td>
+  </tr><tr class="constant private">
+    
+    <td>Constant</td>
+    <td><code><a href="#_ACK_TIME" class="internal-link" title="rp2da2.mqtt.mqtt_client._ACK_TIME">_ACK<wbr></wbr>_TIME</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="constant private">
+    
+    <td>Constant</td>
+    <td><code><a href="#_AUTH" class="internal-link" title="rp2da2.mqtt.mqtt_client._AUTH">_AUTH</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="constant private">
+    
+    <td>Constant</td>
+    <td><code><a href="#_CONNACK" class="internal-link" title="rp2da2.mqtt.mqtt_client._CONNACK">_CONNACK</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="constant private">
+    
+    <td>Constant</td>
+    <td><code><a href="#_CONNECT" class="internal-link" title="rp2da2.mqtt.mqtt_client._CONNECT">_CONNECT</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="constant private">
+    
+    <td>Constant</td>
+    <td><code><a href="#_DISCONNECT" class="internal-link" title="rp2da2.mqtt.mqtt_client._DISCONNECT">_DISCONNECT</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="constant private">
+    
+    <td>Constant</td>
+    <td><code><a href="#_KEEP_ALIVE" class="internal-link" title="rp2da2.mqtt.mqtt_client._KEEP_ALIVE">_KEEP<wbr></wbr>_ALIVE</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="constant private">
+    
+    <td>Constant</td>
+    <td><code><a href="#_MAX_MUX" class="internal-link" title="rp2da2.mqtt.mqtt_client._MAX_MUX">_MAX<wbr></wbr>_MUX</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="constant private">
+    
+    <td>Constant</td>
+    <td><code><a href="#_MAX_PID" class="internal-link" title="rp2da2.mqtt.mqtt_client._MAX_PID">_MAX<wbr></wbr>_PID</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="constant private">
+    
+    <td>Constant</td>
+    <td><code><a href="#_PING_TIME" class="internal-link" title="rp2da2.mqtt.mqtt_client._PING_TIME">_PING<wbr></wbr>_TIME</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="constant private">
+    
+    <td>Constant</td>
+    <td><code><a href="#_PINGREQ" class="internal-link" title="rp2da2.mqtt.mqtt_client._PINGREQ">_PINGREQ</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="constant private">
+    
+    <td>Constant</td>
+    <td><code><a href="#_PINGRESP" class="internal-link" title="rp2da2.mqtt.mqtt_client._PINGRESP">_PINGRESP</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="constant private">
+    
+    <td>Constant</td>
+    <td><code><a href="#_PUBACK" class="internal-link" title="rp2da2.mqtt.mqtt_client._PUBACK">_PUBACK</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="constant private">
+    
+    <td>Constant</td>
+    <td><code><a href="#_PUBCOMP" class="internal-link" title="rp2da2.mqtt.mqtt_client._PUBCOMP">_PUBCOMP</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="constant private">
+    
+    <td>Constant</td>
+    <td><code><a href="#_PUBLISH" class="internal-link" title="rp2da2.mqtt.mqtt_client._PUBLISH">_PUBLISH</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="constant private">
+    
+    <td>Constant</td>
+    <td><code><a href="#_PUBREC" class="internal-link" title="rp2da2.mqtt.mqtt_client._PUBREC">_PUBREC</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="constant private">
+    
+    <td>Constant</td>
+    <td><code><a href="#_PUBREL" class="internal-link" title="rp2da2.mqtt.mqtt_client._PUBREL">_PUBREL</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="constant private">
+    
+    <td>Constant</td>
+    <td><code><a href="#_REOPEN_TIME" class="internal-link" title="rp2da2.mqtt.mqtt_client._REOPEN_TIME">_REOPEN<wbr></wbr>_TIME</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="constant private">
+    
+    <td>Constant</td>
+    <td><code><a href="#_SUBACK" class="internal-link" title="rp2da2.mqtt.mqtt_client._SUBACK">_SUBACK</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="constant private">
+    
+    <td>Constant</td>
+    <td><code><a href="#_SUBSCRIBE" class="internal-link" title="rp2da2.mqtt.mqtt_client._SUBSCRIBE">_SUBSCRIBE</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="constant private">
+    
+    <td>Constant</td>
+    <td><code><a href="#_UNSUBACK" class="internal-link" title="rp2da2.mqtt.mqtt_client._UNSUBACK">_UNSUBACK</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="constant private">
+    
+    <td>Constant</td>
+    <td><code><a href="#_UNSUBSCRIBE" class="internal-link" title="rp2da2.mqtt.mqtt_client._UNSUBSCRIBE">_UNSUBSCRIBE</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr>
+</table>
+          
+
+            
+        </div>
+
+        <div id="child-list">
+          <div class="baseconstant">
+  
+  
+  <a name="rp2da2.mqtt.mqtt_client.MQTT_BROKER_PORT">
+    
+  </a>
+  <a name="MQTT_BROKER_PORT">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">MQTT_BROKER_PORT</span> =
+    
+    <a class="headerLink" href="#MQTT_BROKER_PORT" title="rp2da2.mqtt.mqtt_client.MQTT_BROKER_PORT">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p>Default MQTT broker port number
+This is the default port number for the MQTT broker. It can be overridden in the configuration file.</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>1883)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant private">
+  
+  
+  <a name="rp2da2.mqtt.mqtt_client._ACK_TIME">
+    
+  </a>
+  <a name="_ACK_TIME">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_ACK_TIME</span> =
+    
+    <a class="headerLink" href="#_ACK_TIME" title="rp2da2.mqtt.mqtt_client._ACK_TIME">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>10000)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant private">
+  
+  
+  <a name="rp2da2.mqtt.mqtt_client._AUTH">
+    
+  </a>
+  <a name="_AUTH">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_AUTH</span> =
+    
+    <a class="headerLink" href="#_AUTH" title="rp2da2.mqtt.mqtt_client._AUTH">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>15)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant private">
+  
+  
+  <a name="rp2da2.mqtt.mqtt_client._CONNACK">
+    
+  </a>
+  <a name="_CONNACK">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_CONNACK</span> =
+    
+    <a class="headerLink" href="#_CONNACK" title="rp2da2.mqtt.mqtt_client._CONNACK">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>2)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant private">
+  
+  
+  <a name="rp2da2.mqtt.mqtt_client._CONNECT">
+    
+  </a>
+  <a name="_CONNECT">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_CONNECT</span> =
+    
+    <a class="headerLink" href="#_CONNECT" title="rp2da2.mqtt.mqtt_client._CONNECT">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>1)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant private">
+  
+  
+  <a name="rp2da2.mqtt.mqtt_client._DISCONNECT">
+    
+  </a>
+  <a name="_DISCONNECT">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_DISCONNECT</span> =
+    
+    <a class="headerLink" href="#_DISCONNECT" title="rp2da2.mqtt.mqtt_client._DISCONNECT">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>14)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant private">
+  
+  
+  <a name="rp2da2.mqtt.mqtt_client._KEEP_ALIVE">
+    
+  </a>
+  <a name="_KEEP_ALIVE">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_KEEP_ALIVE</span> =
+    
+    <a class="headerLink" href="#_KEEP_ALIVE" title="rp2da2.mqtt.mqtt_client._KEEP_ALIVE">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>60)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant private">
+  
+  
+  <a name="rp2da2.mqtt.mqtt_client._MAX_MUX">
+    
+  </a>
+  <a name="_MAX_MUX">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_MAX_MUX</span> =
+    
+    <a class="headerLink" href="#_MAX_MUX" title="rp2da2.mqtt.mqtt_client._MAX_MUX">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>(128 * 128 * 128))</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant private">
+  
+  
+  <a name="rp2da2.mqtt.mqtt_client._MAX_PID">
+    
+  </a>
+  <a name="_MAX_PID">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_MAX_PID</span> =
+    
+    <a class="headerLink" href="#_MAX_PID" title="rp2da2.mqtt.mqtt_client._MAX_PID">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>10)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant private">
+  
+  
+  <a name="rp2da2.mqtt.mqtt_client._PING_TIME">
+    
+  </a>
+  <a name="_PING_TIME">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_PING_TIME</span> =
+    
+    <a class="headerLink" href="#_PING_TIME" title="rp2da2.mqtt.mqtt_client._PING_TIME">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>50000)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant private">
+  
+  
+  <a name="rp2da2.mqtt.mqtt_client._PINGREQ">
+    
+  </a>
+  <a name="_PINGREQ">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_PINGREQ</span> =
+    
+    <a class="headerLink" href="#_PINGREQ" title="rp2da2.mqtt.mqtt_client._PINGREQ">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>12)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant private">
+  
+  
+  <a name="rp2da2.mqtt.mqtt_client._PINGRESP">
+    
+  </a>
+  <a name="_PINGRESP">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_PINGRESP</span> =
+    
+    <a class="headerLink" href="#_PINGRESP" title="rp2da2.mqtt.mqtt_client._PINGRESP">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>13)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant private">
+  
+  
+  <a name="rp2da2.mqtt.mqtt_client._PUBACK">
+    
+  </a>
+  <a name="_PUBACK">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_PUBACK</span> =
+    
+    <a class="headerLink" href="#_PUBACK" title="rp2da2.mqtt.mqtt_client._PUBACK">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>4)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant private">
+  
+  
+  <a name="rp2da2.mqtt.mqtt_client._PUBCOMP">
+    
+  </a>
+  <a name="_PUBCOMP">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_PUBCOMP</span> =
+    
+    <a class="headerLink" href="#_PUBCOMP" title="rp2da2.mqtt.mqtt_client._PUBCOMP">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>7)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant private">
+  
+  
+  <a name="rp2da2.mqtt.mqtt_client._PUBLISH">
+    
+  </a>
+  <a name="_PUBLISH">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_PUBLISH</span> =
+    
+    <a class="headerLink" href="#_PUBLISH" title="rp2da2.mqtt.mqtt_client._PUBLISH">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>3)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant private">
+  
+  
+  <a name="rp2da2.mqtt.mqtt_client._PUBREC">
+    
+  </a>
+  <a name="_PUBREC">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_PUBREC</span> =
+    
+    <a class="headerLink" href="#_PUBREC" title="rp2da2.mqtt.mqtt_client._PUBREC">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>5)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant private">
+  
+  
+  <a name="rp2da2.mqtt.mqtt_client._PUBREL">
+    
+  </a>
+  <a name="_PUBREL">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_PUBREL</span> =
+    
+    <a class="headerLink" href="#_PUBREL" title="rp2da2.mqtt.mqtt_client._PUBREL">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>6)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant private">
+  
+  
+  <a name="rp2da2.mqtt.mqtt_client._REOPEN_TIME">
+    
+  </a>
+  <a name="_REOPEN_TIME">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_REOPEN_TIME</span> =
+    
+    <a class="headerLink" href="#_REOPEN_TIME" title="rp2da2.mqtt.mqtt_client._REOPEN_TIME">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>5000)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant private">
+  
+  
+  <a name="rp2da2.mqtt.mqtt_client._SUBACK">
+    
+  </a>
+  <a name="_SUBACK">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_SUBACK</span> =
+    
+    <a class="headerLink" href="#_SUBACK" title="rp2da2.mqtt.mqtt_client._SUBACK">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>9)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant private">
+  
+  
+  <a name="rp2da2.mqtt.mqtt_client._SUBSCRIBE">
+    
+  </a>
+  <a name="_SUBSCRIBE">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_SUBSCRIBE</span> =
+    
+    <a class="headerLink" href="#_SUBSCRIBE" title="rp2da2.mqtt.mqtt_client._SUBSCRIBE">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>8)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant private">
+  
+  
+  <a name="rp2da2.mqtt.mqtt_client._UNSUBACK">
+    
+  </a>
+  <a name="_UNSUBACK">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_UNSUBACK</span> =
+    
+    <a class="headerLink" href="#_UNSUBACK" title="rp2da2.mqtt.mqtt_client._UNSUBACK">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>11)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant private">
+  
+  
+  <a name="rp2da2.mqtt.mqtt_client._UNSUBSCRIBE">
+    
+  </a>
+  <a name="_UNSUBSCRIBE">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_UNSUBSCRIBE</span> =
+    
+    <a class="headerLink" href="#_UNSUBSCRIBE" title="rp2da2.mqtt.mqtt_client._UNSUBSCRIBE">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>10)</code></pre></td></tr></table>
+  </div>
+</div>
+        </div>
+      
+      </main>
+    </div>
+
+    <footer class="navbar navbar-default">
+
+  
+  <div class="container-fluid">
+    <a href="index.html">API Documentation</a> for RP2 Distributed Automation,
+  generated by <a href="https://github.com/twisted/pydoctor/">pydoctor</a>
+    25.10.1 at 2026-07-13 14:55:02.
+  </div>
+
+  <!-- Search related scripts needs to be loaded at the end of HTML 
+    parsing not to introduce overhead and display HTML data asap -->
+  <script src="ajax.js" type="text/javascript"></script>
+  <script src="searchlib.js" type="text/javascript"></script>
+  <script src="search.js" type="text/javascript"></script>
+
+</footer>
+  
+    <script src="pydoctor.js" type="text/javascript"></script>
+
+  </body>
+</html>

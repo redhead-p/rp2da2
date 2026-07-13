@@ -1,0 +1,2189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+          "DTD/xhtml1-strict.dtd">
+<html>
+  
+
+  <head>
+    
+    <title>rp2da2.lib.device.Device</title>
+    <meta name="generator" content="pydoctor 25.10.1"> 
+        
+    </meta>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1" />
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="apidocs.css" />
+    <link rel="stylesheet" type="text/css" href="extra.css" />
+    
+</head>
+
+  <body>
+
+    
+
+    <nav class="navbar navbar-default mainnavbar">
+      
+  
+  <div class="container-fluid">
+
+
+    <div class="navbar-header">
+      
+      <div class="navlinks">
+        <span class="navbar-brand">
+          RP2 Distributed Automation <a href="index.html">API Documentation</a>
+        </span>
+
+        <a href="moduleIndex.html">
+          Modules
+        </a>
+
+        <a href="classIndex.html">
+          Classes
+        </a>
+
+        <a href="nameIndex.html">
+          Names
+        </a>
+
+        <div id="search-box-container">
+          <div class="input-group">
+            <input id="search-box" type="search" name="search-query" placeholder="Search..." aria-label="Search" minlength="2" class="form-control" autocomplete="off" />
+            
+            <span class="input-group-btn">
+              <a style="display: none;" class="btn btn-default" id="search-clear-button" title="Clear" onclick="clearSearch()"><img src="fonts/x-circle.svg" alt="Clear" /></a>
+              <a class="btn btn-default" id="apidocs-help-button" title="Help" href="apidocs-help.html"><img src="fonts/info.svg" alt="Help" /></a>
+            </span>
+          </div>
+        </div>
+
+      </div>
+
+      <div id="search-results-container" style="display: none;">
+        
+        <div id="search-buttons">
+          <span class="label label-default" id="search-docstrings-button">
+          <label class="checkbox-inline">
+            <input type="checkbox" id="toggle-search-in-docstrings-checkbox" value="false" onclick="toggleSearchInDocstrings()">
+              search in docstrings
+            </input>
+          </label>
+          </span>
+          
+        </div>
+        
+        <noscript>
+            <h1>Cannot search: JavaScript is not supported/enabled in your browser.</h1>
+        </noscript>
+
+        <div id="search-status"> </div>
+
+        <div class="warning" id="search-warn-box" style="display: none;">
+          <p class="rst-last"><span id="search-warn"></span></p>
+        </div>
+
+        <table id="search-results">
+          <!-- Filled dynamically by JS -->
+        </table>
+        
+        <div style="margin-top: 10px;">
+          <p>For more information on the search, visit the <a href="apidocs-help.html#rst-search">help page</a>.</p>
+        </div>
+      </div>
+
+    </div>
+
+
+  </div>
+</nav>
+    
+    <div class="container-fluid">
+
+      <!-- Side navigation -->
+      <div class="sidebarcontainer" style="display: none;">
+        
+        <div class="sidebar"><nav class="sidebar">
+  
+
+  <div>
+
+      <div class="thingTitle">
+        <span>Class</span>
+        <code class="thisobject"><a href="rp2da2.lib.device.Device.html" class="internal-link" title="This class"><wbr></wbr>Device</a></code> 
+      </div>
+      
+      <div>
+        
+
+        
+         
+
+        
+        
+
+        <div class="childrenKindTitle">Methods</div>
+        <ul>
+    
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#by_type_name" class="internal-link" title="rp2da2.lib.device.Device.by_type_name">by<wbr></wbr>_type<wbr></wbr>_name</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#get_event_report" class="internal-link" title="rp2da2.lib.device.Device.get_event_report">get<wbr></wbr>_event<wbr></wbr>_report</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#get_items" class="internal-link" title="rp2da2.lib.device.Device.get_items">get<wbr></wbr>_items</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#get_keys" class="internal-link" title="rp2da2.lib.device.Device.get_keys">get<wbr></wbr>_keys</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#check_core0" class="internal-link" title="rp2da2.lib.device.Device.check_core0">check<wbr></wbr>_core0</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#__init__" class="internal-link" title="rp2da2.lib.device.Device.__init__">__init__</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#report_event" class="internal-link" title="rp2da2.lib.device.Device.report_event">report<wbr></wbr>_event</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#wait_for_flag" class="internal-link" title="rp2da2.lib.device.Device.wait_for_flag">wait<wbr></wbr>_for<wbr></wbr>_flag</a></code>
+            </div>
+        
+
+    </li>
+</ul> 
+
+        
+         
+
+        <div class="childrenKindTitle">Attributes</div>
+        <ul>
+    
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#BD_DEV_TYPE" class="internal-link" title="rp2da2.lib.device.Device.BD_DEV_TYPE">BD<wbr></wbr>_DEV<wbr></wbr>_TYPE</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#BLK_CH1" class="internal-link" title="rp2da2.lib.device.Device.BLK_CH1">BLK<wbr></wbr>_CH1</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#BLK_EMPTY" class="internal-link" title="rp2da2.lib.device.Device.BLK_EMPTY">BLK<wbr></wbr>_EMPTY</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#BLK_NPOW" class="internal-link" title="rp2da2.lib.device.Device.BLK_NPOW">BLK<wbr></wbr>_NPOW</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#BLK_OCC" class="internal-link" title="rp2da2.lib.device.Device.BLK_OCC">BLK<wbr></wbr>_OCC</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#CH2_Q_FULL" class="internal-link" title="rp2da2.lib.device.Device.CH2_Q_FULL">CH2<wbr></wbr>_Q<wbr></wbr>_FULL</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#GBL_DEV_TYPE" class="internal-link" title="rp2da2.lib.device.Device.GBL_DEV_TYPE">GBL<wbr></wbr>_DEV<wbr></wbr>_TYPE</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#INDETERMINATE" class="internal-link" title="rp2da2.lib.device.Device.INDETERMINATE">INDETERMINATE</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#LCL_DEV_TYPE" class="internal-link" title="rp2da2.lib.device.Device.LCL_DEV_TYPE">LCL<wbr></wbr>_DEV<wbr></wbr>_TYPE</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#MC_CLOSED" class="internal-link" title="rp2da2.lib.device.Device.MC_CLOSED">MC<wbr></wbr>_CLOSED</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#MC_CONNECTED" class="internal-link" title="rp2da2.lib.device.Device.MC_CONNECTED">MC<wbr></wbr>_CONNECTED</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#MC_DEV_TYPE" class="internal-link" title="rp2da2.lib.device.Device.MC_DEV_TYPE">MC<wbr></wbr>_DEV<wbr></wbr>_TYPE</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#MC_OS_ERR" class="internal-link" title="rp2da2.lib.device.Device.MC_OS_ERR">MC<wbr></wbr>_OS<wbr></wbr>_ERR</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#MC_PINGERR" class="internal-link" title="rp2da2.lib.device.Device.MC_PINGERR">MC<wbr></wbr>_PINGERR</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#MC_PROT_ERR" class="internal-link" title="rp2da2.lib.device.Device.MC_PROT_ERR">MC<wbr></wbr>_PROT<wbr></wbr>_ERR</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#MC_PUB_RX" class="internal-link" title="rp2da2.lib.device.Device.MC_PUB_RX">MC<wbr></wbr>_PUB<wbr></wbr>_RX</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#MC_READY" class="internal-link" title="rp2da2.lib.device.Device.MC_READY">MC<wbr></wbr>_READY</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#MC_SEND" class="internal-link" title="rp2da2.lib.device.Device.MC_SEND">MC<wbr></wbr>_SEND</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#MC_U_ID7" class="internal-link" title="rp2da2.lib.device.Device.MC_U_ID7">MC<wbr></wbr>_U<wbr></wbr>_ID7</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#POM_CV" class="internal-link" title="rp2da2.lib.device.Device.POM_CV">POM<wbr></wbr>_CV</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#POM_NAK" class="internal-link" title="rp2da2.lib.device.Device.POM_NAK">POM<wbr></wbr>_NAK</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#POM_TO" class="internal-link" title="rp2da2.lib.device.Device.POM_TO">POM<wbr></wbr>_TO</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#SET" class="internal-link" title="rp2da2.lib.device.Device.SET">SET</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#TO_DEV_TYPE" class="internal-link" title="rp2da2.lib.device.Device.TO_DEV_TYPE">TO<wbr></wbr>_DEV<wbr></wbr>_TYPE</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#TO_STATE" class="internal-link" title="rp2da2.lib.device.Device.TO_STATE">TO<wbr></wbr>_STATE</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#UNKNOWN" class="internal-link" title="rp2da2.lib.device.Device.UNKNOWN">UNKNOWN</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#UNSET" class="internal-link" title="rp2da2.lib.device.Device.UNSET">UNSET</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#WF_CONNECTED" class="internal-link" title="rp2da2.lib.device.Device.WF_CONNECTED">WF<wbr></wbr>_CONNECTED</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#WF_CONNECTING" class="internal-link" title="rp2da2.lib.device.Device.WF_CONNECTING">WF<wbr></wbr>_CONNECTING</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#WF_DEV_TYPE" class="internal-link" title="rp2da2.lib.device.Device.WF_DEV_TYPE">WF<wbr></wbr>_DEV<wbr></wbr>_TYPE</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#WF_DISCON" class="internal-link" title="rp2da2.lib.device.Device.WF_DISCON">WF<wbr></wbr>_DISCON</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#WF_START" class="internal-link" title="rp2da2.lib.device.Device.WF_START">WF<wbr></wbr>_START</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#name" class="internal-link" title="rp2da2.lib.device.Device.name">name</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#type" class="internal-link" title="rp2da2.lib.device.Device.type">type</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_device_table" class="internal-link" title="rp2da2.lib.device.Device._device_table">_device<wbr></wbr>_table</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_q_lock" class="internal-link" title="rp2da2.lib.device.Device._q_lock">_q<wbr></wbr>_lock</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_queue" class="internal-link" title="rp2da2.lib.device.Device._queue">_queue</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_name" class="internal-link" title="rp2da2.lib.device.Device._name">_name</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_ready_flag" class="internal-link" title="rp2da2.lib.device.Device._ready_flag">_ready<wbr></wbr>_flag</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_type" class="internal-link" title="rp2da2.lib.device.Device._type">_type</a></code>
+            </div>
+        
+
+    </li>
+</ul> 
+
+        
+         
+        
+      </div>
+  </div><div>
+
+      <div class="thingTitle">
+        <span>Module</span>
+        <code><a href="rp2da2.lib.device.html" class="internal-link" title="The parent of this class">device</a></code> 
+      </div>
+      
+      <div>
+        
+
+        
+         
+
+        <div class="childrenKindTitle">Classes</div>
+        <ul>
+    
+    <li class=" thisobject">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.lib.device.Device.html" class="internal-link" title="rp2da2.lib.device.Device"><wbr></wbr>Device</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.lib.device.ThreadQError.html" class="internal-link" title="rp2da2.lib.device.ThreadQError"><wbr></wbr>Thread<wbr></wbr>QError</a></code>
+            </div>
+        
+
+    </li>
+</ul>
+
+        
+         
+
+        
+         
+
+        <div class="childrenKindTitle">Variables</div>
+        <ul>
+    
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.lib.device.html#MAX_Q_LEN" class="internal-link" title="rp2da2.lib.device.MAX_Q_LEN">MAX<wbr></wbr>_Q<wbr></wbr>_LEN</a></code>
+            </div>
+        
+
+    </li>
+</ul> 
+
+        
+         
+        
+      </div>
+  </div>
+
+</nav>
+        </div>
+        <div id="collapse-sidebar">
+          <a class="btn btn-link" onclick="toggleSideBarCollapse()" title="Toggle Sidebar Collapse">
+          </a>
+        </div> 
+        <script src="sidebartoggle.js" type="text/javascript"></script>
+       
+      </div>
+
+      <main class="">
+        
+
+        
+
+        <div class="page-header">
+          <h1 class="class"><code><code><a href="index.html" class="internal-link">rp2da2</a></code><wbr></wbr>.<code><a href="rp2da2.lib.html" class="internal-link" title="rp2da2.lib">lib</a></code><wbr></wbr>.<code><a href="rp2da2.lib.device.html" class="internal-link" title="rp2da2.lib.device">device</a></code><wbr></wbr>.<code><a href="rp2da2.lib.device.Device.html" class="internal-link" title="rp2da2.lib.device.Device">Device</a></code></code></h1>
+          <div id="show-private">
+            <button class="btn btn-link" onclick="togglePrivate()">Toggle Private API</button>
+          </div>
+        </div>
+
+        <div class="categoryHeader">
+          class documentation
+        </div>
+
+        <div class="extrasDocstring">
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">Device</span>:</code></p><p>Constructor: <code><a href="#__init__" class="internal-link" title="rp2da2.lib.device.Device.__init__">Device(name, type)</a></code></p><p><a href="classIndex.html#rp2da2.lib.device.Device">View In Hierarchy</a></p>
+        </div>
+
+        <div class="moduleDocstring">
+          <div><p>Device Base Class</p>
+<p>This class acts as a base for hardware devices and similar. In particular those devices which need to raise
+events for display on the screen or initiate actions as part of automation.  Events are queued.  Although
+many devices may raise events there is only one reader.  Typically the device class is a abstract class.  I.e not
+instantiated independently.</p>
+</div>
+        </div>
+
+        <div id="split-tables">
+          <table class="children sortable" id="id4">
+  
+  
+  <tr class="classmethod">
+    
+    <td>Class Method</td>
+    <td><code><a href="#by_type_name" class="internal-link" title="rp2da2.lib.device.Device.by_type_name">by<wbr></wbr>_type<wbr></wbr>_name</a></code></td>
+    <td>Find a device object by type and name</td>
+  </tr><tr class="classmethod">
+    
+    <td>Class Method</td>
+    <td><code><a href="#get_event_report" class="internal-link" title="rp2da2.lib.device.Device.get_event_report">get<wbr></wbr>_event<wbr></wbr>_report</a></code></td>
+    <td>get the event report at top of queue</td>
+  </tr><tr class="classmethod">
+    
+    <td>Class Method</td>
+    <td><code><a href="#get_items" class="internal-link" title="rp2da2.lib.device.Device.get_items">get<wbr></wbr>_items</a></code></td>
+    <td>Get items from the device table.</td>
+  </tr><tr class="classmethod">
+    
+    <td>Class Method</td>
+    <td><code><a href="#get_keys" class="internal-link" title="rp2da2.lib.device.Device.get_keys">get<wbr></wbr>_keys</a></code></td>
+    <td>Get device names (keys) from the device table.</td>
+  </tr><tr class="staticmethod">
+    
+    <td>Static Method</td>
+    <td><code><a href="#check_core0" class="internal-link" title="rp2da2.lib.device.Device.check_core0">check<wbr></wbr>_core0</a></code></td>
+    <td>Check on core 0</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#__init__" class="internal-link" title="rp2da2.lib.device.Device.__init__">__init__</a></code></td>
+    <td>Initialise Device</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#report_event" class="internal-link" title="rp2da2.lib.device.Device.report_event">report<wbr></wbr>_event</a></code></td>
+    <td>Add event report to the queue</td>
+  </tr><tr class="method">
+    
+    <td>Async Method</td>
+    <td><code><a href="#wait_for_flag" class="internal-link" title="rp2da2.lib.device.Device.wait_for_flag">wait<wbr></wbr>_for<wbr></wbr>_flag</a></code></td>
+    <td>Wait for available event</td>
+  </tr><tr class="constant">
+    
+    <td>Constant</td>
+    <td><code><a href="#BD_DEV_TYPE" class="internal-link" title="rp2da2.lib.device.Device.BD_DEV_TYPE">BD<wbr></wbr>_DEV<wbr></wbr>_TYPE</a></code></td>
+    <td>Block Detect Device  Type</td>
+  </tr><tr class="constant">
+    
+    <td>Constant</td>
+    <td><code><a href="#BLK_CH1" class="internal-link" title="rp2da2.lib.device.Device.BLK_CH1">BLK<wbr></wbr>_CH1</a></code></td>
+    <td>Block occupied - RailCom channel 1 info.</td>
+  </tr><tr class="constant">
+    
+    <td>Constant</td>
+    <td><code><a href="#BLK_EMPTY" class="internal-link" title="rp2da2.lib.device.Device.BLK_EMPTY">BLK<wbr></wbr>_EMPTY</a></code></td>
+    <td>Block unoccupied</td>
+  </tr><tr class="constant">
+    
+    <td>Constant</td>
+    <td><code><a href="#BLK_NPOW" class="internal-link" title="rp2da2.lib.device.Device.BLK_NPOW">BLK<wbr></wbr>_NPOW</a></code></td>
+    <td>Block not powered.</td>
+  </tr><tr class="constant">
+    
+    <td>Constant</td>
+    <td><code><a href="#BLK_OCC" class="internal-link" title="rp2da2.lib.device.Device.BLK_OCC">BLK<wbr></wbr>_OCC</a></code></td>
+    <td>Block occupied - Load detected but no info.</td>
+  </tr><tr class="constant">
+    
+    <td>Constant</td>
+    <td><code><a href="#CH2_Q_FULL" class="internal-link" title="rp2da2.lib.device.Device.CH2_Q_FULL">CH2<wbr></wbr>_Q<wbr></wbr>_FULL</a></code></td>
+    <td>Channel 2 report queue full</td>
+  </tr><tr class="constant">
+    
+    <td>Constant</td>
+    <td><code><a href="#GBL_DEV_TYPE" class="internal-link" title="rp2da2.lib.device.Device.GBL_DEV_TYPE">GBL<wbr></wbr>_DEV<wbr></wbr>_TYPE</a></code></td>
+    <td>Global RailCom Device Type</td>
+  </tr><tr class="constant">
+    
+    <td>Constant</td>
+    <td><code><a href="#INDETERMINATE" class="internal-link" title="rp2da2.lib.device.Device.INDETERMINATE">INDETERMINATE</a></code></td>
+    <td>State indeterminate (e.g. action in progress)</td>
+  </tr><tr class="constant">
+    
+    <td>Constant</td>
+    <td><code><a href="#LCL_DEV_TYPE" class="internal-link" title="rp2da2.lib.device.Device.LCL_DEV_TYPE">LCL<wbr></wbr>_DEV<wbr></wbr>_TYPE</a></code></td>
+    <td>Local RailCom Device Type</td>
+  </tr><tr class="constant">
+    
+    <td>Constant</td>
+    <td><code><a href="#MC_CLOSED" class="internal-link" title="rp2da2.lib.device.Device.MC_CLOSED">MC<wbr></wbr>_CLOSED</a></code></td>
+    <td>Closed</td>
+  </tr><tr class="constant">
+    
+    <td>Constant</td>
+    <td><code><a href="#MC_CONNECTED" class="internal-link" title="rp2da2.lib.device.Device.MC_CONNECTED">MC<wbr></wbr>_CONNECTED</a></code></td>
+    <td>Broker connected</td>
+  </tr><tr class="constant">
+    
+    <td>Constant</td>
+    <td><code><a href="#MC_DEV_TYPE" class="internal-link" title="rp2da2.lib.device.Device.MC_DEV_TYPE">MC<wbr></wbr>_DEV<wbr></wbr>_TYPE</a></code></td>
+    <td>MQTT Client device type</td>
+  </tr><tr class="constant">
+    
+    <td>Constant</td>
+    <td><code><a href="#MC_OS_ERR" class="internal-link" title="rp2da2.lib.device.Device.MC_OS_ERR">MC<wbr></wbr>_OS<wbr></wbr>_ERR</a></code></td>
+    <td>OS Error on write or read</td>
+  </tr><tr class="constant">
+    
+    <td>Constant</td>
+    <td><code><a href="#MC_PINGERR" class="internal-link" title="rp2da2.lib.device.Device.MC_PINGERR">MC<wbr></wbr>_PINGERR</a></code></td>
+    <td>Ping cannot be sent (wrong state)</td>
+  </tr><tr class="constant">
+    
+    <td>Constant</td>
+    <td><code><a href="#MC_PROT_ERR" class="internal-link" title="rp2da2.lib.device.Device.MC_PROT_ERR">MC<wbr></wbr>_PROT<wbr></wbr>_ERR</a></code></td>
+    <td>Protocol error - ill formed response etc</td>
+  </tr><tr class="constant">
+    
+    <td>Constant</td>
+    <td><code><a href="#MC_PUB_RX" class="internal-link" title="rp2da2.lib.device.Device.MC_PUB_RX">MC<wbr></wbr>_PUB<wbr></wbr>_RX</a></code></td>
+    <td>Publication received</td>
+  </tr><tr class="constant">
+    
+    <td>Constant</td>
+    <td><code><a href="#MC_READY" class="internal-link" title="rp2da2.lib.device.Device.MC_READY">MC<wbr></wbr>_READY</a></code></td>
+    <td>Initial subscriptions registered / no publication in progress</td>
+  </tr><tr class="constant">
+    
+    <td>Constant</td>
+    <td><code><a href="#MC_SEND" class="internal-link" title="rp2da2.lib.device.Device.MC_SEND">MC<wbr></wbr>_SEND</a></code></td>
+    <td>Sending (connection request, subscription, or publication)</td>
+  </tr><tr class="constant">
+    
+    <td>Constant</td>
+    <td><code><a href="#MC_U_ID7" class="internal-link" title="rp2da2.lib.device.Device.MC_U_ID7">MC<wbr></wbr>_U<wbr></wbr>_ID7</a></code></td>
+    <td>no encoding info for ID7 subindex</td>
+  </tr><tr class="constant">
+    
+    <td>Constant</td>
+    <td><code><a href="#POM_CV" class="internal-link" title="rp2da2.lib.device.Device.POM_CV">POM<wbr></wbr>_CV</a></code></td>
+    <td>event code for reporting a CV value from read or write.</td>
+  </tr><tr class="constant">
+    
+    <td>Constant</td>
+    <td><code><a href="#POM_NAK" class="internal-link" title="rp2da2.lib.device.Device.POM_NAK">POM<wbr></wbr>_NAK</a></code></td>
+    <td>event code for reporting NAK received.</td>
+  </tr><tr class="constant">
+    
+    <td>Constant</td>
+    <td><code><a href="#POM_TO" class="internal-link" title="rp2da2.lib.device.Device.POM_TO">POM<wbr></wbr>_TO</a></code></td>
+    <td>event code for reporting POM access timeout.</td>
+  </tr><tr class="constant">
+    
+    <td>Constant</td>
+    <td><code><a href="#SET" class="internal-link" title="rp2da2.lib.device.Device.SET">SET</a></code></td>
+    <td>State Set / on / true or action complete if &gt; 2 operables states</td>
+  </tr><tr class="constant">
+    
+    <td>Constant</td>
+    <td><code><a href="#TO_DEV_TYPE" class="internal-link" title="rp2da2.lib.device.Device.TO_DEV_TYPE">TO<wbr></wbr>_DEV<wbr></wbr>_TYPE</a></code></td>
+    <td>Turnout/Point device type</td>
+  </tr><tr class="constant">
+    
+    <td>Constant</td>
+    <td><code><a href="#TO_STATE" class="internal-link" title="rp2da2.lib.device.Device.TO_STATE">TO<wbr></wbr>_STATE</a></code></td>
+    <td>Turnout/Point state update</td>
+  </tr><tr class="constant">
+    
+    <td>Constant</td>
+    <td><code><a href="#UNKNOWN" class="internal-link" title="rp2da2.lib.device.Device.UNKNOWN">UNKNOWN</a></code></td>
+    <td>State unavalable (e.g start of day</td>
+  </tr><tr class="constant">
+    
+    <td>Constant</td>
+    <td><code><a href="#UNSET" class="internal-link" title="rp2da2.lib.device.Device.UNSET">UNSET</a></code></td>
+    <td>State unset / off / false</td>
+  </tr><tr class="constant">
+    
+    <td>Constant</td>
+    <td><code><a href="#WF_CONNECTED" class="internal-link" title="rp2da2.lib.device.Device.WF_CONNECTED">WF<wbr></wbr>_CONNECTED</a></code></td>
+    <td>Connected OK</td>
+  </tr><tr class="constant">
+    
+    <td>Constant</td>
+    <td><code><a href="#WF_CONNECTING" class="internal-link" title="rp2da2.lib.device.Device.WF_CONNECTING">WF<wbr></wbr>_CONNECTING</a></code></td>
+    <td>Connection in progress</td>
+  </tr><tr class="constant">
+    
+    <td>Constant</td>
+    <td><code><a href="#WF_DEV_TYPE" class="internal-link" title="rp2da2.lib.device.Device.WF_DEV_TYPE">WF<wbr></wbr>_DEV<wbr></wbr>_TYPE</a></code></td>
+    <td>Wi-Fi device type (w)</td>
+  </tr><tr class="constant">
+    
+    <td>Constant</td>
+    <td><code><a href="#WF_DISCON" class="internal-link" title="rp2da2.lib.device.Device.WF_DISCON">WF<wbr></wbr>_DISCON</a></code></td>
+    <td>Wi-Fi disconnected</td>
+  </tr><tr class="constant">
+    
+    <td>Constant</td>
+    <td><code><a href="#WF_START" class="internal-link" title="rp2da2.lib.device.Device.WF_START">WF<wbr></wbr>_START</a></code></td>
+    <td>Wi-Fi starting</td>
+  </tr><tr class="property">
+    
+    <td>Property</td>
+    <td><code><a href="#name" class="internal-link" title="rp2da2.lib.device.Device.name">name</a></code></td>
+    <td>Get the device name</td>
+  </tr><tr class="property">
+    
+    <td>Property</td>
+    <td><code><a href="#type" class="internal-link" title="rp2da2.lib.device.Device.type">type</a></code></td>
+    <td>Get the device type</td>
+  </tr><tr class="classvariable private">
+    
+    <td>Class Variable</td>
+    <td><code><a href="#_device_table" class="internal-link" title="rp2da2.lib.device.Device._device_table">_device<wbr></wbr>_table</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="classvariable private">
+    
+    <td>Class Variable</td>
+    <td><code><a href="#_q_lock" class="internal-link" title="rp2da2.lib.device.Device._q_lock">_q<wbr></wbr>_lock</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="classvariable private">
+    
+    <td>Class Variable</td>
+    <td><code><a href="#_queue" class="internal-link" title="rp2da2.lib.device.Device._queue">_queue</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable private">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#_name" class="internal-link" title="rp2da2.lib.device.Device._name">_name</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable private">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#_ready_flag" class="internal-link" title="rp2da2.lib.device.Device._ready_flag">_ready<wbr></wbr>_flag</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable private">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#_type" class="internal-link" title="rp2da2.lib.device.Device._type">_type</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr>
+</table>
+          
+
+            
+        </div>
+
+        <div id="child-list">
+          <div class="baseclassmethod">
+  
+  
+  <a name="rp2da2.lib.device.Device.by_type_name">
+    
+  </a>
+  <a name="by_type_name">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <div><span class="decorator">@classmethod<br /></span></div>
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">by_type_name</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">cls</span>, </span><span class="rst-sig-param">type, </span><span class="rst-sig-param">name</span>):</span>
+    
+    <a class="headerLink" href="#by_type_name" title="rp2da2.lib.device.Device.by_type_name">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Find a device object by type and name</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">cls</span></td><td class="fieldArgDesc"></td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">type</span></td><td class="fieldArgDesc">the type of the device</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">name</span></td><td class="fieldArgDesc">the name of the device</td></tr></table><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td colspan="2">refererence to the object</td></tr></table><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Raises</td></tr><tr><td class="fieldArgContainer"><code>IndexError if not found</code></td><td></td></tr></table></div>
+  </div>
+</div><div class="baseclassmethod">
+  
+  
+  <a name="rp2da2.lib.device.Device.get_event_report">
+    
+  </a>
+  <a name="get_event_report">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <div><span class="decorator">@classmethod<br /></span></div>
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">get_event_report</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">cls</span>, </span><span class="rst-sig-param">wait=True</span>):</span>
+    
+    <a class="headerLink" href="#get_event_report" title="rp2da2.lib.device.Device.get_event_report">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>get the event report at top of queue</p>
+<p>This is synchronous if wait true and will wait forever while the queue is empty.
+If wait is false it returns None immediately if the queue is empty.</p>
+<p>If the queue is not empty the returned tuple holds:</p>
+<blockquote>
+<ul class="rst-simple">
+<li>source, 'self' from the object reporting the event</li>
+<li>event, one of ACTION_DONE, ACTION_ERROR, ACTION_INIT or as defined for device</li>
+<li>data, depends on source object and event</li>
+</ul>
+</blockquote>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">wait</span></td><td class="fieldArgDesc">if True wait for an event report otherwise return immediately</td></tr></table><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td colspan="2">None or a tuple</td></tr></table></div>
+  </div>
+</div><div class="baseclassmethod">
+  
+  
+  <a name="rp2da2.lib.device.Device.get_items">
+    
+  </a>
+  <a name="get_items">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <div><span class="decorator">@classmethod<br /></span></div>
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">get_items</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">cls</span></span>):</span>
+    
+    <a class="headerLink" href="#get_items" title="rp2da2.lib.device.Device.get_items">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Get items from the device table.</p>
+<p>The device table holds a list of the device objects keyed by their type and
+name.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td colspan="2">a list of items - name and device object pairs</td></tr></table></div>
+  </div>
+</div><div class="baseclassmethod">
+  
+  
+  <a name="rp2da2.lib.device.Device.get_keys">
+    
+  </a>
+  <a name="get_keys">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <div><span class="decorator">@classmethod<br /></span></div>
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">get_keys</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">cls</span></span>):</span>
+    
+    <a class="headerLink" href="#get_keys" title="rp2da2.lib.device.Device.get_keys">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Get device names (keys) from the device table.</p>
+<p>The device table holds a list of the device objects keyed by their name.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td colspan="2">a list of device names</td></tr></table></div>
+  </div>
+</div><div class="basestaticmethod">
+  
+  
+  <a name="rp2da2.lib.device.Device.check_core0">
+    
+  </a>
+  <a name="check_core0">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <div><span class="decorator">@staticmethod<br /></span></div>
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">check_core0</span><span class="function-signature">():</span>
+    
+    <a class="headerLink" href="#check_core0" title="rp2da2.lib.device.Device.check_core0">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Check on core 0</p>
+<p>'Soft' ISRs associated with timer events and hw related ISRs now appear to run in core 0.
+This implentation assumes this and the method here allows a 'soft' serivice routine to check
+it's on core 0. The get_ident method return core number + 1!</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Raises</td></tr><tr><td class="fieldArgContainer"><code>Run time error if not on core 0.</code></td><td></td></tr></table></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="rp2da2.lib.device.Device.__init__">
+    
+  </a>
+  <a name="__init__">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">__init__</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">name, </span><span class="rst-sig-param">type</span>):</span>
+    
+    <a class="headerLink" href="#__init__" title="rp2da2.lib.device.Device.__init__">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Initialise Device</p>
+<p>This initialises the device.  Usally invoked by super().__init__() from the child.</p>
+<p>Save the name (should be unique but not formally tested) &amp; type.  Type is a single character. Could
+used __class__ but that would be more complex.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">name</span></td><td class="fieldArgDesc">string containing the device name</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">type</span></td><td class="fieldArgDesc">character specifying the type of device (i.e. class of child)</td></tr></table></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="rp2da2.lib.device.Device.report_event">
+    
+  </a>
+  <a name="report_event">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">report_event</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">event, </span><span class="rst-sig-param">data</span>):</span>
+    
+    <a class="headerLink" href="#report_event" title="rp2da2.lib.device.Device.report_event">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Add event report to the queue</p>
+<p>The event report is added to the queue.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">event</span></td><td class="fieldArgDesc">event code - a Device class constant</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">data</span></td><td class="fieldArgDesc">event data to qualify code - device dependent</td></tr></table><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Raises</td></tr><tr><td class="fieldArgContainer"><code><a href="rp2da2.lib.device.ThreadQError.html" class="internal-link" title="rp2da2.lib.device.ThreadQError">ThreadQError</a></code></td><td>The queue is full</td></tr></table></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="rp2da2.lib.device.Device.wait_for_flag">
+    
+  </a>
+  <a name="wait_for_flag">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">async&#160;def</span>&#160;<span class="py-defname">wait_for_flag</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span></span>):</span>
+    
+    <a class="headerLink" href="#wait_for_flag" title="rp2da2.lib.device.Device.wait_for_flag">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Wait for available event</p>
+<p>This may be called by an agent to wait for the asynchio event to be set
+signifying the device has new information available.</p>
+</div>
+  </div>
+</div><div class="baseconstant">
+  
+  
+  <a name="rp2da2.lib.device.Device.BD_DEV_TYPE">
+    
+  </a>
+  <a name="BD_DEV_TYPE">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">BD_DEV_TYPE</span> =
+    
+    <a class="headerLink" href="#BD_DEV_TYPE" title="rp2da2.lib.device.Device.BD_DEV_TYPE">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p>Block Detect Device  Type</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr><span class="rst-variable-quote">'</span><span class="rst-variable-string">d</span><span class="rst-variable-quote">'</span>)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant">
+  
+  
+  <a name="rp2da2.lib.device.Device.BLK_CH1">
+    
+  </a>
+  <a name="BLK_CH1">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">BLK_CH1</span> =
+    
+    <a class="headerLink" href="#BLK_CH1" title="rp2da2.lib.device.Device.BLK_CH1">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p>Block occupied - RailCom channel 1 info.</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>21)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant">
+  
+  
+  <a name="rp2da2.lib.device.Device.BLK_EMPTY">
+    
+  </a>
+  <a name="BLK_EMPTY">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">BLK_EMPTY</span> =
+    
+    <a class="headerLink" href="#BLK_EMPTY" title="rp2da2.lib.device.Device.BLK_EMPTY">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p>Block unoccupied</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>20)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant">
+  
+  
+  <a name="rp2da2.lib.device.Device.BLK_NPOW">
+    
+  </a>
+  <a name="BLK_NPOW">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">BLK_NPOW</span> =
+    
+    <a class="headerLink" href="#BLK_NPOW" title="rp2da2.lib.device.Device.BLK_NPOW">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p>Block not powered.</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>23)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant">
+  
+  
+  <a name="rp2da2.lib.device.Device.BLK_OCC">
+    
+  </a>
+  <a name="BLK_OCC">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">BLK_OCC</span> =
+    
+    <a class="headerLink" href="#BLK_OCC" title="rp2da2.lib.device.Device.BLK_OCC">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p>Block occupied - Load detected but no info.</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>22)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant">
+  
+  
+  <a name="rp2da2.lib.device.Device.CH2_Q_FULL">
+    
+  </a>
+  <a name="CH2_Q_FULL">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">CH2_Q_FULL</span> =
+    
+    <a class="headerLink" href="#CH2_Q_FULL" title="rp2da2.lib.device.Device.CH2_Q_FULL">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p>Channel 2 report queue full</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>33)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant">
+  
+  
+  <a name="rp2da2.lib.device.Device.GBL_DEV_TYPE">
+    
+  </a>
+  <a name="GBL_DEV_TYPE">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">GBL_DEV_TYPE</span> =
+    
+    <a class="headerLink" href="#GBL_DEV_TYPE" title="rp2da2.lib.device.Device.GBL_DEV_TYPE">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p>Global RailCom Device Type</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr><span class="rst-variable-quote">'</span><span class="rst-variable-string">g</span><span class="rst-variable-quote">'</span>)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant">
+  
+  
+  <a name="rp2da2.lib.device.Device.INDETERMINATE">
+    
+  </a>
+  <a name="INDETERMINATE">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">INDETERMINATE</span> =
+    
+    <a class="headerLink" href="#INDETERMINATE" title="rp2da2.lib.device.Device.INDETERMINATE">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p>State indeterminate (e.g. action in progress)</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>3)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant">
+  
+  
+  <a name="rp2da2.lib.device.Device.LCL_DEV_TYPE">
+    
+  </a>
+  <a name="LCL_DEV_TYPE">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">LCL_DEV_TYPE</span> =
+    
+    <a class="headerLink" href="#LCL_DEV_TYPE" title="rp2da2.lib.device.Device.LCL_DEV_TYPE">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p>Local RailCom Device Type</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr><span class="rst-variable-quote">'</span><span class="rst-variable-string">l</span><span class="rst-variable-quote">'</span>)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant">
+  
+  
+  <a name="rp2da2.lib.device.Device.MC_CLOSED">
+    
+  </a>
+  <a name="MC_CLOSED">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">MC_CLOSED</span> =
+    
+    <a class="headerLink" href="#MC_CLOSED" title="rp2da2.lib.device.Device.MC_CLOSED">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p>Closed</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>44)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant">
+  
+  
+  <a name="rp2da2.lib.device.Device.MC_CONNECTED">
+    
+  </a>
+  <a name="MC_CONNECTED">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">MC_CONNECTED</span> =
+    
+    <a class="headerLink" href="#MC_CONNECTED" title="rp2da2.lib.device.Device.MC_CONNECTED">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p>Broker connected</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>40)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant">
+  
+  
+  <a name="rp2da2.lib.device.Device.MC_DEV_TYPE">
+    
+  </a>
+  <a name="MC_DEV_TYPE">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">MC_DEV_TYPE</span> =
+    
+    <a class="headerLink" href="#MC_DEV_TYPE" title="rp2da2.lib.device.Device.MC_DEV_TYPE">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p>MQTT Client device type</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr><span class="rst-variable-quote">'</span><span class="rst-variable-string">m</span><span class="rst-variable-quote">'</span>)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant">
+  
+  
+  <a name="rp2da2.lib.device.Device.MC_OS_ERR">
+    
+  </a>
+  <a name="MC_OS_ERR">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">MC_OS_ERR</span> =
+    
+    <a class="headerLink" href="#MC_OS_ERR" title="rp2da2.lib.device.Device.MC_OS_ERR">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p>OS Error on write or read</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>41)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant">
+  
+  
+  <a name="rp2da2.lib.device.Device.MC_PINGERR">
+    
+  </a>
+  <a name="MC_PINGERR">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">MC_PINGERR</span> =
+    
+    <a class="headerLink" href="#MC_PINGERR" title="rp2da2.lib.device.Device.MC_PINGERR">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p>Ping cannot be sent (wrong state)</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>45)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant">
+  
+  
+  <a name="rp2da2.lib.device.Device.MC_PROT_ERR">
+    
+  </a>
+  <a name="MC_PROT_ERR">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">MC_PROT_ERR</span> =
+    
+    <a class="headerLink" href="#MC_PROT_ERR" title="rp2da2.lib.device.Device.MC_PROT_ERR">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p>Protocol error - ill formed response etc</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>48)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant">
+  
+  
+  <a name="rp2da2.lib.device.Device.MC_PUB_RX">
+    
+  </a>
+  <a name="MC_PUB_RX">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">MC_PUB_RX</span> =
+    
+    <a class="headerLink" href="#MC_PUB_RX" title="rp2da2.lib.device.Device.MC_PUB_RX">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p>Publication received</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>46)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant">
+  
+  
+  <a name="rp2da2.lib.device.Device.MC_READY">
+    
+  </a>
+  <a name="MC_READY">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">MC_READY</span> =
+    
+    <a class="headerLink" href="#MC_READY" title="rp2da2.lib.device.Device.MC_READY">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p>Initial subscriptions registered / no publication in progress</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>43)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant">
+  
+  
+  <a name="rp2da2.lib.device.Device.MC_SEND">
+    
+  </a>
+  <a name="MC_SEND">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">MC_SEND</span> =
+    
+    <a class="headerLink" href="#MC_SEND" title="rp2da2.lib.device.Device.MC_SEND">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p>Sending (connection request, subscription, or publication)</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>42)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant">
+  
+  
+  <a name="rp2da2.lib.device.Device.MC_U_ID7">
+    
+  </a>
+  <a name="MC_U_ID7">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">MC_U_ID7</span> =
+    
+    <a class="headerLink" href="#MC_U_ID7" title="rp2da2.lib.device.Device.MC_U_ID7">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p>no encoding info for ID7 subindex</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>49)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant">
+  
+  
+  <a name="rp2da2.lib.device.Device.POM_CV">
+    
+  </a>
+  <a name="POM_CV">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">POM_CV</span> =
+    
+    <a class="headerLink" href="#POM_CV" title="rp2da2.lib.device.Device.POM_CV">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p>event code for reporting a CV value from read or write.</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>30)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant">
+  
+  
+  <a name="rp2da2.lib.device.Device.POM_NAK">
+    
+  </a>
+  <a name="POM_NAK">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">POM_NAK</span> =
+    
+    <a class="headerLink" href="#POM_NAK" title="rp2da2.lib.device.Device.POM_NAK">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p>event code for reporting NAK received.</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>32)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant">
+  
+  
+  <a name="rp2da2.lib.device.Device.POM_TO">
+    
+  </a>
+  <a name="POM_TO">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">POM_TO</span> =
+    
+    <a class="headerLink" href="#POM_TO" title="rp2da2.lib.device.Device.POM_TO">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p>event code for reporting POM access timeout.</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>31)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant">
+  
+  
+  <a name="rp2da2.lib.device.Device.SET">
+    
+  </a>
+  <a name="SET">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">SET</span> =
+    
+    <a class="headerLink" href="#SET" title="rp2da2.lib.device.Device.SET">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p>State Set / on / true or action complete if &gt; 2 operables states</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>1)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant">
+  
+  
+  <a name="rp2da2.lib.device.Device.TO_DEV_TYPE">
+    
+  </a>
+  <a name="TO_DEV_TYPE">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">TO_DEV_TYPE</span> =
+    
+    <a class="headerLink" href="#TO_DEV_TYPE" title="rp2da2.lib.device.Device.TO_DEV_TYPE">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p>Turnout/Point device type</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr><span class="rst-variable-quote">'</span><span class="rst-variable-string">p</span><span class="rst-variable-quote">'</span>)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant">
+  
+  
+  <a name="rp2da2.lib.device.Device.TO_STATE">
+    
+  </a>
+  <a name="TO_STATE">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">TO_STATE</span> =
+    
+    <a class="headerLink" href="#TO_STATE" title="rp2da2.lib.device.Device.TO_STATE">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p>Turnout/Point state update</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>60)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant">
+  
+  
+  <a name="rp2da2.lib.device.Device.UNKNOWN">
+    
+  </a>
+  <a name="UNKNOWN">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">UNKNOWN</span> =
+    
+    <a class="headerLink" href="#UNKNOWN" title="rp2da2.lib.device.Device.UNKNOWN">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p>State unavalable (e.g start of day</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>2)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant">
+  
+  
+  <a name="rp2da2.lib.device.Device.UNSET">
+    
+  </a>
+  <a name="UNSET">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">UNSET</span> =
+    
+    <a class="headerLink" href="#UNSET" title="rp2da2.lib.device.Device.UNSET">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p>State unset / off / false</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>0)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant">
+  
+  
+  <a name="rp2da2.lib.device.Device.WF_CONNECTED">
+    
+  </a>
+  <a name="WF_CONNECTED">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">WF_CONNECTED</span> =
+    
+    <a class="headerLink" href="#WF_CONNECTED" title="rp2da2.lib.device.Device.WF_CONNECTED">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p>Connected OK</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>52)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant">
+  
+  
+  <a name="rp2da2.lib.device.Device.WF_CONNECTING">
+    
+  </a>
+  <a name="WF_CONNECTING">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">WF_CONNECTING</span> =
+    
+    <a class="headerLink" href="#WF_CONNECTING" title="rp2da2.lib.device.Device.WF_CONNECTING">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p>Connection in progress</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>51)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant">
+  
+  
+  <a name="rp2da2.lib.device.Device.WF_DEV_TYPE">
+    
+  </a>
+  <a name="WF_DEV_TYPE">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">WF_DEV_TYPE</span> =
+    
+    <a class="headerLink" href="#WF_DEV_TYPE" title="rp2da2.lib.device.Device.WF_DEV_TYPE">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p>Wi-Fi device type (w)</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr><span class="rst-variable-quote">'</span><span class="rst-variable-string">w</span><span class="rst-variable-quote">'</span>)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant">
+  
+  
+  <a name="rp2da2.lib.device.Device.WF_DISCON">
+    
+  </a>
+  <a name="WF_DISCON">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">WF_DISCON</span> =
+    
+    <a class="headerLink" href="#WF_DISCON" title="rp2da2.lib.device.Device.WF_DISCON">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p>Wi-Fi disconnected</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>50)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant">
+  
+  
+  <a name="rp2da2.lib.device.Device.WF_START">
+    
+  </a>
+  <a name="WF_START">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">WF_START</span> =
+    
+    <a class="headerLink" href="#WF_START" title="rp2da2.lib.device.Device.WF_START">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p>Wi-Fi starting</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>const(<wbr></wbr>53)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseproperty">
+  
+  
+  <a name="rp2da2.lib.device.Device.name">
+    
+  </a>
+  <a name="name">
+    
+  </a>
+  <div class="functionHeader">
+    <div><span class="decorator">@property<br /></span></div>
+    <span class="py-defname">name</span> =
+    
+    <a class="headerLink" href="#name" title="rp2da2.lib.device.Device.name">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p>Get the device name</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td colspan="2">the device name as a string</td></tr></table></div>
+    
+  </div>
+</div><div class="baseproperty">
+  
+  
+  <a name="rp2da2.lib.device.Device.type">
+    
+  </a>
+  <a name="type">
+    
+  </a>
+  <div class="functionHeader">
+    <div><span class="decorator">@property<br /></span></div>
+    <span class="py-defname">type</span> =
+    
+    <a class="headerLink" href="#type" title="rp2da2.lib.device.Device.type">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p>Get the device type</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td colspan="2">the device type as a single character string</td></tr></table></div>
+    
+  </div>
+</div><div class="baseclassvariable private">
+  
+  
+  <a name="rp2da2.lib.device.Device._device_table">
+    
+  </a>
+  <a name="_device_table">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_device_table</span>: <code>dict</code> =
+    
+    <a class="headerLink" href="#_device_table" title="rp2da2.lib.device.Device._device_table">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseclassvariable private">
+  
+  
+  <a name="rp2da2.lib.device.Device._q_lock">
+    
+  </a>
+  <a name="_q_lock">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_q_lock</span> =
+    
+    <a class="headerLink" href="#_q_lock" title="rp2da2.lib.device.Device._q_lock">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseclassvariable private">
+  
+  
+  <a name="rp2da2.lib.device.Device._queue">
+    
+  </a>
+  <a name="_queue">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_queue</span> =
+    
+    <a class="headerLink" href="#_queue" title="rp2da2.lib.device.Device._queue">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable private">
+  
+  
+  <a name="rp2da2.lib.device.Device._name">
+    
+  </a>
+  <a name="_name">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_name</span> =
+    
+    <a class="headerLink" href="#_name" title="rp2da2.lib.device.Device._name">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable private">
+  
+  
+  <a name="rp2da2.lib.device.Device._ready_flag">
+    
+  </a>
+  <a name="_ready_flag">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_ready_flag</span> =
+    
+    <a class="headerLink" href="#_ready_flag" title="rp2da2.lib.device.Device._ready_flag">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable private">
+  
+  
+  <a name="rp2da2.lib.device.Device._type">
+    
+  </a>
+  <a name="_type">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_type</span> =
+    
+    <a class="headerLink" href="#_type" title="rp2da2.lib.device.Device._type">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div>
+        </div>
+      
+      </main>
+    </div>
+
+    <footer class="navbar navbar-default">
+
+  
+  <div class="container-fluid">
+    <a href="index.html">API Documentation</a> for RP2 Distributed Automation,
+  generated by <a href="https://github.com/twisted/pydoctor/">pydoctor</a>
+    25.10.1 at 2026-07-13 14:55:02.
+  </div>
+
+  <!-- Search related scripts needs to be loaded at the end of HTML 
+    parsing not to introduce overhead and display HTML data asap -->
+  <script src="ajax.js" type="text/javascript"></script>
+  <script src="searchlib.js" type="text/javascript"></script>
+  <script src="search.js" type="text/javascript"></script>
+
+</footer>
+  
+    <script src="pydoctor.js" type="text/javascript"></script>
+
+  </body>
+</html>

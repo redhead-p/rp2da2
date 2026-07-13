@@ -1,0 +1,828 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+          "DTD/xhtml1-strict.dtd">
+<html>
+  
+
+  <head>
+    
+    <title>rp2da2.mqtt.mqtt_client.MQTTPacketOut</title>
+    <meta name="generator" content="pydoctor 25.10.1"> 
+        
+    </meta>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1" />
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="apidocs.css" />
+    <link rel="stylesheet" type="text/css" href="extra.css" />
+    
+</head>
+
+  <body>
+
+    
+
+    <nav class="navbar navbar-default mainnavbar">
+      
+  
+  <div class="container-fluid">
+
+
+    <div class="navbar-header">
+      
+      <div class="navlinks">
+        <span class="navbar-brand">
+          RP2 Distributed Automation <a href="index.html">API Documentation</a>
+        </span>
+
+        <a href="moduleIndex.html">
+          Modules
+        </a>
+
+        <a href="classIndex.html">
+          Classes
+        </a>
+
+        <a href="nameIndex.html">
+          Names
+        </a>
+
+        <div id="search-box-container">
+          <div class="input-group">
+            <input id="search-box" type="search" name="search-query" placeholder="Search..." aria-label="Search" minlength="2" class="form-control" autocomplete="off" />
+            
+            <span class="input-group-btn">
+              <a style="display: none;" class="btn btn-default" id="search-clear-button" title="Clear" onclick="clearSearch()"><img src="fonts/x-circle.svg" alt="Clear" /></a>
+              <a class="btn btn-default" id="apidocs-help-button" title="Help" href="apidocs-help.html"><img src="fonts/info.svg" alt="Help" /></a>
+            </span>
+          </div>
+        </div>
+
+      </div>
+
+      <div id="search-results-container" style="display: none;">
+        
+        <div id="search-buttons">
+          <span class="label label-default" id="search-docstrings-button">
+          <label class="checkbox-inline">
+            <input type="checkbox" id="toggle-search-in-docstrings-checkbox" value="false" onclick="toggleSearchInDocstrings()">
+              search in docstrings
+            </input>
+          </label>
+          </span>
+          
+        </div>
+        
+        <noscript>
+            <h1>Cannot search: JavaScript is not supported/enabled in your browser.</h1>
+        </noscript>
+
+        <div id="search-status"> </div>
+
+        <div class="warning" id="search-warn-box" style="display: none;">
+          <p class="rst-last"><span id="search-warn"></span></p>
+        </div>
+
+        <table id="search-results">
+          <!-- Filled dynamically by JS -->
+        </table>
+        
+        <div style="margin-top: 10px;">
+          <p>For more information on the search, visit the <a href="apidocs-help.html#rst-search">help page</a>.</p>
+        </div>
+      </div>
+
+    </div>
+
+
+  </div>
+</nav>
+    
+    <div class="container-fluid">
+
+      <!-- Side navigation -->
+      <div class="sidebarcontainer" style="display: none;">
+        
+        <div class="sidebar"><nav class="sidebar">
+  
+
+  <div>
+
+      <div class="thingTitle">
+        <span>Class</span>
+        <code class="thisobject"><a href="rp2da2.mqtt.mqtt_client.MQTTPacketOut.html" class="internal-link" title="This class"><wbr></wbr>MQTTPacket<wbr></wbr>Out</a></code> 
+      </div>
+      
+      <div>
+        
+
+        
+         
+
+        
+        
+
+        <div class="childrenKindTitle">Methods</div>
+        <ul>
+    
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#__init__" class="internal-link" title="rp2da2.mqtt.mqtt_client.MQTTPacketOut.__init__">__init__</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#add_byte" class="internal-link" title="rp2da2.mqtt.mqtt_client.MQTTPacketOut.add_byte">add<wbr></wbr>_byte</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#add_payload" class="internal-link" title="rp2da2.mqtt.mqtt_client.MQTTPacketOut.add_payload">add<wbr></wbr>_payload</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#add_str" class="internal-link" title="rp2da2.mqtt.mqtt_client.MQTTPacketOut.add_str">add<wbr></wbr>_str</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#add_uint16" class="internal-link" title="rp2da2.mqtt.mqtt_client.MQTTPacketOut.add_uint16">add<wbr></wbr>_uint16</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#write_buff" class="internal-link" title="rp2da2.mqtt.mqtt_client.MQTTPacketOut.write_buff">write<wbr></wbr>_buff</a></code>
+            </div>
+        
+
+    </li>
+</ul> 
+
+        
+         
+
+        <div class="childrenKindTitle">Attributes</div>
+        <ul>
+    
+    <li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_buffer" class="internal-link" title="rp2da2.mqtt.mqtt_client.MQTTPacketOut._buffer">_buffer</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_header" class="internal-link" title="rp2da2.mqtt.mqtt_client.MQTTPacketOut._header">_header</a></code>
+            </div>
+        
+
+    </li>
+</ul> 
+
+        
+         
+        
+      </div>
+  </div><div>
+
+      <div class="thingTitle">
+        <span>Module</span>
+        <code><a href="rp2da2.mqtt.mqtt_client.html" class="internal-link" title="The parent of this class">mqtt<wbr></wbr>_client</a></code> 
+      </div>
+      
+      <div>
+        
+
+        
+         
+
+        <div class="childrenKindTitle">Classes</div>
+        <ul>
+    
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.mqtt.mqtt_client.MQTTClient.html" class="internal-link" title="rp2da2.mqtt.mqtt_client.MQTTClient"><wbr></wbr>MQTTClient</a></code>
+            </div>
+        
+
+    </li><li class=" thisobject">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.mqtt.mqtt_client.MQTTPacketOut.html" class="internal-link" title="rp2da2.mqtt.mqtt_client.MQTTPacketOut"><wbr></wbr>MQTTPacket<wbr></wbr>Out</a></code>
+            </div>
+        
+
+    </li>
+</ul>
+
+        
+         
+
+        
+         
+
+        <div class="childrenKindTitle">Variables</div>
+        <ul>
+    
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.mqtt.mqtt_client.html#MQTT_BROKER_PORT" class="internal-link" title="rp2da2.mqtt.mqtt_client.MQTT_BROKER_PORT">MQTT<wbr></wbr>_BROKER<wbr></wbr>_PORT</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.mqtt.mqtt_client.html#_ACK_TIME" class="internal-link" title="rp2da2.mqtt.mqtt_client._ACK_TIME">_ACK<wbr></wbr>_TIME</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.mqtt.mqtt_client.html#_AUTH" class="internal-link" title="rp2da2.mqtt.mqtt_client._AUTH">_AUTH</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.mqtt.mqtt_client.html#_CONNACK" class="internal-link" title="rp2da2.mqtt.mqtt_client._CONNACK">_CONNACK</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.mqtt.mqtt_client.html#_CONNECT" class="internal-link" title="rp2da2.mqtt.mqtt_client._CONNECT">_CONNECT</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.mqtt.mqtt_client.html#_DISCONNECT" class="internal-link" title="rp2da2.mqtt.mqtt_client._DISCONNECT">_DISCONNECT</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.mqtt.mqtt_client.html#_KEEP_ALIVE" class="internal-link" title="rp2da2.mqtt.mqtt_client._KEEP_ALIVE">_KEEP<wbr></wbr>_ALIVE</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.mqtt.mqtt_client.html#_MAX_MUX" class="internal-link" title="rp2da2.mqtt.mqtt_client._MAX_MUX">_MAX<wbr></wbr>_MUX</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.mqtt.mqtt_client.html#_MAX_PID" class="internal-link" title="rp2da2.mqtt.mqtt_client._MAX_PID">_MAX<wbr></wbr>_PID</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.mqtt.mqtt_client.html#_PING_TIME" class="internal-link" title="rp2da2.mqtt.mqtt_client._PING_TIME">_PING<wbr></wbr>_TIME</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.mqtt.mqtt_client.html#_PINGREQ" class="internal-link" title="rp2da2.mqtt.mqtt_client._PINGREQ">_PINGREQ</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.mqtt.mqtt_client.html#_PINGRESP" class="internal-link" title="rp2da2.mqtt.mqtt_client._PINGRESP">_PINGRESP</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.mqtt.mqtt_client.html#_PUBACK" class="internal-link" title="rp2da2.mqtt.mqtt_client._PUBACK">_PUBACK</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.mqtt.mqtt_client.html#_PUBCOMP" class="internal-link" title="rp2da2.mqtt.mqtt_client._PUBCOMP">_PUBCOMP</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.mqtt.mqtt_client.html#_PUBLISH" class="internal-link" title="rp2da2.mqtt.mqtt_client._PUBLISH">_PUBLISH</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.mqtt.mqtt_client.html#_PUBREC" class="internal-link" title="rp2da2.mqtt.mqtt_client._PUBREC">_PUBREC</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.mqtt.mqtt_client.html#_PUBREL" class="internal-link" title="rp2da2.mqtt.mqtt_client._PUBREL">_PUBREL</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.mqtt.mqtt_client.html#_REOPEN_TIME" class="internal-link" title="rp2da2.mqtt.mqtt_client._REOPEN_TIME">_REOPEN<wbr></wbr>_TIME</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.mqtt.mqtt_client.html#_SUBACK" class="internal-link" title="rp2da2.mqtt.mqtt_client._SUBACK">_SUBACK</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.mqtt.mqtt_client.html#_SUBSCRIBE" class="internal-link" title="rp2da2.mqtt.mqtt_client._SUBSCRIBE">_SUBSCRIBE</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.mqtt.mqtt_client.html#_UNSUBACK" class="internal-link" title="rp2da2.mqtt.mqtt_client._UNSUBACK">_UNSUBACK</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="rp2da2.mqtt.mqtt_client.html#_UNSUBSCRIBE" class="internal-link" title="rp2da2.mqtt.mqtt_client._UNSUBSCRIBE">_UNSUBSCRIBE</a></code>
+            </div>
+        
+
+    </li>
+</ul> 
+
+        
+         
+        
+      </div>
+  </div>
+
+</nav>
+        </div>
+        <div id="collapse-sidebar">
+          <a class="btn btn-link" onclick="toggleSideBarCollapse()" title="Toggle Sidebar Collapse">
+          </a>
+        </div> 
+        <script src="sidebartoggle.js" type="text/javascript"></script>
+       
+      </div>
+
+      <main class="">
+        
+
+        
+
+        <div class="page-header">
+          <h1 class="class"><code><code><a href="index.html" class="internal-link">rp2da2</a></code><wbr></wbr>.<code><a href="rp2da2.mqtt.html" class="internal-link" title="rp2da2.mqtt">mqtt</a></code><wbr></wbr>.<code><a href="rp2da2.mqtt.mqtt_client.html" class="internal-link" title="rp2da2.mqtt.mqtt_client">mqtt_client</a></code><wbr></wbr>.<code><a href="rp2da2.mqtt.mqtt_client.MQTTPacketOut.html" class="internal-link" title="rp2da2.mqtt.mqtt_client.MQTTPacketOut">MQTTPacketOut</a></code></code></h1>
+          <div id="show-private">
+            <button class="btn btn-link" onclick="togglePrivate()">Toggle Private API</button>
+          </div>
+        </div>
+
+        <div class="categoryHeader">
+          class documentation
+        </div>
+
+        <div class="extrasDocstring">
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">MQTTPacketOut</span>:</code></p><p>Constructor: <code><a href="#__init__" class="internal-link" title="rp2da2.mqtt.mqtt_client.MQTTPacketOut.__init__">MQTTPacketOut(pkt_type, flags)</a></code></p><p><a href="classIndex.html#rp2da2.mqtt.mqtt_client.MQTTPacketOut">View In Hierarchy</a></p>
+        </div>
+
+        <div class="moduleDocstring">
+          <div><p>MQTT Control Packet Out</p>
+<p>This class is used to construct MQTT control packets to be sent to the
+broker.
+It provides methods to add bytes, strings and payloads to the packet.
+The packet is constructed as a bytearray and the write method sends the
+complete packet.
+The first byte is the control packet type and flags, the following bytes
+hold the remaining packet length.
+The remaining length is calculated as the number of bytes in the packet excluding the
+control byte and length bytes.
+The packet is constructed in the order of the MQTT protocol specification.</p>
+</div>
+        </div>
+
+        <div id="split-tables">
+          <table class="children sortable" id="id32">
+  
+  
+  <tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#__init__" class="internal-link" title="rp2da2.mqtt.mqtt_client.MQTTPacketOut.__init__">__init__</a></code></td>
+    <td>Construct MQTT Control Packet out</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#add_byte" class="internal-link" title="rp2da2.mqtt.mqtt_client.MQTTPacketOut.add_byte">add<wbr></wbr>_byte</a></code></td>
+    <td>Add a byte to the packet</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#add_payload" class="internal-link" title="rp2da2.mqtt.mqtt_client.MQTTPacketOut.add_payload">add<wbr></wbr>_payload</a></code></td>
+    <td>Add a payload to the packet</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#add_str" class="internal-link" title="rp2da2.mqtt.mqtt_client.MQTTPacketOut.add_str">add<wbr></wbr>_str</a></code></td>
+    <td>Add a string to the packet</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#add_uint16" class="internal-link" title="rp2da2.mqtt.mqtt_client.MQTTPacketOut.add_uint16">add<wbr></wbr>_uint16</a></code></td>
+    <td>Add a 16 bit unsigned integer to the packet</td>
+  </tr><tr class="method">
+    
+    <td>Async Method</td>
+    <td><code><a href="#write_buff" class="internal-link" title="rp2da2.mqtt.mqtt_client.MQTTPacketOut.write_buff">write<wbr></wbr>_buff</a></code></td>
+    <td>Write the complete packet</td>
+  </tr><tr class="instancevariable private">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#_buffer" class="internal-link" title="rp2da2.mqtt.mqtt_client.MQTTPacketOut._buffer">_buffer</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable private">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#_header" class="internal-link" title="rp2da2.mqtt.mqtt_client.MQTTPacketOut._header">_header</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr>
+</table>
+          
+
+            
+        </div>
+
+        <div id="child-list">
+          <div class="basemethod">
+  
+  
+  <a name="rp2da2.mqtt.mqtt_client.MQTTPacketOut.__init__">
+    
+  </a>
+  <a name="__init__">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">__init__</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">pkt_type, </span><span class="rst-sig-param">flags=0</span>):</span>
+    
+    <a class="headerLink" href="#__init__" title="rp2da2.mqtt.mqtt_client.MQTTPacketOut.__init__">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Construct MQTT Control Packet out</p>
+<p>Set  up first byte as control packet type and flags.
+Initialise second byte (length) to 0</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">pkt<wbr></wbr>_type</span></td><td class="fieldArgDesc">MQTT Control Packet type</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">flags</span></td><td class="fieldArgDesc">Packet control flags</td></tr></table></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="rp2da2.mqtt.mqtt_client.MQTTPacketOut.add_byte">
+    
+  </a>
+  <a name="add_byte">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">add_byte</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">b</span>):</span>
+    
+    <a class="headerLink" href="#add_byte" title="rp2da2.mqtt.mqtt_client.MQTTPacketOut.add_byte">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Add a byte to the packet</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">b</span></td><td class="fieldArgDesc">the byte to add to the packet</td></tr></table></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="rp2da2.mqtt.mqtt_client.MQTTPacketOut.add_payload">
+    
+  </a>
+  <a name="add_payload">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">add_payload</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">s</span>):</span>
+    
+    <a class="headerLink" href="#add_payload" title="rp2da2.mqtt.mqtt_client.MQTTPacketOut.add_payload">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Add a payload to the packet</p>
+<p>The payload is added as a UTF-8 encoded byte string.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">s</span></td><td class="fieldArgDesc">the payload to add to the packet</td></tr></table></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="rp2da2.mqtt.mqtt_client.MQTTPacketOut.add_str">
+    
+  </a>
+  <a name="add_str">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">add_str</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">s</span>):</span>
+    
+    <a class="headerLink" href="#add_str" title="rp2da2.mqtt.mqtt_client.MQTTPacketOut.add_str">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Add a string to the packet</p>
+<p>The string is added as a UTF-8 encoded byte string.
+The length of the string is added as a 16 bit unsigned integer.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">s</span></td><td class="fieldArgDesc">the string to add to the packet</td></tr></table></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="rp2da2.mqtt.mqtt_client.MQTTPacketOut.add_uint16">
+    
+  </a>
+  <a name="add_uint16">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">add_uint16</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">i</span>):</span>
+    
+    <a class="headerLink" href="#add_uint16" title="rp2da2.mqtt.mqtt_client.MQTTPacketOut.add_uint16">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Add a 16 bit unsigned integer to the packet</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">i</span></td><td class="fieldArgDesc">the integer to add to the packet</td></tr></table></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="rp2da2.mqtt.mqtt_client.MQTTPacketOut.write_buff">
+    
+  </a>
+  <a name="write_buff">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">async&#160;def</span>&#160;<span class="py-defname">write_buff</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">writer</span>):</span>
+    
+    <a class="headerLink" href="#write_buff" title="rp2da2.mqtt.mqtt_client.MQTTPacketOut.write_buff">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Write the complete packet</p>
+<p>The first byte is the control packet type and flags, the following bytes are the
+remaining length of the packet.</p>
+<p>See MQTT spec 2.2.3 for remaining length bytes generation psuedo code.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">writer</span></td><td class="fieldArgDesc">the write stream</td></tr></table><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td colspan="2">True if write successful else False</td></tr></table></div>
+  </div>
+</div><div class="baseinstancevariable private">
+  
+  
+  <a name="rp2da2.mqtt.mqtt_client.MQTTPacketOut._buffer">
+    
+  </a>
+  <a name="_buffer">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_buffer</span> =
+    
+    <a class="headerLink" href="#_buffer" title="rp2da2.mqtt.mqtt_client.MQTTPacketOut._buffer">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable private">
+  
+  
+  <a name="rp2da2.mqtt.mqtt_client.MQTTPacketOut._header">
+    
+  </a>
+  <a name="_header">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_header</span> =
+    
+    <a class="headerLink" href="#_header" title="rp2da2.mqtt.mqtt_client.MQTTPacketOut._header">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div>
+        </div>
+      
+      </main>
+    </div>
+
+    <footer class="navbar navbar-default">
+
+  
+  <div class="container-fluid">
+    <a href="index.html">API Documentation</a> for RP2 Distributed Automation,
+  generated by <a href="https://github.com/twisted/pydoctor/">pydoctor</a>
+    25.10.1 at 2026-07-13 14:55:02.
+  </div>
+
+  <!-- Search related scripts needs to be loaded at the end of HTML 
+    parsing not to introduce overhead and display HTML data asap -->
+  <script src="ajax.js" type="text/javascript"></script>
+  <script src="searchlib.js" type="text/javascript"></script>
+  <script src="search.js" type="text/javascript"></script>
+
+</footer>
+  
+    <script src="pydoctor.js" type="text/javascript"></script>
+
+  </body>
+</html>

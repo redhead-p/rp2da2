@@ -19,9 +19,9 @@ You can enter DCC API commands at the REPL preceded by
 
 See [API](API.md) for more details.
 
-## RailCom Test Harnesses
+## RailCom and Detector Test Harnesses
 
-There are RailCom test harnesses in the test directory.
+There are test harnesses for these in the test directory.
 
 ***test_dccrc1.py*** runs the local RailCom detectors.
 
@@ -56,11 +56,15 @@ Available in test_dcccmd module.
 
 ## Commissioning PCBs
 
+There are two modules in this category. They are available in the repository test directory.
+They are run directly from Thonny and is not installed on the Pico.
+
 ### Module test_lcl_bd
 
 This is a free standing module for assisting in commissioning the 4 way
 local detector board.
-It's available in the repository test directory.
-It is run directly from Thonny and is not installed on the Pico.
 
-It's useage is covered in the commisioning script.
+### Module test_cs_bd
+
+This is a free standing module for assisting in commissioning the integrated
+command station.
