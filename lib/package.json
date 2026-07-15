@@ -5,7 +5,8 @@
     ["hw_conf.py", "hw_conf.py"],
     ["led_pio.py", "led_pio.py"],
     ["oled0_91.py", "oled0_91.py"],
-    ["screen.py", "screen.py"]
+    ["screen.py", "screen.py"],
+    ["lib.json","package.json"]
   ],
   "version": "0.1.0-alpha"
 }
