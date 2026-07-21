@@ -32,7 +32,7 @@ The packages and other softare need to be installed on the target device. This i
 
 Setting up local installation details such as network and operational paramaters is described in the [configuration section](docs/Configuration.md).
 
-The hardware environment primarily uses Raspberry Pi Pico or Pico2 processeors.
+The hardware environment primarily uses Raspberry Pi Pico or Pico2 processors.
 More detail is provided in the [hardware section](docs/Hardware.md).
 
 High level softare design is covered in the [design document](docs/Design.md).

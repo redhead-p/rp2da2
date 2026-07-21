@@ -57,7 +57,7 @@ Available in test_dcccmd module.
 ## Commissioning PCBs
 
 There are two modules in this category. They are available in the repository test directory.
-They are run directly from Thonny and is not installed on the Pico.
+They are run directly from Thonny and are not installed on the Pico.
 
 ### Module test_lcl_bd
 

@@ -30,6 +30,10 @@ may be exposed PCB on headers.
 
 ## GPIO Pins, I2C & SPI
 
+### Command Station
+
+![Command Station Overview](cs_hw.png)
+
 On the command station one global detector is
 available for the receipt of Channel 2 datagrams. Pin allocations for a Pico based command station are as follows.
 
@@ -47,6 +51,8 @@ available for the receipt of Channel 2 datagrams. Pin allocations for a Pico bas
 |Ground|DRV8874 iMode|
 |Ground|DRV8874 pMode|
 |NC|DRV8874 Vref|
+
+### Quad Local Detector
 
 The following table shows pin allocations for a four block local detector on a Pico series
 platform. Pin allocations on other platforms may differ. Other platforms may be able to
@@ -94,7 +100,7 @@ the State Machines on these as 0 to 7 and 0 to 11 respectively.
 
 The command station uses a PIO state machine for DCC signal generation and timing the
 cutout. Each RailCom detector uses two PIO state machines - one to time the Channel 1 or
-Channel 2 window as appropriate and one to de-serialised the RailCom message.
+Channel 2 window as appropriate and one to de-serialise the RailCom message.
 
 On the Pico W and Pico2 W use of the radio module also requires use of a PIO
 State Machine and a State Machine may also be used to drive a NeoPixel chain.
@@ -106,7 +112,7 @@ The DCC & RailCom MicroPython application code leaves these
 free for the radio rather than specifically
 allocating them.
 
-### Command Station/Global Detector
+### Command Station State Machines
 
 |State Machine|Function|
 |---|---|
@@ -119,7 +125,7 @@ allocating them.
 |8|Radio on Pico2 W|
 |9|NeoPixel on Pico2 / Pico2 W|
 
-### Local Detector
+### Quad Local Detector State Machines
 
 |State Machine|Function|
 |---|---|
