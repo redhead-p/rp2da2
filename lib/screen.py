@@ -180,7 +180,7 @@ class Screen():
 
     def _handle_mqtt_os_err(self, src, data):
         rw, oserr = data
-        self.show_line(2,f'Er {rw}:{str(oserr)}', 0)
+        self.show_line(3,f'Er {rw}:{str(oserr)}', 0)
 
     _event_handler = {Device.BLK_EMPTY: _handle_blk_empty,
                       Device.BLK_CH1: _handle_blk_ch1,

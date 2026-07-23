@@ -2,8 +2,8 @@
 
 :author: Paul Redhead
 
-This module contains the MQTT client code. It defines classes for the MQTT Client and messages to be sent
-to the MQTT broker.
+This module contains the MQTT client code. It defines classes for the MQTT Client and manages the connection to
+the MQTT broker.
 
 The MQTT client is a singleton.
 
@@ -217,7 +217,6 @@ class MQTTClient(Device):
         ERR_SUBACK: invalid subscription acknowledgement
         ERR_UTF8: invalid UTF8 character
         ERR_OSR : Operating System Error on read or write
-        DEVICE_TYPE: MQTT client device type
         QOS0: Quality of service 0
         QOS1: Quality of service 1
         errors: counts of errors by type
@@ -246,10 +245,7 @@ class MQTTClient(Device):
     ERR_OSR    = const(8)
 
     QOS0        = const(0)      # Quality of service 0
-
     QOS1        = const(1)      # Quality of service 1
-
-    DEVICE_TYPE = const('m')
 
     _mqtt_client = None  # the singleton instance
 
@@ -269,13 +265,14 @@ class MQTTClient(Device):
         Getting a reference to the Wi-Fi singleton will instantiate it if not already done.
         """
         assert MQTTClient._mqtt_client is None, 'only one MQTT Client allowed'
-
+        # read MQTT configuration into dictionary
         with open('/conf/mqtt.json', 'r') as fd:
             conf = json.load(fd)
         
         port = conf.get('port', MQTT_BROKER_PORT)
 
         self._con_params = conf['broker'], port
+        # client id defaults to hostname
         self._client_id = conf.get('clientId', network.hostname())
 
         self._wifi = WiFi.get_instance()
@@ -310,6 +307,7 @@ class MQTTClient(Device):
                 await self._re_open()
             while self._state != MQTTClient.M_CLOSED:
                 if self._state == MQTTClient.M_CONNECTED and len(self._clientPidTx) == _MAX_PID:
+                    # no ping response outstanding and no outstanding publish/subs etc.
                     self.report_event(self.MC_READY,None)
                 try:
                     hdr = await self._reader.read(2)

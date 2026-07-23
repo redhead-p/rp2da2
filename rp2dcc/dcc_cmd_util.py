@@ -61,27 +61,10 @@ class CommandPacket:
         SENT_POM:   Return valued for Program on Main second send
     """
 
-
-
     # class constants
     MAX_LONG_ADDR = const(0x27FF)      # DCC long address upper limit (inclusive)
     MIN_LONG_ADDR = const(128)         # DCC long address lower limit (inclusive)
     BASE_LONG_ADDR = const(0xc000)     # DCC long mobile address range base
-
-    @classmethod
-    def get_last_command(cls):
-        """Get the last command
-        
-        This returns the most recently serialised DCC command.  It's primary purpose
-        is to allow the RailCom Channel 2 response processor to determine the command
-        that initiated the response.
-            
-        returns:
-            the last commannd
-        """
-        
-        return cls._last_command
-
 
     def __init__(self, byte_list = None):
         """ Contruct the DCC Command
@@ -119,7 +102,7 @@ class CommandPacket:
     def set_buffer(self, byte_list):
         """Set buffer contents
 
-        This builds the raw command content as required by the PIO statemachine. The preamble is
+        This builds the raw command content as required by the PIO state machine. The preamble is
         prepended.  The checksum is calculated and appended, as is the packet end bit. The function
         is called by the constructor. It may also be called to update the command.
         
@@ -127,7 +110,7 @@ class CommandPacket:
         (the preamble) to 0 is used as an indicator that the buffer is being updated and shouldn't be sent.
         Word 0 is reset to the preamble to indicate update over. IRQs are disabled when writing to word 0.
 
-        We build the buffer here in 'slow time' rather than in timer ISR 'critical time'.
+        We build the buffer here in 'slow time' rather than in ISR 'critical time'.
 
         args:
             byte_list: a list of the component bytes.
@@ -156,10 +139,20 @@ class CommandPacket:
         machine.enable_irq(magic_no)
 
     def is_locked(self):
+        """Is Locked
+
+        Check to see if the command is locked by looking at the first
+        word.  This will be pre-amble if unlocked or 0 if locked.
+        
+        returns: True if command is locked for editing"""
         return(not self._packet_buff[0])
     
     @property
     def packet_buffer(self):
+        """Get the Packet Buffer
+        
+        This returns the packet as prepared for serialisation.
+        It may be written as is to the PIO state machine FIFO."""
         return self._packet_buff
     
     @property

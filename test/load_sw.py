@@ -1,7 +1,12 @@
-""" Wi-Fi Connection Initial Confidence Check
+""" Load Software
 
-To be run as part of commissioning a newly constructed board as a check on Wi-fi
-configuration file contents and wi-fi operability.
+This installs the software packages and relevant main.py for the command station or local
+detector board. The latest version of softare as available on the GitHub repository is installed.
+
+To be run as part of commissioning a newly constructed board or to maintain the sofware.
+
+The target Pico must be a wireless capbable version. There must be W-Fi connectivity to the 
+Internet.
 
 """
 """        Copyright (C) 2026 Paul Redhead
@@ -19,6 +24,7 @@ configuration file contents and wi-fi operability.
 import network
 import time
 import json
+import mip
 
 wlan = None
 ssidd_set = set()
@@ -33,7 +39,10 @@ def get_config():
         credentials = (conf['ssid'], conf['password'])
     for key, content in conf.items():
         filler = ' ' * (9 - len(key))
-        print(f"{key}{filler}:{content}")
+        if key != 'password':
+            print(f"{key}{filler}:{content}")
+        else:
+            print(f"{key}{filler}:{'*' * len(content)}")
 
 def print_ifconfig():
         ip, subnet, gateway, dns = wlan.ifconfig()
@@ -42,35 +51,6 @@ def print_ifconfig():
         print(f" gateway {gateway}")
         print(f" dns     {dns}")
         
-def chk_wifi():
-    global wlan
-    global ssid_set
-    ssid_set = set()
-    print("*    Access points    *")
-    print()
-    print("ssid                 bssid              channel rssi sec hidden")
-    for ssid, bssid, channel, rssi, sec, hidden in wlan.scan():
-        ssid_set.add(ssid.decode())
-        #print(f"ssid : {ssid.decode()}")
-        bssid_out = ''
-        for b in bssid:
-            bssid_out = bssid_out + hex(b)[2:4] + ':'
-        #print(f" bssid   : {bssid_out[:-1]}")
-        #print(f' channel : {channel}')
-        #print(f' rssi    : {rssi}')
-        #print(f' security: {sec}')
-        #print(f' hidden  : {hidden}')
-        #print()
-        print(f'{ssid:<20} {bssid_out:<20} {channel:5} {rssi:>4} {sec:>3} {hidden}')
-    print()
-    if conf['ssid'] not in ssid_set:
-        print(f'** Warning {conf["ssid"]} not in range.')
-
-    if wlan.isconnected():
-        print(f"wi-fi connected to {wlan.config('ssid')}")
-        print_ifconfig()
-    else:
-        print("wi-fi not connected")
 
 def do_connect():
     state_lu = {network.STAT_IDLE: 'Idle',
@@ -83,7 +63,8 @@ def do_connect():
             }
     global wlan, conf, credentials
     if wlan.isconnected():
-        print(f"wi-fi connected to {wlan.config('ssid')}")
+        print(f"Wi-Fi already connected to {wlan.config('ssid')}")
+        return True
     else:
         print(f'Connecting to {conf['ssid']}')
         wlan.connect(*credentials)
@@ -92,56 +73,69 @@ def do_connect():
         while status == network.STAT_CONNECTING:
             time.sleep(1)
             count += 1
-            if count > 10:
+            if count > 20:
                 break # authentication error doesn't seem to get reported!
             status  = wlan.status()
         if status == network.STAT_GOT_IP:
-            print(f"wi-fi connected to {wlan.config('ssid')}")
+            print(f"Wi-Fi connected to {wlan.config('ssid')}")
             print_ifconfig()
+            print()
+            return True
         else:
             print(state_lu[status])
+            return False
+        
+def select_option():
+    ip = '?'
+    print('Select Option')
+    while ip not in 'pcl':
+        print('enter "p" for packages only')
+        print('      "c" for packages + command station "main.py"')
+        print('      "l" for packages + local detector  "main.py"')
+        ip = input('>')
+        print(ip)
+    return ip
+
+        
+def load_packages():
+    # other packages depend on mqtt
+    mip.install("github:redhead-p/rp2da2/mqtt")
+
+
+def load_main(ip):
+    if ip == 'c':
+        mip.install("github:redhead-p/rp2da2/examples/command/main.py", target = '/')
+    if ip == 'l':
+        mip.install("github:redhead-p/rp2da2/examples/quad_local_detect/main.py", target = '/')    
+
     
 def disconnect():
     wlan.disconnect()
 
 
-tests = {
-            0:("Load and review Wi-Fi configuration", get_config,()),
-            1:("Check Wi-Fi State", chk_wifi, ()),
-            2:("Connect", do_connect, ()),
-            3:("Disconnect", disconnect, ())
-        }
-    
-def do_test(tn = None):
-    global test_num
-    if tn is not None:
-        test_num = tn
-    descrip, test_fn , param = tests[test_num]
-    print(f"** {descrip} **")
-    test_fn(*param)
+
 
 
 if __name__ == '__main__':
     print()
-    print("Wi-Fi Commissioning Tests")
+    print("Load RP2DA2 Software")
     print()
+    print("Activating Wi-Fi")
     if wlan is None:
         # get wlan and activate
         wlan = network.WLAN(network.STA_IF)
         wlan.active(True)
-    nxt_tst = 0
+    print("Reading Configuration from /conf/wifi.json")
+    get_config()
+    print("Connecting......")
+    if not do_connect():
+        print("Connection failed")
+    else:
+        opt = select_option()
+        load_packages()
+        if opt in 'cl':
+            load_main(opt)
+        print("Check preceeding REPL log for errors")
 
-    test_keys = sorted(tests.keys())
-    # list tests
-    for k in test_keys:
-        print(k, tests[k][0])
-    # stop when last test done
-    while nxt_tst < len(test_keys):
-        print()
-        ip = input('>')
-        print(ip)
-        if ip:
-            nxt_tst = int(ip)
-        do_test(nxt_tst)
-        nxt_tst += 1
+
     

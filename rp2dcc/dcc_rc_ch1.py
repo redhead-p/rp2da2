@@ -3,6 +3,13 @@
 
 This module contains the functions and classes for DCC RailCom block detection on Channel 1.
 
+The following Sequence Diagram shows the reading the RailCom channel 1 response.    
+
+.. figure:: images/ch1.svg
+    :align: center
+    
+    **DCC Channel 1 Sequence Diagram**
+
 """
 """        Copyright (C) 2023, 2024, 2025,2026 Paul Redhead
 
@@ -31,11 +38,11 @@ _RESP_TO = const(500)       # channel 1 response time out (ms)
 
 
 class RComBlkDet(RailComRead):
-    """Channel 1 (block) Detector
+    """Channel 1 (block) Detector.
     
     This runs on a local block detector MCU.
     
-    The PIO code monitors the load current to detect the cutout.
+    The PIO code monitors the DCC voltage to detect the cutout.
 
     Although in addition to interpreting channel 1 messages, we could use
     the rx_pin to monitor the block for occupancy, detecting
@@ -57,12 +64,13 @@ class RComBlkDet(RailComRead):
     """
     
     def __init__(self, blk_name, i):
-        """Construct the RailCom block detector
+        """Inititalise the RailCom block detector.
         
-        This constructs the RailCom block detector. This reads channel 1. It instatiates a RailCom reader using
-        the supplied state machine and receiver pin. 
-        This runs on a remote accessory controller and the cutout timing is recovered from the DCC signal.
+        The RailCom block detector reads channel 1. This initiates a RailCom reader using
+        the supplied block name and index number. 
+        This runs on a remote controller and the cutout timing is recovered from the DCC signal.
         The base RailCom class is initiated with the block name.
+        Hardware pin and state machine allocations are retreived from the hardware configuration.
 
         Note:
             The RailCom reader will use two sequentially numbered state machines - the first is supplied.
@@ -87,7 +95,6 @@ class RComBlkDet(RailComRead):
         """block state may have channel 1 data if ch1 responses received or None"""
         self._blk_state = None
      
-        self._ready_flag = asyncio.ThreadSafeFlag() # used to signal new state available to comms agent
         self._ch1_dg_rx = asyncio.ThreadSafeFlag() # valid ch1 response resets no response timeout
 
         super().__init__(blk_name,
@@ -104,15 +111,6 @@ class RComBlkDet(RailComRead):
         The block index number is derived from the blocks position in the configuration list. It's used
         to identify the Indicator led."""
         return self._index
-
-    async def wait_for_flag(self):
-        """ Wait for the new state available flag
-
-        This waits for the asynchio thread safe flag to be set. This may be used by another thread
-        to wait on a state change.
-        """
-        await self._ready_flag.wait()
-        return
     
     def report_event(self, event, data):
         """ Report Event
@@ -152,6 +150,7 @@ class RComBlkDet(RailComRead):
         """
         self._errors = {}
         self._cb_count = 0  # number of times called back
+        
     @property
     def block_state(self):
         """ Current block state

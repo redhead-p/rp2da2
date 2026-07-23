@@ -92,12 +92,7 @@ class DCCBlkDet(Device):
         - occupied
         - unknown (start of day)
         - unpowered (no DCC power)
-
-    Attributes:
-        DEVICE_TYPE: 'd' for (current) detector
     """
-
-
 
     _i2c_lock = asyncio.Lock() # to ensure only one read at a time
 
@@ -114,7 +109,6 @@ class DCCBlkDet(Device):
             i: logical block number
         """
 
-        
         self._id_val = {} # channel 1 payload values for ids 1 & 2
         self._index = i #
         self._av = 0.0 # initialise average IIR filtered reading with start value
@@ -122,24 +116,18 @@ class DCCBlkDet(Device):
 
         """block state may be unknown, empty, occupied"""
         self._blk_state = Device.UNKNOWN # start of day value
-       
-        self._ready_flag = asyncio.ThreadSafeFlag() # used to signal new state available to comms agent
 
         super().__init__(blk_name,
                         Device.BD_DEV_TYPE)
         
         asyncio.create_task(self._monitor())
-
-    async def wait_for_flag(self):
-        """ Wait for the new state available event
-
-        This waits for the asynchio event to be set.
-        """
-        await self._ready_flag.wait()
-        return
     
     @property
     def index(self):
+        """Block Logical Index Number
+        
+        Index number as supplied. May be used for  line number
+        on screen and LED indicator."""
         return self._index # this is the logic index number too
 
     def report_event(self, event, data):

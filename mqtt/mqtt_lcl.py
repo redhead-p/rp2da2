@@ -1,4 +1,4 @@
-"""MQTT Control and Utilities
+"""MQTT Agents - Local Detector
 
 :author: Paul Redhead
 

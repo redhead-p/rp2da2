@@ -3,7 +3,7 @@
 ## General
 
 The first step in software installation is to obtain a copy of the softare from the [GitHub repository](https://github.com/redhead-p/rp2da2#). You can either clone the repository on your local PC or download a zip file. Either way you should end up with a local copy of the
-repository. This includes test and commissioning software, the RP2DA2 'embedded' application, template configuration files and the documentation of which this is a part.
+repository. This includes test and commissioning software, the RP2DA2 'embedded' application, template versions of configuration files and the documentation of which this is a part.
 
 If you have not installed the MicroPython runtime system on the target Pico, this needs to be done now. [Thonny](https://thonny.org) can do this. Select Thonny Settings and then the Configuration tab. This should have an option to install or update MicroPython. You may need to press the Pico's 'bootsel' button before connecting the USB cable to make sure that the Pico is in the correct mode. Complete the details on the 'Install or update MicroPython' screen. The target volume should be preset. The family is 'RP2'. Select the variant that applies to the target Pico and the latest version.
 

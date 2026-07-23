@@ -42,6 +42,7 @@ occur.
 
 # stardard python imports
 from collections import deque
+import asyncio
 
 # micropython imports
 from machine import Pin
@@ -70,6 +71,9 @@ class Device():
     
     Attributes:
 
+        LCL_DEV_TYPE  : Local RailCom Device Type
+        GBL_DEV_TYPE  : Global RailCom Device Type
+        BD_DEV_TYPE   : Block Detect Device  Type
         BLK_EMPTY: Block unoccupied
         BLK_CH1: Block occupied - RailCom channel 1 info.
         BLK_OCC: Block occupied - Load detected but no info.
@@ -77,16 +81,25 @@ class Device():
         POM_CV:  event code for reporting a CV value from read or write.
         POM_TO:  event code for reporting POM access timeout.
         POM_NAK: event code for reporting NAK received.
+        MC_DEV_TYPE   :  MQTT Client device type
+        MC_CONNECTED : Broker connected
+        MC_CLOSED    : Closed
         MC_READY  : Initial subscriptions registered and broker available
-        MC_CONNECT_ERR  : Connect error - broker not available
+        MC_PROT_ERR  : Protocol error - ill formed response etc
+        MC_PINGERR   : Ping cannot be sent (wrong state)
+        MC_PUB_RX    : Publication received
+        MC_READY   : Initial subscriptions registered / no publication in progress
+        MC_SEND : Sending (connection request, subscription, or publication)
         WF_DEV_TYPE    : Wi-Fi device type (w)
         WF_DISCON       : Wi-Fi disconnected
         WF_CONNECTING  : Connection in progress
-        WF_CONNECTED   : Connected OK         
-        TO_CMD : Set Turnout (point) instruction, data is 'N' or 'R'
+        WF_CONNECTED   : Connected OK
+        WF_START       : Wi-Fi starting
         CH2_Q_FULL : Channel 2 report queue full
         MC_U_ID7 : no encoding info for ID7 subindex
         MC_OS_ERR : OS Error on write or read
+        TO_DEV_TYPE : Turnout/Point device type
+        TO_STATE : Turnout/Point state update
 
     """
     # class variables
@@ -145,7 +158,8 @@ class Device():
 
     # Point 
 
-    TO_CMD  = const(60) # Point control instruction - data is hw number, value 'N' or 'R'
+    TO_DEV_TYPE = const('p')
+    TO_STATE  = const(60) # Point state update
 
     # _fido = WDT()  # enable a watch dog timer just in case
 
@@ -156,8 +170,6 @@ class Device():
     ## empty device table
     # will be added to by devices when instantiated.
     _device_table = {}
-
-    _led = Pin('LED')
 
     @classmethod 
     def by_type_name(cls, type, name):
@@ -252,7 +264,9 @@ class Device():
             name: string containing the device name
             type: character specifying the type of device (i.e. class of child)
         """
-        
+               
+        self._ready_flag = asyncio.ThreadSafeFlag() # used to signal to agent
+
         self._name = name
         self._type = type
         Device._device_table[(type, name)] = (self)
@@ -274,32 +288,6 @@ class Device():
             the device type as a single character string
         """
         return self._type
-    
-    def value(self, v = None):
-        """Get or Set the device value
-        
-        This must be superseded by a bound method in an inheriting class. Otherwise
-        a 'not implemented' error will be raised when called.
-        
-        args:
-            v: the value to be writen if supplied
-        
-        raises:
-            NotImplementedError: if not overridden
-        """
-        raise NotImplementedError
-    
-    def get_state(self):
-        """Get the device state
-        
-        This must be superseded by a bound method in an inheriting class. Otherwise
-        a 'not implemented' error will be raised when called.
-
-        raises:
-            NotImplementedError: if not overridden
-        """
-        raise NotImplementedError
-
 
     def report_event(self, event, data):
         """ Add event report to the queue
@@ -319,3 +307,12 @@ class Device():
             except IndexError:
                 pass
         raise ThreadQError('Q full')
+    
+    async def wait_for_flag(self):
+        """ Wait for available event
+
+        This may be called by an agent to wait for the asynchio event to be set
+        signifying the device has new information available.
+        """
+        await self._ready_flag.wait()
+        return

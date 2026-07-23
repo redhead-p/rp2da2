@@ -3,6 +3,12 @@
 
 This module contains the functions and classes for DCC RailCom DCC command mobile responses on Channel 2.
 
+The following Sequence Diagram shows the reading of a RailCom Channel 2 response.    
+
+.. figure:: images/ch2.svg
+    :align: center
+
+    **DCC Channel 2 Sequence Diagram**
 """
 """        Copyright (C) 2023, 2024, 2025, 2026 Paul Redhead
 
@@ -41,7 +47,10 @@ class RComCmdRsp(RailComRead):
     """Channel 2 (Command Response) Decode
     
     This runs on the command station. As there is only one DCC generator there can only be
-    one of these too.
+    one of these too. It is a singleton class.
+
+    The channel 2 window is time from the start of the cutout. This is detected by
+    monitoring the DRV8874 enable pin which is used to insert the cutout.
 
     Datagram identifiers for channel 2 are defined in RCN-217 3.1 Table 6.
 
@@ -108,9 +117,8 @@ class RComCmdRsp(RailComRead):
         return cls._rc_ch2
 
     def __init__(self):
-        """DCC Command object constructor
+        """DCC Command object constructor.
         
-
         The enable pin is that used to enable the DRV8874. It's set by the DCC generator PIO.
         It's monitored here by the PIO program as
         it's low going edge marks the start of the cutout.
@@ -123,6 +131,8 @@ class RComCmdRsp(RailComRead):
 
             The RailCom reader will use two sequentially numbered GPIO pins for receiving -
             the first is read from the hardware configuration.
+
+        The pin and state machine allocations are read from the hardware configuration.
         """
         assert RComCmdRsp._rc_ch2 is None, 'Attempt to create 2nd RC ch2 detector'
         RComCmdRsp._rc_ch2 = self
@@ -186,7 +196,7 @@ class RComCmdRsp(RailComRead):
         Used to set the command that will be used for interpreting
         the next channel 2 response message.
         
-        Args:
+        args:
             command:  The last serialised command object."""
         self._last_command = command
 
@@ -267,8 +277,8 @@ class RComCmdRsp(RailComRead):
                 if not ps:  # first byte of datagram
                     if b in RailComRead.PROT_BYTE:
                         # encoded protocol bytes
-                        # these only get reported once so save in a set
-                        # as ACK may be used as filler
+                        # these only get reported once as ACK may be used as
+                        #  filler - so save in a set
                         if b not in pb_set:
                             # first time seen - ignore repeats
                             datagram.append((RailComRead.DG_RESP, b))

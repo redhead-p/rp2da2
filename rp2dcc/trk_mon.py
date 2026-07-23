@@ -45,8 +45,9 @@ class TrkMon:
     - < 2A = yellowish
     - > 2A = orange
     The DCC monitor is a singleton class that monitors the DCC status and updates the NeoPixel
-    accordingly. It uses an Infinite Impulse Response (IIR) filter to smooth the current sense reading
-    and the zero offset to remove the zero offset when the DCC is asleep. The IIR filter is
+    accordingly. It uses a statistical median filter and an Infinite Impulse Response (IIR) filter to smooth the current sense reading
+    and the zero offset to remove the zero offset when the DCC is asleep. The statistical median
+    filter is non linear and removes outlying values.The IIR filter is
     implemented using a simple formula:
 
         new_value = (old_value * (FILTER_FACTOR - 1) /FILTER_FACTOR + (new_reading / FILTER_FACTOR)

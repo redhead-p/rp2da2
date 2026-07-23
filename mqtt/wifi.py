@@ -46,8 +46,6 @@ class WiFi(Device):
     The connection is checked periodically and if the connection is lost, it will attempt to reconnect.
     The LED is set to red when not connected and cleared when connected.
 
-    Attributes:
-        DEVICE_TYPE: Wi-Fi device identifier.
     """
 
     _wi_fi = None  # will be set on intantiation

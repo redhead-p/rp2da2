@@ -42,6 +42,8 @@ class HwConf():
 
     It sets up the items which are common to all board types.
 
+    This is an abstract class.
+
     Attributes:
         OLED_I2C: The oled is on I2C 0 (default GPIO pins 4 & 5).
         NP_SM: NeoPixel State Machine number for RP2040 (Pico, PicoW etc).
@@ -56,6 +58,11 @@ class HwConf():
         Note - this returns the base class for access to common
         asignations.  It won't automatically instantiate.
 
+        The singleton is initiated on the first call to get_instance() of an inheriting
+        class, but the singleton reference
+        is a base class variable. Once set by the first inheriting class get_instance()
+        call, no other inheriting class may be instantiated.
+
         Returns:
             The base configuration class.
         """
@@ -68,7 +75,7 @@ class HwConf():
     # common assigments
     OLED_I2C = const(0) # the oled is on I2C 0 (default GPIO pins 4 & 5)
     NP_SM = const(5)    # NeoPixel State Machine number for RP2040 (Pico, PicoW etc) 
-    NP_SM_P2 = const(9) # State Machine number for RP2350 (Pico2, Pico2W)
+    NP_SM_P2 = const(9) # NeoPixel State Machine number for RP2350 (Pico2, Pico2W)
 
     def __init__(self, name, platform):
         """ HW Configuration Constructor
@@ -115,7 +122,8 @@ class HwConfLcl(HwConf):
     def get_instance(cls):
         """ Get the Hardware configuration instance.
 
-        This returns the singleton Local Hardware Config instance.
+        This returns the singleton Local Hardware Config instance. The instance is
+        created on the first call.
 
         Returns:
             The DCC Command instance
@@ -179,7 +187,8 @@ class HwConfGbl(HwConf):
     def get_instance(cls):
         """ Get the Hardware configuration instance.
 
-        This returns the singleton Command Station/Global Hardware Config instance.
+        This returns the singleton Command Station/Global Hardware Config instance. The
+        instance is created on the first call.
 
         Returns:
             The configuration instance.

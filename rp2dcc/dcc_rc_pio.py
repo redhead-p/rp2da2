@@ -46,38 +46,44 @@ _PIO_RX_FREQ = const(4_000_000)         # 4MHz - 16 * 250kHz bps rx clock rate f
 class RailComRead(Device):
     """ The RailCom Reader class
     
-    This class schedules and executes RailCom datagram read activities during the cutout period. During
-    the cutout period, the DCC power signal is ceased and the two DCC lines are short circuited allowing the 
-    RailCom current signal to be generated and detected. On the command station the cutout is instigated by the
-    enable signal to the DRV8874 being set low. This cutout signal being low is used directly when detecting
-    on the command station. A remote block detector uses the RailCom detector output to detect the cutout.
+    This class schedules and executes RailCom datagram read activities during
+    the cutout period. During the cutout the DCC power signal is ceased and the
+    two DCC lines are short circuited allowing the 
+    RailCom current signal to be generated and detected. On the command station
+    the cutout is instigated by the enable signal to the DRV8874 being set low.
+    This cutout signal being low is used directly when detecting on the command
+    station. A remote block detector monitors the DCC power to detect the cutout.
 
-    A RailCom reader object works on either on Channel 1 (block) or Channel 2 (central/global) but not both. 
+    A RailCom reader object works on either on Channel 1 (block) or Channel 2
+    (central/global) but not both. 
 
-    Channel 1 is used for block occupancy detection and usually the detector runs on a detector local to the block.
-    Channel 2 is used for command responses and other decoder specific information.  It only runs
+    Channel 1 is used for block occupancy detection and usually the detector
+    runs on a detector local to the block. Channel 2 is used for command
+    responses and other decoder specific information.  It only runs
     on the command station.
 
-    On the command station, as far as this class is concerned, the cutout (DRV8874 enable pin) is used as an input.
+    On the command station, as far as this class is concerned,
+    the cutout (DRV8874 enable pin) is used as an input.
     
-    The RailCom detector output is high for no current detected and low for current detected. During normal DCC
-    energisation it will be high for an unoccupied block / no load. For an occupied block it will low except for 
-    short periods (<2.5µs) during DCC polarity change. During the cutout period it will be high except when
+    The RailCom detector output is high for no current detected and low for current
+    detected.  During the cutout period it will be high except when
     a RailCom encoder (e.g. DCC decoder) is actively transmitting.
 
-    Each RailCom reader uses two PIO state machines.  One times the cutout and the second is the serial
-    RailCom message receiver. 
+    Each RailCom reader uses two PIO state machines.  One times the cutout and the
+    second is the serial RailCom message receiver. 
     
     A PIO block has 4 state machines and can run two readers. The 
-    The cutout timers will be on the state machine numbers 0 & 2 of the PIO block and the associated receivers on state machine
-    numbers 1 & 3. (Note that MicroPython numbers all state machines sequentially from 0 - e.g. it refers to the first 
-    state machine on the second PIO as no. 4.)
+    The cutout timers will be on the state machine numbers 0 & 2 of the PIO block
+    and the associated receivers on state machine numbers 1 & 3.
+    (Note that MicroPython numbers all state machines sequentially from 0 - e.g.
+    it refers to the first state machine on the second PIO as no. 4.)
 
-    The cutout state machine starts the RailCom receiver using an IRQ. Relative IRQ numbering 
-    is used. The first is no 5 which will be used by sm 0. The sm 2 will use IRQ 7.
+    The cutout state machine starts the RailCom receiver using an IRQ.
+    Relative IRQ numbering is used. The first is no 5 which will be used by
+    state machine 0. State machine 2 will use IRQ 7.
 
-    At the end of the channel window the PIO state machine raises an application interrupt to initate
-    reading the state machine FIFO buffer.
+    At the end of the channel window the PIO state machine raises an
+    application interrupt to initate reading the state machine FIFO buffer.
 
 
     Attributes:
@@ -187,7 +193,8 @@ class RailComRead(Device):
     def __init__(self, dev_name, cu_sm_num, rc_rx_pin, *, cu_pin = None, dcc_pin = None):
         """ RailCom class constructor
 
-        Constructs a reader for Channel 1 (local block detector) or Channel 2 (global detector) using two PIO state machines.
+        Constructs a reader for Channel 1 (local block detector) or Channel 2
+        (global detector) using two PIO state machines.
 
         The cutout monitor state machine runs on the supplied state machine number.  The receive state machine
         runs on the number + 1.

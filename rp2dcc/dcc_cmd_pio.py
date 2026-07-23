@@ -15,7 +15,7 @@ Each byte is preceeded by a single '0' bit.
 The checksum is followed by a single '1' bit which may be the initial bit of
 the next preamble. The preamble is at least 14 '1' bits. Note that in this implementation the pre-amble is
 not interrupted by the cutout so the preamble length doesn't need to be lengthened but for compliance
-RCN-217 the pre-amble is set to 18 bits.
+with RCN-217 the pre-amble is set to 18 bits.
 
 The DCC signal is a series of '1' & '0' bits.  Each bit is encoded
 into a complete DCC output cycle.  The half cycle length for a '1' is 58us, a '0' is 100us.

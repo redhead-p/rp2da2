@@ -28,18 +28,18 @@ The software is written and developed using [MicroPython](https://micropython.or
 using modules within this repository or modules built into the standard MicroPython runtime.
 
 The run-time application is split accross three packages. [Package documentation](docs/SoftwarePackages.md) provides further details. In addition to packaged modules there are example `main.py` modules and test modules.
-The packages and other softare need to be installed on the target device. This is covered under [Software Installation](docs/SoftwareInstallation.md).
+The packages and the relevant `main.py` need to be installed on the target device. This is covered under [Software Installation](docs/SoftwareInstallation.md).
 
 Setting up local installation details such as network and operational paramaters is described in the [configuration section](docs/Configuration.md).
 
 The hardware environment primarily uses Raspberry Pi Pico or Pico2 processors.
 More detail is provided in the [hardware section](docs/Hardware.md).
 
-High level softare design is covered in the [design document](docs/Design.md).
+High level software design is covered in the [design document](docs/Design.md).
 
 Full API details and additional design information are in the [API section](docs/rp2_api/index.html). This documentation is generated from Python 'docstrings' in the code modules. There are also API details for [key components](docs/API.md).
 
-Details of diagnostics and testing are in the [testing section](docs/Testing.md)
+Details of diagnostics and testing are in the [testing section](docs/Testing.md).
 
 ---
 
@@ -49,7 +49,7 @@ Each software package has a directory:
 
 * lib - common software modules
 * mqtt - MQTT related software and Wi-Fi modules
-* rp2dcc - DCC and RailCom softare modules.
+* rp2dcc - DCC and RailCom software modules.
 
 In addition to the package directories, there are three other software directories:
 

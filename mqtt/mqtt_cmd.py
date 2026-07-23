@@ -1,4 +1,4 @@
-"""MQTT Control and Utilities
+"""MQTT Agents - Command Station and Global
 
 :author: Paul Redhead
 

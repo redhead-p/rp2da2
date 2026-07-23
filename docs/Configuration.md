@@ -74,6 +74,7 @@ the mqtt.json configuration file above.
 
 Check 'Additional Connection Settings' under
 Preferences->Connections for the MQTT connection to access the JMRI MQTT configuration.
+The JMRI MQTT topics need to be set as shown in the following table.
 
 |Setting|Value|
 |---|---|

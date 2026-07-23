@@ -1,4 +1,4 @@
-"""MQTT Control and Utilities
+"""MQTT Agents - Common
 
 :author: Paul Redhead
 
