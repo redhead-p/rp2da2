@@ -161,6 +161,26 @@
         
 
         
+            <div class="itemName"><code><a href="#_handle_cvrd_pub" class="internal-link" title="rp2da2.mqtt.mqtt_cmd.Cab._handle_cvrd_pub">_handle<wbr></wbr>_cvrd<wbr></wbr>_pub</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_handle_cvwr_pub" class="internal-link" title="rp2da2.mqtt.mqtt_cmd.Cab._handle_cvwr_pub">_handle<wbr></wbr>_cvwr<wbr></wbr>_pub</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
             <div class="itemName"><code><a href="#_handle_dir_pub" class="internal-link" title="rp2da2.mqtt.mqtt_cmd.Cab._handle_dir_pub">_handle<wbr></wbr>_dir<wbr></wbr>_pub</a></code>
             </div>
         
@@ -394,7 +414,7 @@ publicatons have been received for both speed and direction.</p>
     
     <td>Method</td>
     <td><code><a href="#handle_publication" class="internal-link" title="rp2da2.mqtt.mqtt_cmd.Cab.handle_publication">handle<wbr></wbr>_publication</a></code></td>
-    <td>Handle a publication This method is called by the MQTT client when a publication is received.</td>
+    <td>Handle a publication This method is called by the MQTT client when a publication is received. Topic is broken down as cab/address/command/[fn]</td>
   </tr><tr class="constant">
     
     <td>Constant</td>
@@ -405,6 +425,16 @@ publicatons have been received for both speed and direction.</p>
     <td>Method</td>
     <td><code><a href="#_create_pub_check" class="internal-link" title="rp2da2.mqtt.mqtt_cmd.Cab._create_pub_check">_create<wbr></wbr>_pub<wbr></wbr>_check</a></code></td>
     <td>Overrides version in base class</td>
+  </tr><tr class="method private">
+    
+    <td>Method</td>
+    <td><code><a href="#_handle_cvrd_pub" class="internal-link" title="rp2da2.mqtt.mqtt_cmd.Cab._handle_cvrd_pub">_handle<wbr></wbr>_cvrd<wbr></wbr>_pub</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="method private">
+    
+    <td>Method</td>
+    <td><code><a href="#_handle_cvwr_pub" class="internal-link" title="rp2da2.mqtt.mqtt_cmd.Cab._handle_cvwr_pub">_handle<wbr></wbr>_cvwr<wbr></wbr>_pub</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
   </tr><tr class="method private">
     
     <td>Method</td>
@@ -505,7 +535,17 @@ publicatons have been received for both speed and direction.</p>
   <div class="docstring functionBody">
     
     <div><p>Handle a publication
-This method is called by the MQTT client when a publication is received.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">topic</span></td><td class="fieldArgDesc">the topic of the publication</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">dup<wbr></wbr>_flag</span></td><td class="fieldArgDesc">True if this is a duplicate publication</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">ret<wbr></wbr>_flag</span></td><td class="fieldArgDesc">True if this is a retained publication</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">payload</span></td><td class="fieldArgDesc">the payload of the publication as a string</td></tr></table></div>
+This method is called by the MQTT client when a publication is received.
+Topic is broken down as cab/address/command/[fn]</p>
+<blockquote>
+<ul class="rst-simple">
+<li>cab is fixed 'cab'</li>
+<li>address is dcc address</li>
+<li>command is one of throttle, direction, function, cv_read, cv_write</li>
+<li>fn only applies to function</li>
+</ul>
+</blockquote>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">topic</span></td><td class="fieldArgDesc">the topic of the publication</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">dup<wbr></wbr>_flag</span></td><td class="fieldArgDesc">True if this is a duplicate publication</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">ret<wbr></wbr>_flag</span></td><td class="fieldArgDesc">True if this is a retained publication</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">payload</span></td><td class="fieldArgDesc">the payload of the publication as a string</td></tr></table></div>
   </div>
 </div><div class="baseconstant">
   
@@ -554,6 +594,54 @@ This method is called by the MQTT client when a publication is received.</p><tab
   <div class="docstring functionBody">
     
     <div><p>Overrides version in base class</p></div>
+  </div>
+</div><div class="basemethod private">
+  
+  
+  <a name="rp2da2.mqtt.mqtt_cmd.Cab._handle_cvrd_pub">
+    
+  </a>
+  <a name="_handle_cvrd_pub">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">_handle_cvrd_pub</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">address, </span><span class="rst-sig-param">topic3, </span><span class="rst-sig-param">payload</span>):</span>
+    
+    <a class="headerLink" href="#_handle_cvrd_pub" title="rp2da2.mqtt.mqtt_cmd.Cab._handle_cvrd_pub">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod private">
+  
+  
+  <a name="rp2da2.mqtt.mqtt_cmd.Cab._handle_cvwr_pub">
+    
+  </a>
+  <a name="_handle_cvwr_pub">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">_handle_cvwr_pub</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">address, </span><span class="rst-sig-param">topic3, </span><span class="rst-sig-param">payload</span>):</span>
+    
+    <a class="headerLink" href="#_handle_cvwr_pub" title="rp2da2.mqtt.mqtt_cmd.Cab._handle_cvwr_pub">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
   </div>
 </div><div class="basemethod private">
   
@@ -702,7 +790,9 @@ This method is called by the MQTT client when a publication is received.</p><tab
     <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>{<wbr></wbr><span class="rst-variable-quote">'</span><span class="rst-variable-string">throttle</span><span class="rst-variable-quote">'</span>: <a href="#_handle_spd_pub" class="internal-link" title="rp2da2.mqtt.mqtt_cmd.Cab._handle_spd_pub">_handle_spd_pub</a>,
  <wbr></wbr><span class="rst-variable-quote">'</span><span class="rst-variable-string">direction</span><span class="rst-variable-quote">'</span>: <a href="#_handle_dir_pub" class="internal-link" title="rp2da2.mqtt.mqtt_cmd.Cab._handle_dir_pub">_handle_dir_pub</a>,
  <wbr></wbr><span class="rst-variable-quote">'</span><span class="rst-variable-string">function</span><span class="rst-variable-quote">'</span>: <a href="#_handle_fn_pub" class="internal-link" title="rp2da2.mqtt.mqtt_cmd.Cab._handle_fn_pub">_handle_fn_pub</a>,
- <wbr></wbr><span class="rst-variable-quote">'</span><span class="rst-variable-string">consist</span><span class="rst-variable-quote">'</span>: <a href="#_handle_ns_pub" class="internal-link" title="rp2da2.mqtt.mqtt_cmd.Cab._handle_ns_pub">_handle_ns_pub</a>}</code></pre></td></tr></table>
+ <wbr></wbr><span class="rst-variable-quote">'</span><span class="rst-variable-string">consist</span><span class="rst-variable-quote">'</span>: <a href="#_handle_ns_pub" class="internal-link" title="rp2da2.mqtt.mqtt_cmd.Cab._handle_ns_pub">_handle_ns_pub</a>,
+ <wbr></wbr><span class="rst-variable-quote">'</span><span class="rst-variable-string">cv_read</span><span class="rst-variable-quote">'</span>: <a href="#_handle_cvrd_pub" class="internal-link" title="rp2da2.mqtt.mqtt_cmd.Cab._handle_cvrd_pub">_handle_cvrd_pub</a>,
+ <wbr></wbr><span class="rst-variable-quote">'</span><span class="rst-variable-string">cv_write</span><span class="rst-variable-quote">'</span>: <a href="#_handle_cvwr_pub" class="internal-link" title="rp2da2.mqtt.mqtt_cmd.Cab._handle_cvwr_pub">_handle_cvwr_pub</a>}</code></pre></td></tr></table>
   </div>
 </div><div class="baseclassvariable private">
   
@@ -788,7 +878,7 @@ This method is called by the MQTT client when a publication is received.</p><tab
   <div class="container-fluid">
     <a href="index.html">API Documentation</a> for <a href="https://redhead-p.github.io/rp2da2/" class="projecthome">RP2 Distributed Automation</a>,
   generated by <a href="https://github.com/twisted/pydoctor/">pydoctor</a>
-    25.10.1 at 2026-07-21 11:15:11.
+    25.10.1 at 2026-08-07 14:41:34.
   </div>
 
   <!-- Search related scripts needs to be loaded at the end of HTML 

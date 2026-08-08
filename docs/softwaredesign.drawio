@@ -1,6 +1,6 @@
 <mxfile host="Electron">
   <diagram name="Page-1" id="b1aE-z4bUsYSCm_yO2hh">
-    <mxGraphModel dx="1152" dy="877" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1459" dy="1111" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -339,9 +339,6 @@
             <mxPoint x="-27" y="7" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="JGe2AeRFoKRdHrLCDb-N-3" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Text" vertex="1">
-          <mxGeometry height="30" width="60" x="380" y="540" as="geometry" />
-        </mxCell>
         <mxCell id="JGe2AeRFoKRdHrLCDb-N-4" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="&lt;font style=&quot;font-size: 17px;&quot;&gt;Core 0&lt;/font&gt;" vertex="1">
           <mxGeometry height="30" width="60" x="690" y="140" as="geometry" />
         </mxCell>
@@ -409,6 +406,9 @@
         </mxCell>
         <mxCell id="JGe2AeRFoKRdHrLCDb-N-19" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="&lt;font style=&quot;font-size: 17px;&quot;&gt;Core 1&lt;/font&gt;" vertex="1">
           <mxGeometry height="30" width="60" x="690" y="1080" as="geometry" />
+        </mxCell>
+        <mxCell id="X7CDveq3j4pVERW2HT87-4" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Only one Comms Agent is shown. In practice there may be multiple comms agents. The mapping between Comms Handler and other components depends on detailed applications design." vertex="1">
+          <mxGeometry height="50" width="290" x="410" y="270" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

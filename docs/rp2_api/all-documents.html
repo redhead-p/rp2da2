@@ -2651,7 +2651,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Handle a publication This method is called by the MQTT client when a publication is received.</div>
+            <div class="summary">Handle a publication This method is called by the MQTT client when a publication is received. Topic is broken down as cab/address/command/[fn]</div>
           </li><li id="rp2da2.mqtt.mqtt_cmd.Cab._handle_fn_pub">
             
             <div class="fullName">rp2da2<wbr></wbr>.mqtt<wbr></wbr>.mqtt<wbr></wbr>_cmd<wbr></wbr>.<wbr></wbr>Cab<wbr></wbr>._handle<wbr></wbr>_fn<wbr></wbr>_pub</div>
@@ -2672,6 +2672,22 @@
             
             <div class="fullName">rp2da2<wbr></wbr>.mqtt<wbr></wbr>.mqtt<wbr></wbr>_cmd<wbr></wbr>.<wbr></wbr>Cab<wbr></wbr>._handle<wbr></wbr>_spd<wbr></wbr>_pub</div>
             <div class="url">rp2da2.mqtt.mqtt_cmd.Cab.html#_handle_spd_pub</div>
+            <div class="type">Function</div>
+            <div class="kind">Method</div>
+            <div class="privacy">PRIVATE</div>
+            <div class="summary"><span class="rst-undocumented">Undocumented</span></div>
+          </li><li id="rp2da2.mqtt.mqtt_cmd.Cab._handle_cvrd_pub">
+            
+            <div class="fullName">rp2da2<wbr></wbr>.mqtt<wbr></wbr>.mqtt<wbr></wbr>_cmd<wbr></wbr>.<wbr></wbr>Cab<wbr></wbr>._handle<wbr></wbr>_cvrd<wbr></wbr>_pub</div>
+            <div class="url">rp2da2.mqtt.mqtt_cmd.Cab.html#_handle_cvrd_pub</div>
+            <div class="type">Function</div>
+            <div class="kind">Method</div>
+            <div class="privacy">PRIVATE</div>
+            <div class="summary"><span class="rst-undocumented">Undocumented</span></div>
+          </li><li id="rp2da2.mqtt.mqtt_cmd.Cab._handle_cvwr_pub">
+            
+            <div class="fullName">rp2da2<wbr></wbr>.mqtt<wbr></wbr>.mqtt<wbr></wbr>_cmd<wbr></wbr>.<wbr></wbr>Cab<wbr></wbr>._handle<wbr></wbr>_cvwr<wbr></wbr>_pub</div>
+            <div class="url">rp2da2.mqtt.mqtt_cmd.Cab.html#_handle_cvwr_pub</div>
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PRIVATE</div>
@@ -2715,7 +2731,7 @@
             <div class="type">Attribute</div>
             <div class="kind">Constant</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary"><span class="rst-undocumented">Undocumented</span></div>
+            <div class="summary">MQTT topic prefix for publishing</div>
           </li><li id="rp2da2.mqtt.mqtt_lcl.Block.__init__">
             
             <div class="fullName">rp2da2<wbr></wbr>.mqtt<wbr></wbr>.mqtt<wbr></wbr>_lcl<wbr></wbr>.<wbr></wbr>Block<wbr></wbr>.__init__</div>
@@ -2787,7 +2803,7 @@
             <div class="type">Attribute</div>
             <div class="kind">Constant</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary"><span class="rst-undocumented">Undocumented</span></div>
+            <div class="summary">MQTT topic prefix for publishing</div>
           </li><li id="rp2da2.mqtt.mqtt_lcl.Sensor.SENSOR_PAYLOAD">
             
             <div class="fullName">rp2da2<wbr></wbr>.mqtt<wbr></wbr>.mqtt<wbr></wbr>_lcl<wbr></wbr>.<wbr></wbr>Sensor<wbr></wbr>.SENSOR<wbr></wbr>_PAYLOAD</div>
@@ -3016,6 +3032,14 @@
             
             <div class="fullName">rp2da2<wbr></wbr>.rp2dcc<wbr></wbr>.blk<wbr></wbr>_mon<wbr></wbr>._ADC<wbr></wbr>_CONF1C</div>
             <div class="url">rp2da2.rp2dcc.blk_mon.html#_ADC_CONF1C</div>
+            <div class="type">Attribute</div>
+            <div class="kind">Constant</div>
+            <div class="privacy">PRIVATE</div>
+            <div class="summary"><span class="rst-undocumented">Undocumented</span></div>
+          </li><li id="rp2da2.rp2dcc.blk_mon._ADC_SLEEP">
+            
+            <div class="fullName">rp2da2<wbr></wbr>.rp2dcc<wbr></wbr>.blk<wbr></wbr>_mon<wbr></wbr>._ADC<wbr></wbr>_SLEEP</div>
+            <div class="url">rp2da2.rp2dcc.blk_mon.html#_ADC_SLEEP</div>
             <div class="type">Attribute</div>
             <div class="kind">Constant</div>
             <div class="privacy">PRIVATE</div>
@@ -3740,20 +3764,20 @@
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
             <div class="summary">Update State after Send</div>
-          </li><li id="rp2da2.rp2dcc.dcc_cmd_util.CV_Access.get_state">
+          </li><li id="rp2da2.rp2dcc.dcc_cmd_util.CV_Access.operation">
             
-            <div class="fullName">rp2da2<wbr></wbr>.rp2dcc<wbr></wbr>.dcc<wbr></wbr>_cmd<wbr></wbr>_util<wbr></wbr>.<wbr></wbr>CV_<wbr></wbr>Access<wbr></wbr>.get<wbr></wbr>_state</div>
-            <div class="url">rp2da2.rp2dcc.dcc_cmd_util.CV_Access.html#get_state</div>
-            <div class="type">Function</div>
-            <div class="kind">Method</div>
+            <div class="fullName">rp2da2<wbr></wbr>.rp2dcc<wbr></wbr>.dcc<wbr></wbr>_cmd<wbr></wbr>_util<wbr></wbr>.<wbr></wbr>CV_<wbr></wbr>Access<wbr></wbr>.operation</div>
+            <div class="url">rp2da2.rp2dcc.dcc_cmd_util.CV_Access.html#operation</div>
+            <div class="type">Attribute</div>
+            <div class="kind">Property</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Get the command state</div>
-          </li><li id="rp2da2.rp2dcc.dcc_cmd_util.CV_Access.get_cv">
+            <div class="summary">Get the operation</div>
+          </li><li id="rp2da2.rp2dcc.dcc_cmd_util.CV_Access.cv_num">
             
-            <div class="fullName">rp2da2<wbr></wbr>.rp2dcc<wbr></wbr>.dcc<wbr></wbr>_cmd<wbr></wbr>_util<wbr></wbr>.<wbr></wbr>CV_<wbr></wbr>Access<wbr></wbr>.get<wbr></wbr>_cv</div>
-            <div class="url">rp2da2.rp2dcc.dcc_cmd_util.CV_Access.html#get_cv</div>
-            <div class="type">Function</div>
-            <div class="kind">Method</div>
+            <div class="fullName">rp2da2<wbr></wbr>.rp2dcc<wbr></wbr>.dcc<wbr></wbr>_cmd<wbr></wbr>_util<wbr></wbr>.<wbr></wbr>CV_<wbr></wbr>Access<wbr></wbr>.cv<wbr></wbr>_num</div>
+            <div class="url">rp2da2.rp2dcc.dcc_cmd_util.CV_Access.html#cv_num</div>
+            <div class="type">Attribute</div>
+            <div class="kind">Property</div>
             <div class="privacy">PUBLIC</div>
             <div class="summary">Get the CV number</div>
           </li><li id="rp2da2.rp2dcc.dcc_command.DCCCommand">
@@ -4380,6 +4404,14 @@
             <div class="kind">Instance Variable</div>
             <div class="privacy">PRIVATE</div>
             <div class="summary"><span class="rst-undocumented">Undocumented</span></div>
+          </li><li id="rp2da2.rp2dcc.dcc_rc_ch2.RComCmdRsp._id0">
+            
+            <div class="fullName">rp2da2<wbr></wbr>.rp2dcc<wbr></wbr>.dcc<wbr></wbr>_rc<wbr></wbr>_ch2<wbr></wbr>.<wbr></wbr>RCom<wbr></wbr>Cmd<wbr></wbr>Rsp<wbr></wbr>._id0</div>
+            <div class="url">rp2da2.rp2dcc.dcc_rc_ch2.RComCmdRsp.html#_id0</div>
+            <div class="type">Attribute</div>
+            <div class="kind">Instance Variable</div>
+            <div class="privacy">PRIVATE</div>
+            <div class="summary"><span class="rst-undocumented">Undocumented</span></div>
           </li><li id="rp2da2.rp2dcc.dcc_rc_ch2.RComCmdRsp._errors">
             
             <div class="fullName">rp2da2<wbr></wbr>.rp2dcc<wbr></wbr>.dcc<wbr></wbr>_rc<wbr></wbr>_ch2<wbr></wbr>.<wbr></wbr>RCom<wbr></wbr>Cmd<wbr></wbr>Rsp<wbr></wbr>._errors</div>
@@ -4419,7 +4451,15 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">get changes to dyn info</div>
+            <div class="summary">Get changes to dyn info</div>
+          </li><li id="rp2da2.rp2dcc.dcc_rc_ch2.RComCmdRsp.get_id0">
+            
+            <div class="fullName">rp2da2<wbr></wbr>.rp2dcc<wbr></wbr>.dcc<wbr></wbr>_rc<wbr></wbr>_ch2<wbr></wbr>.<wbr></wbr>RCom<wbr></wbr>Cmd<wbr></wbr>Rsp<wbr></wbr>.get<wbr></wbr>_id0</div>
+            <div class="url">rp2da2.rp2dcc.dcc_rc_ch2.RComCmdRsp.html#get_id0</div>
+            <div class="type">Function</div>
+            <div class="kind">Method</div>
+            <div class="privacy">PUBLIC</div>
+            <div class="summary">Get id0</div>
           </li><li id="rp2da2.rp2dcc.dcc_rc_ch2.RComCmdRsp.reset_stats">
             
             <div class="fullName">rp2da2<wbr></wbr>.rp2dcc<wbr></wbr>.dcc<wbr></wbr>_rc<wbr></wbr>_ch2<wbr></wbr>.<wbr></wbr>RCom<wbr></wbr>Cmd<wbr></wbr>Rsp<wbr></wbr>.reset<wbr></wbr>_stats</div>

@@ -21,19 +21,27 @@ This is the recommended method for normal installations. It installs direct from
 
 It uses [MicroPython Package Management](https://docs.micropython.org/en/latest/reference/packages.html).
 
+A pre-requisite for automated installation is to set up the wifi.json configuration file
+in the conf directory. See the [configuration](Configuration.md) section.
 
+To run the automated installation load /test/load_sw.py into the Thonny editor window and
+‘Run current script’ (green play button).
+
+You may install all the packages and optionally one of the example 'main.py's as described
+below.
+
+Select the install option you require at the prompt.
 
 ### Manual Installation
 
 Copy the python (.py) files from the lib, rp2dcc and mqtt directories to the Pico using Thonny.
 Don’t replicate the repository directory structure. Copy the files from the three directories to the
-lib directory at the Pico files system top level.
+lib directory at the Pico'a file system top level.
 Note that MicroPython will only search the top level directory and the lib directory for
 *.py files.
 Don’t bother with the \_\_init\_\_.py  files.
 These are purely documentary at the moment. Ignore the package.json files.  These define the packages for automated installation.
 Also ignore the test directory.
-
 
 #### Command Station
 

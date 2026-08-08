@@ -54,7 +54,7 @@ Each software package has a directory:
 In addition to the package directories, there are three other software directories:
 
 * conf - Example configuration files.
-* examples - Example `main.py` modules.
+* examples - Example modules e.g. `main.py` for command station and local detectors.
 * test - Free standing test and commissioning modules.
 
 The docs directory contains project documentation.

@@ -145,26 +145,6 @@
             </div>
         
 
-    </li><li class="">
-        
-        
-        
-
-        
-            <div class="itemName"><code><a href="#get_cv" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_util.CV_Access.get_cv">get<wbr></wbr>_cv</a></code>
-            </div>
-        
-
-    </li><li class="">
-        
-        
-        
-
-        
-            <div class="itemName"><code><a href="#get_state" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_util.CV_Access.get_state">get<wbr></wbr>_state</a></code>
-            </div>
-        
-
     </li>
 </ul> 
 
@@ -284,6 +264,26 @@
 
         
             <div class="itemName"><code><a href="#TYPE" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_util.CV_Access.TYPE">TYPE</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#cv_num" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_util.CV_Access.cv_num">cv<wbr></wbr>_num</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#operation" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_util.CV_Access.operation">operation</a></code>
             </div>
         
 
@@ -652,16 +652,6 @@ dropped for garbage collection.</p>
     <td>Method</td>
     <td><code><a href="#all_sent" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_util.CV_Access.all_sent">all<wbr></wbr>_sent</a></code></td>
     <td>Update State after Send</td>
-  </tr><tr class="method">
-    
-    <td>Method</td>
-    <td><code><a href="#get_cv" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_util.CV_Access.get_cv">get<wbr></wbr>_cv</a></code></td>
-    <td>Get the CV number</td>
-  </tr><tr class="method">
-    
-    <td>Method</td>
-    <td><code><a href="#get_state" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_util.CV_Access.get_state">get<wbr></wbr>_state</a></code></td>
-    <td>Get the command state</td>
   </tr><tr class="constant">
     
     <td>Constant</td>
@@ -707,6 +697,16 @@ dropped for garbage collection.</p>
     <td>Constant</td>
     <td><code><a href="#TYPE" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_util.CV_Access.TYPE">TYPE</a></code></td>
     <td>P - Programme on Main</td>
+  </tr><tr class="property">
+    
+    <td>Property</td>
+    <td><code><a href="#cv_num" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_util.CV_Access.cv_num">cv<wbr></wbr>_num</a></code></td>
+    <td>Get the CV number</td>
+  </tr><tr class="property">
+    
+    <td>Property</td>
+    <td><code><a href="#operation" class="internal-link" title="rp2da2.rp2dcc.dcc_cmd_util.CV_Access.operation">operation</a></code></td>
+    <td>Get the operation</td>
   </tr><tr class="constant private">
     
     <td>Constant</td>
@@ -868,64 +868,6 @@ At the moment only single byte CV operations are supported.</p>
 <p>Should only need to send read once but TOM appears to need it twice!</p>
 <p>returns True if all POM sends done</p>
 </div>
-  </div>
-</div><div class="basemethod">
-  
-  
-  <a name="rp2da2.rp2dcc.dcc_cmd_util.CV_Access.get_cv">
-    
-  </a>
-  <a name="get_cv">
-    
-  </a>
-  <div class="functionHeader">
-    
-    
-    <span class="py-keyword">def</span>&#160;<span class="py-defname">get_cv</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span></span>):</span>
-    
-    <a class="headerLink" href="#get_cv" title="rp2da2.rp2dcc.dcc_cmd_util.CV_Access.get_cv">
-      
-      
-      ¶
-    </a>
-  </div>
-  <div class="docstring functionBody">
-    
-    <div><p>Get the CV number</p>
-<p>This returns the number of the CV being accessed. The primary purpose is
-allow the  Channel 2 response processor to determine which CV a returned
-CV value relates to.</p>
-<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td colspan="2">The CV numver being accessed.</td></tr></table></div>
-  </div>
-</div><div class="basemethod">
-  
-  
-  <a name="rp2da2.rp2dcc.dcc_cmd_util.CV_Access.get_state">
-    
-  </a>
-  <a name="get_state">
-    
-  </a>
-  <div class="functionHeader">
-    
-    
-    <span class="py-keyword">def</span>&#160;<span class="py-defname">get_state</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span></span>):</span>
-    
-    <a class="headerLink" href="#get_state" title="rp2da2.rp2dcc.dcc_cmd_util.CV_Access.get_state">
-      
-      
-      ¶
-    </a>
-  </div>
-  <div class="docstring functionBody">
-    
-    <div><p>Get the command state</p>
-<p>This returns the state of the most recent send or NOT_SENT.</p>
-<div class="rst-admonition rst-admonition-todo">
-<p class="rst-admonition-title rst-first">todo</p>
-<p class="rst-last">Confirm that this is required.</p>
-</div>
-<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td colspan="2">The send state of the command</td></tr></table></div>
   </div>
 </div><div class="baseconstant">
   
@@ -1143,6 +1085,60 @@ CV value relates to.</p>
     <div><p>P - Programme on Main</p></div>
     <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code><span class="rst-variable-quote">'</span><span class="rst-variable-string">P</span><span class="rst-variable-quote">'</span></code></pre></td></tr></table>
   </div>
+</div><div class="baseproperty">
+  
+  
+  <a name="rp2da2.rp2dcc.dcc_cmd_util.CV_Access.cv_num">
+    
+  </a>
+  <a name="cv_num">
+    
+  </a>
+  <div class="functionHeader">
+    <div><span class="decorator">@property<br /></span></div>
+    <span class="py-defname">cv_num</span> =
+    
+    <a class="headerLink" href="#cv_num" title="rp2da2.rp2dcc.dcc_cmd_util.CV_Access.cv_num">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p>Get the CV number</p>
+<p>This returns the number of the CV being accessed. The primary purpose is
+allow the  Channel 2 response processor to determine which CV a returned
+CV value relates to.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td colspan="2">The CV numver being accessed.</td></tr></table></div>
+    
+  </div>
+</div><div class="baseproperty">
+  
+  
+  <a name="rp2da2.rp2dcc.dcc_cmd_util.CV_Access.operation">
+    
+  </a>
+  <a name="operation">
+    
+  </a>
+  <div class="functionHeader">
+    <div><span class="decorator">@property<br /></span></div>
+    <span class="py-defname">operation</span> =
+    
+    <a class="headerLink" href="#operation" title="rp2da2.rp2dcc.dcc_cmd_util.CV_Access.operation">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p>Get the operation</p>
+<p>May be read or write cv.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td colspan="2">operation code 'r' or 'w'</td></tr></table></div>
+    
+  </div>
 </div><div class="baseconstant private">
   
   
@@ -1323,7 +1319,7 @@ CV value relates to.</p>
   <div class="container-fluid">
     <a href="index.html">API Documentation</a> for <a href="https://redhead-p.github.io/rp2da2/" class="projecthome">RP2 Distributed Automation</a>,
   generated by <a href="https://github.com/twisted/pydoctor/">pydoctor</a>
-    25.10.1 at 2026-07-21 11:15:11.
+    25.10.1 at 2026-08-07 14:41:34.
   </div>
 
   <!-- Search related scripts needs to be loaded at the end of HTML 

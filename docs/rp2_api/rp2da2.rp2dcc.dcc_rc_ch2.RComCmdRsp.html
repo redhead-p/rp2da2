@@ -181,6 +181,16 @@
         
 
         
+            <div class="itemName"><code><a href="#get_id0" class="internal-link" title="rp2da2.rp2dcc.dcc_rc_ch2.RComCmdRsp.get_id0">get<wbr></wbr>_id0</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
             <div class="itemName"><code><a href="#reset_stats" class="internal-link" title="rp2da2.rp2dcc.dcc_rc_ch2.RComCmdRsp.reset_stats">reset<wbr></wbr>_stats</a></code>
             </div>
         
@@ -490,6 +500,16 @@
         
 
         
+            <div class="itemName"><code><a href="#_id0" class="internal-link" title="rp2da2.rp2dcc.dcc_rc_ch2.RComCmdRsp._id0">_id0</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
             <div class="itemName"><code><a href="#_last_command" class="internal-link" title="rp2da2.rp2dcc.dcc_rc_ch2.RComCmdRsp._last_command">_last<wbr></wbr>_command</a></code>
             </div>
         
@@ -631,12 +651,17 @@ monitoring the DRV8874 enable pin which is used to insert the cutout.</p>
     
     <td>Method</td>
     <td><code><a href="#get_dyn_chng" class="internal-link" title="rp2da2.rp2dcc.dcc_rc_ch2.RComCmdRsp.get_dyn_chng">get<wbr></wbr>_dyn<wbr></wbr>_chng</a></code></td>
-    <td>get changes to dyn info</td>
+    <td>Get changes to dyn info</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#get_error_counts" class="internal-link" title="rp2da2.rp2dcc.dcc_rc_ch2.RComCmdRsp.get_error_counts">get<wbr></wbr>_error<wbr></wbr>_counts</a></code></td>
     <td>Get Error Counts</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#get_id0" class="internal-link" title="rp2da2.rp2dcc.dcc_rc_ch2.RComCmdRsp.get_id0">get<wbr></wbr>_id0</a></code></td>
+    <td>Get id0</td>
   </tr><tr class="method">
     
     <td>Method</td>
@@ -790,6 +815,11 @@ monitoring the DRV8874 enable pin which is used to insert the cutout.</p>
   </tr><tr class="instancevariable private">
     
     <td>Instance Variable</td>
+    <td><code><a href="#_id0" class="internal-link" title="rp2da2.rp2dcc.dcc_rc_ch2.RComCmdRsp._id0">_id0</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable private">
+    
+    <td>Instance Variable</td>
     <td><code><a href="#_last_command" class="internal-link" title="rp2da2.rp2dcc.dcc_rc_ch2.RComCmdRsp._last_command">_last<wbr></wbr>_command</a></code></td>
     <td><span class="rst-undocumented">Undocumented</span></td>
   </tr><tr class="instancevariable private">
@@ -917,7 +947,9 @@ the first is read from the hardware configuration.</p>
   </div>
   <div class="docstring functionBody">
     
-    <div><p>get changes to dyn info</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td colspan="2">dyn info for first address in queue</td></tr></table></div>
+    <div><p>Get changes to dyn info</p>
+<p>Pop the first entry from the queue and return it.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td colspan="2">dyn info for first address in queue</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -944,6 +976,32 @@ the first is read from the hardware configuration.</p>
     <div><p>Get Error Counts</p>
 <p>Diagnostic method to retrieve the error counts for detected errors.</p>
 <table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td colspan="2">a dictionary of counts by error code.</td></tr></table></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="rp2da2.rp2dcc.dcc_rc_ch2.RComCmdRsp.get_id0">
+    
+  </a>
+  <a name="get_id0">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">get_id0</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span></span>):</span>
+    
+    <a class="headerLink" href="#get_id0" title="rp2da2.rp2dcc.dcc_rc_ch2.RComCmdRsp.get_id0">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Get id0</p>
+<p>Get the most recent id0 (cv value response) and clear it down.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td colspan="2">id0 contents or None</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -1688,6 +1746,30 @@ here but should not be problematic.</p>
 </div><div class="baseinstancevariable private">
   
   
+  <a name="rp2da2.rp2dcc.dcc_rc_ch2.RComCmdRsp._id0">
+    
+  </a>
+  <a name="_id0">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_id0</span> =
+    
+    <a class="headerLink" href="#_id0" title="rp2da2.rp2dcc.dcc_rc_ch2.RComCmdRsp._id0">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable private">
+  
+  
   <a name="rp2da2.rp2dcc.dcc_rc_ch2.RComCmdRsp._last_command">
     
   </a>
@@ -1745,7 +1827,7 @@ here but should not be problematic.</p>
   <div class="container-fluid">
     <a href="index.html">API Documentation</a> for <a href="https://redhead-p.github.io/rp2da2/" class="projecthome">RP2 Distributed Automation</a>,
   generated by <a href="https://github.com/twisted/pydoctor/">pydoctor</a>
-    25.10.1 at 2026-07-21 11:15:11.
+    25.10.1 at 2026-08-07 14:41:34.
   </div>
 
   <!-- Search related scripts needs to be loaded at the end of HTML 
