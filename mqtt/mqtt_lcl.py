@@ -48,7 +48,8 @@ class Block(MQTTAgent):
     This agent is used to handle publications to the RailCom topic and
     any publications it makes.
     """
-    REPORTER_TOPIC_PREFIX = "rcom/lcl"
+
+    REPORTER_TOPIC_PREFIX = "rcom/lcl" #: MQTT topic prefix for publishing
 
     def __init__(self, rc_block):
         """Construct the Block agent
@@ -113,8 +114,8 @@ class Sensor(MQTTAgent):
     This agent is used to handle publications to the sensor topic and
     any publications it makes.
     """
-    SENSOR_TOPIC_PREFIX = "track/sensor"
-   
+
+    SENSOR_TOPIC_PREFIX = "track/sensor" #: MQTT topic prefix for publishing
 
     SENSOR_PAYLOAD = {DCCBlkDet.BLK_EMPTY:"INACTIVE",
                        DCCBlkDet.BLK_OCC:"ACTIVE",
@@ -122,7 +123,6 @@ class Sensor(MQTTAgent):
     """Sensor payload look up
     
     Dictionary to translate internal status to reported status"""
-    
 
     def __init__(self, sensor):
         """Construct the Sensor agent

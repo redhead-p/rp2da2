@@ -23,6 +23,8 @@ from micropython import const
 
 from machine import I2C
 
+from hw_conf import HwConfLcl
+
 from device import Device
 
 _TIMER_PERIOD = const(50)   # time in ms between checks for current load on block
@@ -51,13 +53,14 @@ _ADC_CONF0 = b'\x95\xE3' # Single read, mux 1, FSR 2048 mV, 3300 sps, comparator
 _ADC_CONF1 = b'\xA5\xE3' # as above but mux 2
 _ADC_CONF0C = b'\x14\xE3'# mux 1 continuous read
 _ADC_CONF1C = b'\x24\xE3'# mux 2 continuous read
+_ADC_SLEEP = b'\x01\x03' # power down/sleep, comparator off
 
 _ADC_CONF_ADD = const(1)
 _adc_addr = {0: (72, _ADC_CONF0, _ADC_CONF0C),
              1:(72, _ADC_CONF1, _ADC_CONF1C),
              2: (73, _ADC_CONF0, _ADC_CONF0C),
              3:(73, _ADC_CONF1, _ADC_CONF1C)}
-_i2c = I2C(1)
+_i2c = I2C(HwConfLcl.BLK_I2C)
 
 
 class DCCBlkDet(Device):
@@ -187,7 +190,7 @@ class DCCBlkDet(Device):
                 # read reg 0 (result register) 10 times (results may not be unique!)
                 # we can read the results register faster than the sampling rate!
                 readings = [_adc2int(_i2c.readfrom_mem(i2c_addr, 0, 2)) for _ in range (0,10)]
-                _i2c.writeto_mem(i2c_addr,_ADC_CONF_ADD,b'\x03\x01') # sleep
+                _i2c.writeto_mem(i2c_addr,_ADC_CONF_ADD,_ADC_SLEEP)
             except OSError:
                 # i2c error - no track power most likely
                 return (None, None)

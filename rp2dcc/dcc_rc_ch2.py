@@ -139,6 +139,7 @@ class RComCmdRsp(RailComRead):
         self._dyn_info = {} # other dynamic info
         self._dyn_chng = deque([],32) # addresses with dynamic info changes
         self._pom_acc = {}   # outstanding cv accesss requests by command type/address
+        self._id0 = None    # last ID0 
 
         self._errors = {} # error counts
         self._dgs = set() # Datagrams seen
@@ -169,7 +170,9 @@ class RComCmdRsp(RailComRead):
         return self._dgs
     
     def get_dyn_chng(self):
-        """ get changes to dyn info
+        """ Get changes to dyn info
+
+        Pop the first entry from the queue and return it.
 
         returns:
             dyn info for first address in queue
@@ -181,6 +184,19 @@ class RComCmdRsp(RailComRead):
             return 0,[]
         return addr, [(si, self._dyn_info[(a, si)]) for (a, si) in self._dyn_info.keys()
                   if a == addr]
+
+    def get_id0(self):
+        """ Get id0
+        
+        Get the most recent id0 (cv value response) and clear it down.
+
+        returns:
+            id0 contents or None
+        
+        """
+        id0 = self._id0
+        self._id0 = None
+        return id0
 
     def reset_stats(self):
         """ Reset diagnostic information
@@ -235,16 +251,18 @@ class RComCmdRsp(RailComRead):
             # maybe already there (second write) - quietly update or add
             # get the request cv number and command timeout and save
             # the decoder has half a second to respond RCN217 5.1
-            self._pom_acc[(address)] = (last_command.get_cv(), time.ticks_add(time.ticks_ms(), 500))
+            self._pom_acc[(address)] = (last_command.cv_num,
+                                        time.ticks_add(time.ticks_ms(), 500),
+                                         last_command.operation)
         else:
             # other command
             # check for outstanding POM command timeout
             try:
-                cv, timeout = self._pom_acc[(address)] # get timeout
+                cv, timeout, _ = self._pom_acc[(address)] # get timeout
                 if time.ticks_diff(time.ticks_ms(), timeout) > 0:
                     # timeout expired
                     del(self._pom_acc[(address)]) # no longer needed
-                    self.report_event(Device.POM_TO, (address, cv + 1))
+                    self.report_event(Device.POM_TO, (address, cv + 1, None))
             except KeyError:
                 # no outstanding POM command
                 pass
@@ -334,19 +352,26 @@ class RComCmdRsp(RailComRead):
                             self.report_event(Device.CH2_Q_FULL,None)
 
             elif id == RComCmdRsp.DG_POM:
+                #print(addr, self._pom_acc[(addr)])
                 # POM cv response RCN219 5.1
                 # payload is cv value from last POM command
                 # check that there was one for this address
                 try:
-                    cv, _= self._pom_acc[(addr)]
+                    cv, _, op = self._pom_acc[(addr)]
                     del(self._pom_acc[(addr)]) # no longer needed
+                    self._id0 = (Device.POM_CV, op, addr, cv + 1, payload)
                     self.report_event(Device.POM_CV, (addr, cv + 1, payload))
                 except KeyError:
                     pass
             elif id == RailComRead.DG_RESP and payload == RailComRead.NAK:
+                # POM cv request NAK'd
                 try:
-                    cv, _= self._pom_acc[(addr)]
+                    cv, _, op = self._pom_acc[(addr)]
                     del(self._pom_acc[(addr)]) # no longer needed
-                    self.report_event(Device.POM_NAK, (addr, cv + 1))
+                    self._id0 = (Device.POM_NAK, op, addr, cv + 1, None)
+                    self.report_event(Device.POM_NAK, (addr, cv + 1, None))
                 except KeyError:
-                    pass         
+                    pass
+        # raise ready flag if anything to be reported
+        if self._dyn_chng or self._id0:
+            self._ready_flag.set()       

@@ -40,7 +40,8 @@ def log_event(report):
     The first item may be set to a string of characters. Each character enables logging
     reports from a specific source as identified in the base Device class.
 
-    characters are:
+    Characters are:
+
         - w: wifi
         - m: MQTT
         - l: local RailCom detector

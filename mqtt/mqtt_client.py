@@ -450,13 +450,15 @@ class MQTTClient(Device):
         # acknowledge publication - with pid extracted from packet
         if qos != MQTTClient.QOS0:
             await self._puback(packet[topic_len + 2] * 256 + packet[topic_len + 3])
+            ps = topic_len + 4 # start of payload - skip pid
+        else:
+            ps = topic_len +2 # start of payload - no pid
         try:
             topic = packet[2:2 + topic_len].decode("utf8")
-            payload = packet[topic_len+4:].decode("utf8")
+            payload = packet[ps:].decode("utf8")
         except UnicodeError:
             self.report_event(Device.MC_PROT_ERR, MQTTClient.ERR_UTF8)
             return # ignore ill formed strings
-
         for subscription in self._subscription_list:
             if subscription.matches(topic):
                 subscription.handle_publication(topic, dup_flag, ret_flag, payload)

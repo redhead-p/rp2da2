@@ -408,25 +408,21 @@ class CV_Access(CommandPacket):
             self._state = CV_Access.SENT_POM
         return True
 
+    @property
+    def operation(self):
+        """ Get the operation
 
-
-    def get_state(self):
-        """Get the command state
+        May be read or write cv.
         
-        This returns the state of the most recent send or NOT_SENT.
-
-        todo:
-            Confirm that this is required. 
-
         returns:
-            The send state of the command
+            operation code 'r' or 'w'
         """
-        return self._state
-    
-    def get_cv(self):
-        """Get the CV number
+        return self._operation
 
-        
+    @property
+    def cv_num(self):
+        """Get the CV number
+   
         This returns the number of the CV being accessed. The primary purpose is
         allow the  Channel 2 response processor to determine which CV a returned 
         CV value relates to. 

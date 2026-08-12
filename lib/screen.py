@@ -149,12 +149,12 @@ class Screen():
             self._oled.scroll_write(f'a:{address} c:{cv_num} v:{value}')
 
     def _handle_pom_to(self,src, data):
-        address, cv_num = data
+        address, cv_num, _ = data
         self._oled.scroll_write(f'a:{address} c:{cv_num} timeout')
         self._oled.show_page(1)
 
     def _handle_pom_nak(self,src, data):
-        address, cv_num = data
+        address, cv_num, _= data
         self._oled.scroll_write(f'a:{address} c:{cv_num} NAK')
 
     def _handle_un_enc(self,src, data):

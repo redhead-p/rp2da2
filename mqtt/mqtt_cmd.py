@@ -162,6 +162,13 @@ class Cab(MQTTAgent):
     def handle_publication(self, topic, dup_flag, ret_flag, payload):
         """Handle a publication
         This method is called by the MQTT client when a publication is received.
+        Topic is broken down as cab/address/command/[fn]
+
+            - cab is fixed 'cab'
+            - address is dcc address
+            - command is one of throttle, direction, function, cv_read, cv_write
+            - fn only applies to function
+
         Args:
             topic: the topic of the publication
             dup_flag: True if this is a duplicate publication
@@ -259,6 +266,30 @@ class Cab(MQTTAgent):
         self._dcc.set_speed(address, dir, dcc_speed)
         self._cab[address] = (dir, dcc_speed)
 
+    def _handle_cvrd_pub(self, address, topic3, payload):
+        try:
+             # cv number
+            cv_number = int(payload)
+        except ValueError:
+            # not a number
+            return
+        if not self._dcc.read_cv(address, cv_number):
+            # command failed - cv number out of range or address not active
+            pass
+
+    def _handle_cvwr_pub(self, address, topic3, payload):
+        try:
+             # cv number, new value - space separated
+            payload_item = payload.split(' ')
+            cv = int(payload_item[0])
+            nv = int(payload_item[1])
+        except ValueError:
+            # not a number
+            return
+        if not self._dcc.write_cv(address, cv, nv):
+            # command failed - cv number out of range or address not active
+            pass
+
     def _handle_ns_pub(self, address, topic3, payload):
         pass
 
@@ -267,8 +298,24 @@ class Cab(MQTTAgent):
         
         Publish the RailCom dynamic info
         """
+        POM_RES = {Device.POM_CV:'OK', Device.POM_NAK:'NAK', Device.POM_TO:'TIMEOUT'}
         while True:
-            await asyncio.sleep_ms(1000) # at the moment check once per sec
+            await self._rc2.wait_for_flag()
+            id0 = self._rc2.get_id0()
+            if id0:
+                # id0 to be published
+                # may be value, timeout or nak
+                pl_dict = {}
+                event, op, addr, cv,  payload = id0
+                pl_dict['CV_NUM'] = cv
+                op_txt = 'WRITE' if op == 'w' else 'READ'
+                pl_dict['RESULT'] = f'{op_txt}_{POM_RES.get(event)}'
+                if payload is not None:
+                    pl_dict['CV_VAL'] = payload
+                await self._client.publish(
+                    f"rcom/gbl/{addr}/id0", json.dumps(pl_dict), False, MQTTClient.QOS1)
+                
+
             addr, changes = self._rc2.get_dyn_chng()
             if not addr:   # no changes to report
                 continue
@@ -287,4 +334,6 @@ class Cab(MQTTAgent):
     _CAB_CMD = {'throttle':_handle_spd_pub,
                 'direction':_handle_dir_pub,
                 'function':_handle_fn_pub,
-                'consist':_handle_ns_pub}
+                'consist':_handle_ns_pub,
+                'cv_read':_handle_cvrd_pub,
+                'cv_write':_handle_cvwr_pub}
