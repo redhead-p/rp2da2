@@ -1,4 +1,6 @@
-# rp2da2
+# [rp2da2](https://github.com/redhead-p/rp2da2)
+
+## Introduction
 
 This project provides Model Railway Distributed Automation for Raspberry Pi RP2040/RP2350 (and other MicropPython Micro Controller Units).
 
@@ -20,28 +22,46 @@ Software is modular. Some software modules will support specific functionality e
 
 For development purposes, testing has been conducted in conjunction with [JMRI](https://www.jmri.org) using its MQTT interface. As result of this, using the software with the standard examples in the repository, will work directly with JMRI. JMRI 'throttles' may be used to control locomotives with mobile decoders. RailCom channel 1 and channel 2 responses are available within JMRI tables.
 
+The software is written and developed using [MicroPython](https://micropython.org). Version 1.26 or later Micropython runtime is required. All software dependencies are resolved
+using modules within this repository or modules built into the standard MicroPython runtime.
+
+This Readme is the main repository Readme and is also the index page for the Documentation on GitHub Pages.
+
+Click [Documentation on GitHub Pages](https://redhead-p.github.io/rp2da2/) to view this Readme and documentation on GitHub pages (recommended).
+
 ---
 
 ## General Overview
 
-The software is written and developed using [MicroPython](https://micropython.org). Version 1.26 or later Micropython runtime is required. All software dependencies are resolved
-using modules within this repository or modules built into the standard MicroPython runtime.
+### Package documentation
 
 The run-time application is split accross three packages. [Package documentation](docs/SoftwarePackages.md) provides further details. In addition to packaged modules there are example `main.py` modules and test modules.
+
+### Software Installation
+
 The packages and the relevant `main.py` need to be installed on the target device. This is covered under [Software Installation](docs/SoftwareInstallation.md).
 
+### Configuration
+
 Setting up local installation details such as network and operational paramaters is described in the [configuration section](docs/Configuration.md).
+
+### Hardware
 
 The hardware environment primarily uses Raspberry Pi Pico or Pico2 processors.
 More detail is provided in the [hardware section](docs/Hardware.md).
 
+### Software
+
 High level software design is covered in the [design document](docs/Design.md).
 
-Full API details and additional design information are in the [API section](docs/rp2_api/index.html). This documentation is generated from Python 'docstrings' in the code modules. There are also API details for [key components](docs/API.md).
+Full API details and additional design information are in the [API section](docs/rp2_api/index.html).
+This documentation is generated from Python 'docstrings' in the code modules. There are also API details for [key components](docs/API.md).
 
-Details of diagnostics and testing are in the [testing section](docs/Testing.md).
+Details of commissioning testing and diagnostics to aid development are in the [testing section](docs/Testing.md).
 
----
+### Run Time Indicators
+
+A quick overview of the system's LED, NeoPixel and OLED indicators is available in [LEDs, NeoPixels and OLED usage](docs/LEDsNeoPixelsOLED.md).
 
 ## Repository Structure
 
@@ -57,6 +77,6 @@ In addition to the package directories, there are three other software directori
 * examples - Example modules e.g. `main.py` for command station and local detectors.
 * test - Free standing test and commissioning modules.
 
-The docs directory contains project documentation.
+The docs directory contains project documentation and is best accessed via [GitHub Pages](https://redhead-p.github.io/rp2da2).
 
 ---

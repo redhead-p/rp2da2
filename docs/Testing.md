@@ -1,4 +1,4 @@
-# DCC Diagnostics & Testing
+# Commissioning & Testing
 
 ## DCC Test Harness
 
@@ -26,9 +26,9 @@ See [API](API.md) for more details.
 There are test harnesses for these in the test directory. These modules
 require the [packages](SoftwarePackages.md) to be installed.
 
-***test_dccrc1.py*** runs the local RailCom detectors.
+`test_dccrc1.py` runs the local RailCom detectors.
 
-***test_quad_blk.py*** runs the current based occupancy Train detectors.
+`test_quad_blk.py` runs the current based occupancy Train detectors.
 
 Both may be run using Thonny. Load the program into the Thonny editor window and ‘Run current script’
 (green play button).

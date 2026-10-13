@@ -27,7 +27,7 @@ in the conf directory. See the [configuration](Configuration.md) section.
 To run the automated installation load /test/load_sw.py into the Thonny editor window and
 ‘Run current script’ (green play button).
 
-You may install all the packages and optionally one of the example 'main.py's as described
+You may install all the packages and optionally one of the example `main.py`s as described
 below.
 
 Select the install option you require at the prompt.
@@ -36,10 +36,10 @@ Select the install option you require at the prompt.
 
 Copy the python (.py) files from the lib, rp2dcc and mqtt directories to the Pico using Thonny.
 Don’t replicate the repository directory structure. Copy the files from the three directories to the
-lib directory at the Pico'a file system top level.
+lib directory at the Pico's file system top level.
 Note that MicroPython will only search the top level directory and the lib directory for
-*.py files.
-Don’t bother with the \_\_init\_\_.py  files.
+`*.py` files.
+Don’t bother with the `\_\_init\_\_.py`  files.
 These are purely documentary at the moment. Ignore the package.json files.  These define the packages for automated installation.
 Also ignore the test directory.
 
@@ -47,7 +47,7 @@ Also ignore the test directory.
 
 The main.py in the examples/command directory is a command station version. It provides MQTT connectivity
 allowing the command station to be controlled from JMRI or similar.
-Copy this main.py from the command directory to the top level directory on the target device.
+Copy this `main.py` from the command directory to the top level directory on the target device.
 
 #### Block Detector
 
