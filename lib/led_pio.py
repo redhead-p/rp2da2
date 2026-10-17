@@ -56,9 +56,6 @@ def ws2812_tx():
     wrap()
 
 
-_MAX_LEN = const(5)
-
-
 class NeoLed():
     """ NeoPixel Led
     
@@ -66,7 +63,7 @@ class NeoLed():
 
     RGB values may either be passed as a tuple or a single colour may be set or cleared.
 
-    Setting a colour without a value will set the defaul.  Clearing a colour will set 0.
+    Setting a colour without a value will set the default.  Clearing a colour will set 0.
     
     Attributes:
         LED_R: Red

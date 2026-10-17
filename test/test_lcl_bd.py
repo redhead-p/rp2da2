@@ -62,7 +62,11 @@ i2c_pn = (4, 5),(6 ,7)
 # PICO on board LED
 led = Pin("LED", Pin.OUT)
 # five neopixels in chain
-np = NeoPixel(Pin(22), 5)
+# default NeoPixel class timing on the RP2350 appears to cause problems
+# with some LEDS/
+# to revert to default timings remove the timing parameter
+# in the following.
+np = NeoPixel(Pin(22), 5, timing = (350, 900, 800, 450))
 # user press button
 sw = Pin(26, Pin.IN, Pin.PULL_UP)
 
@@ -150,6 +154,7 @@ def scan_pins(pins):
             for d in range(4):
                 np[d] = GREEN if next(pin).value() == 1 else UNLIT
             np.write()
+            time.sleep_ms(1)
     except KeyboardInterrupt:
         pass
 

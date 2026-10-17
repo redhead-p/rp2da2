@@ -137,8 +137,8 @@ class HwConfLcl(HwConf):
     def __init__(self):
         """Construct the Local Configuration.
         
-        Define DCC sense pin used for detectiing cutouts and allocate
-        pin numbser and state machine number for each local detector."""
+        Define DCC sense pin used for detecting cutouts. Allocate
+        pin numbers and state machine number for each local detector."""
         assert HwConf._hw_conf is None, 'only one configurator allowed'
         HwConf._hw_conf = self
         # local detector only

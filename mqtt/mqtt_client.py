@@ -109,7 +109,7 @@ class MQTTPacketOut():
             flags: Packet control flags      
         """
         self._buffer = bytearray()
-        self._header= bytearray(((pkt_type << 4 | flags & 0xf),))
+        self._header = bytearray(((pkt_type << 4 | flags & 0xf),))
 
     def add_byte(self, b):
         """Add a byte to the packet
