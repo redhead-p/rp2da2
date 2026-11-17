@@ -132,7 +132,7 @@
             <mxPoint x="90" y="461" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="gr7CwpzHHxp9IrU3xH0L-60" parent="1" style="text;align=center;fontStyle=1;verticalAlign=middle;spacingLeft=3;spacingRight=3;strokeColor=none;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;rounded=0;labelBackgroundColor=none;fontColor=#1D3557;" value="Lib Class Diagram" vertex="1">
+        <mxCell id="gr7CwpzHHxp9IrU3xH0L-60" parent="1" style="text;align=center;fontStyle=1;verticalAlign=middle;spacingLeft=3;spacingRight=3;strokeColor=none;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;rounded=0;labelBackgroundColor=none;fontColor=#1D3557;" value="Core Class Diagram" vertex="1">
           <mxGeometry height="26" width="80" x="360" y="910" as="geometry" />
         </mxCell>
         <mxCell id="gr7CwpzHHxp9IrU3xH0L-67" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;strokeColor=#457B9D;fillColor=#A8DADC;labelBackgroundColor=none;fontColor=#1D3557;" value="BlkLed" vertex="1">

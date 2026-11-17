@@ -67,7 +67,7 @@ A quick overview of the system's LED, NeoPixel and OLED indicators is available 
 
 Each software package has a directory:
 
-* lib - common software modules
+* core - common software modules
 * mqtt - MQTT related software and Wi-Fi modules
 * rp2dcc - DCC and RailCom software modules.
 

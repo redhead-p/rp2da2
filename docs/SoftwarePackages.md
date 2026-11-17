@@ -1,6 +1,6 @@
 # Software Packages
 
-There are three software packages in this repository. The 'lib' package provides
+There are three software packages in this repository. The 'core' package provides
 a common substrate covering:
 
 - a simple user display interface for diagnostic and
@@ -22,13 +22,16 @@ Wi-Fi.
 
 In addition to the packages there are example main.py and configuration files for the integrated Pico based command station and the quad RailCom local detector.
 
+Packages are grouped by functionality rather than application. E.g a package may contain
+modules for DCC Generation (command station) and RailCom decode (block detection). The 'main.py' determines which of these are invoked at run-time.
+
 The following sections provide an overview of the packages. Further details on the
 packages and their component modules are provided
 in the full [API section](rp2_api/index.html)
 
 ---
 
-## lib package - Utility & UI
+## core package - Utility & UI
 
 **device** - This provides the Device class, a base class for hardware device
 drivers and similar objects.

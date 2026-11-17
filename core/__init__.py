@@ -1,4 +1,4 @@
-"""**Lib - Device Library Package**
+"""**Core - Library Package**
 
 This is the core utility library used across the project. This package
 collects small, well-tested modules that provide common functionality
@@ -14,9 +14,9 @@ can be imported from command-line tools, tests, and other packages
 without side-effects. Import individual submodules or symbols to keep
 startup fast.
 
-**Lib Package Class Diagram**
+**Core Package Class Diagram**
 
-.. figure:: images/lib.svg
+.. figure:: images/core.svg
     :align: center
 
 """
